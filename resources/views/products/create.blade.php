@@ -1,12 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="header">
-        <h1 class="title">Nuevo producto</h1>
-    </div>
+<div class="header">
+    <h1 class="title">➕ Crear Nuevo Producto</h1>
+</div>
 
-    <form action="{{ route('productos.store') }}" method="POST">
-        @csrf
-        @include('products._form')
-    </form>
+<form action="{{ route('admin.productos.store') }}" method="POST" style="background: #f9fafb; padding: 20px; border-radius: 8px;">
+    @csrf
+    @include('products._form')
+</form>
+
+<script>
+    // Auto-complete SKU from barcode
+    document.getElementById('barcode')?.addEventListener('change', function() {
+        if (!document.getElementById('sku').value) {
+            document.getElementById('sku').value = 'SKU-' + this.value;
+        }
+    });
+</script>
+
 @endsection

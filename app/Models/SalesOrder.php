@@ -16,6 +16,16 @@ class SalesOrder extends Model
         'customer_id',
         'user_id',
         'status',
+        'channel',
+        'online_status',
+        'stripe_payment_intent_id',
+        'shipping_address',
+        'shipping_city',
+        'shipping_postal_code',
+        'shipping_notes',
+        'shipped_at',
+        'delivered_at',
+        'tracking_number',
         'subtotal',
         'discount_type',
         'discount_value',
@@ -41,7 +51,45 @@ class SalesOrder extends Model
             'total' => 'decimal:2',
             'completed_at' => 'datetime',
             'cancelled_at' => 'datetime',
+            'shipped_at' => 'datetime',
+            'delivered_at' => 'datetime',
         ];
+    }
+
+    public function isOnline(): bool
+    {
+        return $this->channel === 'online';
+    }
+
+    public function getStatusLabelAttribute(): string
+    {
+        if ($this->isOnline()) {
+            return match($this->online_status) {
+                'pending' => 'Pendiente de pago',
+                'paid' => 'Pagado',
+                'processing' => 'En proceso',
+                'shipped' => 'Enviado',
+                'delivered' => 'Entregado',
+                'cancelled' => 'Cancelado',
+                default => 'Desconocido',
+            };
+        }
+
+        return match($this->status) {
+            'pending' => 'Pendiente',
+            'completed' => 'Completado',
+            'cancelled' => 'Cancelado',
+            'refunded' => 'Reembolsado',
+            default => 'Desconocido',
+        };
+    }
+
+    public static function generateOrderNumber(): string
+    {
+        $prefix = 'ORD';
+        $date = now()->format('Ymd');
+        $random = strtoupper(substr(uniqid(), -4));
+        return "{$prefix}-{$date}-{$random}";
     }
 
     public function customer(): BelongsTo

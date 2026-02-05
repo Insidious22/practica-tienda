@@ -28,6 +28,12 @@ class RolesSeeder extends Seeder
                 'description' => 'Gestión de inventario y recepciones',
                 'is_system' => true,
             ],
+            [
+                'code' => 'customer',
+                'name' => 'Cliente',
+                'description' => 'Cliente de la tienda online',
+                'is_system' => true,
+            ],
         ];
 
         foreach ($roles as $role) {

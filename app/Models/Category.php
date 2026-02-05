@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
@@ -12,9 +13,25 @@ class Category extends Model
     protected $fillable = [
         'zone_id',
         'name',
+        'slug',
         'code',
         'description',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($category) {
+            if (empty($category->slug)) {
+                $category->slug = Str::slug($category->name);
+                $count = static::where('slug', 'like', $category->slug . '%')->count();
+                if ($count > 0) {
+                    $category->slug .= '-' . ($count + 1);
+                }
+            }
+        });
+    }
 
     public function zone()
     {

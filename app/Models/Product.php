@@ -7,17 +7,41 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
     use HasFactory;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($product) {
+            if (empty($product->slug)) {
+                $product->slug = Str::slug($product->name);
+                $count = static::where('slug', 'like', $product->slug . '%')->count();
+                if ($count > 0) {
+                    $product->slug .= '-' . ($count + 1);
+                }
+            }
+        });
+
+        static::updating(function ($product) {
+            if ($product->isDirty('name') && empty($product->slug)) {
+                $product->slug = Str::slug($product->name);
+            }
+        });
+    }
 
     protected $fillable = [
         'category_id',
         'barcode',
         'sku',
         'name',
+        'slug',
         'description',
+        'image',
         'price',
         'stock',
         'stock_quantity',
