@@ -4,8 +4,8 @@
 <div class="header">
     <h1 class="title">📍 Detalle de Zona: {{ $zone->name }}</h1>
     <div class="header-actions">
-        <a class="btn secondary" href="{{ route('admin.zonas.edit', $zone) }}" style="gap: 6px;">✏️ Editar</a>
-        <a class="btn secondary" href="{{ route('admin.zonas.index') }}" style="gap: 6px;">← Volver</a>
+        <a class="btn btn-secondary" href="{{ route('admin.zonas.edit', $zone) }}" style="gap: 6px;">✏️ Editar</a>
+        <a class="btn btn-secondary" href="{{ route('admin.zonas.index') }}" style="gap: 6px;">← Volver</a>
     </div>
 </div>
 
@@ -59,7 +59,7 @@
                         <div class="muted" style="font-size: 12px; margin-bottom: 8px;">Código: {{ $category->code }}</div>
                     @endif
                     <div class="muted" style="font-size: 13px;">{{ $category->products->count() }} productos</div>
-                    <a class="btn secondary" href="{{ route('admin.categorias.show', $category) }}" style="margin-top: 10px; width: 100%; text-align: center; padding: 8px 12px; font-size: 12px;">Ver categoría →</a>
+                    <a class="btn btn-secondary" href="{{ route('admin.categorias.show', $category) }}" style="margin-top: 10px; width: 100%; text-align: center; padding: 8px 12px; font-size: 12px;">Ver categoría →</a>
                 </div>
             @endforeach
         </div>
@@ -67,19 +67,19 @@
         <div class="empty-state" style="padding: 40px 20px;">
             <div class="empty-state-icon">🏷️</div>
             <div class="empty-state-text">No hay categorías en esta zona</div>
-            <a href="{{ route('admin.categorias.create') }}" class="btn primary">Crear primera categoría</a>
+            <a href="{{ route('admin.categorias.create') }}" class="btn btn-primary">Crear primera categoría</a>
         </div>
     @endif
 </div>
 
 <!-- Action Buttons -->
 <div style="display: flex; gap: 12px; margin-bottom: 30px; flex-wrap: wrap;">
-    <a class="btn primary" href="{{ route('admin.zonas.edit', $zone) }}" style="gap: 6px;">✏️ Editar Zona</a>
-    <a class="btn secondary" href="{{ route('admin.zonas.index') }}" style="gap: 6px;">← Volver a Lista</a>
+    <a class="btn btn-primary" href="{{ route('admin.zonas.edit', $zone) }}" style="gap: 6px;">✏️ Editar Zona</a>
+    <a class="btn btn-secondary" href="{{ route('admin.zonas.index') }}" style="gap: 6px;">← Volver a Lista</a>
     <form action="{{ route('admin.zonas.destroy', $zone) }}" method="POST" style="display: inline;">
         @csrf
         @method('DELETE')
-        <button class="btn danger" type="submit" onclick="return confirm('¿Eliminar esta zona? También se eliminarán sus categorías.')" style="gap: 6px;">🗑️ Eliminar</button>
+        <button class="btn btn-danger" type="submit" onclick="return confirm('¿Eliminar esta zona? También se eliminarán sus categorías.')" style="gap: 6px;">🗑️ Eliminar</button>
     </form>
 </div>
 

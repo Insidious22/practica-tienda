@@ -4,8 +4,8 @@
 <div class="header">
     <h1 class="title">🏷️ Detalle de Categoría: {{ $category->name }}</h1>
     <div class="header-actions">
-        <a class="btn secondary" href="{{ route('admin.categorias.edit', $category) }}" style="gap: 6px;">✏️ Editar</a>
-        <a class="btn secondary" href="{{ route('admin.categorias.index') }}" style="gap: 6px;">← Volver</a>
+        <a class="btn btn-secondary" href="{{ route('admin.categorias.edit', $category) }}" style="gap: 6px;">✏️ Editar</a>
+        <a class="btn btn-secondary" href="{{ route('admin.categorias.index') }}" style="gap: 6px;">← Volver</a>
     </div>
 </div>
 
@@ -67,7 +67,7 @@
     
     @if($category->products->count() > 0)
         <div style="overflow-x: auto;">
-            <table class="table">
+            <table class="table table-striped table-hover align-middle">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -92,8 +92,8 @@
                             </td>
                             <td>
                                 <div class="actions">
-                                    <a class="btn secondary" href="{{ route('admin.productos.show', $product) }}" title="Ver">👁️</a>
-                                    <a class="btn secondary" href="{{ route('admin.productos.edit', $product) }}" title="Editar">✏️</a>
+                                    <a class="btn btn-secondary" href="{{ route('admin.productos.show', $product) }}" title="Ver">👁️</a>
+                                    <a class="btn btn-secondary" href="{{ route('admin.productos.edit', $product) }}" title="Editar">✏️</a>
                                 </div>
                             </td>
                         </tr>
@@ -105,19 +105,19 @@
         <div class="empty-state" style="padding: 40px 20px;">
             <div class="empty-state-icon">📦</div>
             <div class="empty-state-text">No hay productos en esta categoría</div>
-            <a href="{{ route('admin.productos.create') }}" class="btn primary">Crear primer producto</a>
+            <a href="{{ route('admin.productos.create') }}" class="btn btn-primary">Crear primer producto</a>
         </div>
     @endif
 </div>
 
 <!-- Action Buttons -->
 <div style="display: flex; gap: 12px; margin-bottom: 30px; flex-wrap: wrap;">
-    <a class="btn primary" href="{{ route('admin.categorias.edit', $category) }}" style="gap: 6px;">✏️ Editar Categoría</a>
-    <a class="btn secondary" href="{{ route('admin.categorias.index') }}" style="gap: 6px;">← Volver a Lista</a>
+    <a class="btn btn-primary" href="{{ route('admin.categorias.edit', $category) }}" style="gap: 6px;">✏️ Editar Categoría</a>
+    <a class="btn btn-secondary" href="{{ route('admin.categorias.index') }}" style="gap: 6px;">← Volver a Lista</a>
     <form action="{{ route('admin.categorias.destroy', $category) }}" method="POST" style="display: inline;">
         @csrf
         @method('DELETE')
-        <button class="btn danger" type="submit" onclick="return confirm('¿Eliminar esta categoría? También se eliminarán sus productos.')" style="gap: 6px;">🗑️ Eliminar</button>
+        <button class="btn btn-danger" type="submit" onclick="return confirm('¿Eliminar esta categoría? También se eliminarán sus productos.')" style="gap: 6px;">🗑️ Eliminar</button>
     </form>
 </div>
 

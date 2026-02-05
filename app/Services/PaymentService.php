@@ -13,7 +13,7 @@ class PaymentService
      * Process a payment for an order
      * This is a simplified version - in production, integrate with Stripe/PayPal
      */
-    public function processPayment(SalesOrder $order, string $paymentMethodCode = 'stripe'): array
+    public function processPayment(SalesOrder $order, string $paymentMethodCode = 'wallet'): array
     {
         // In production, this would integrate with Stripe:
         // 1. Create PaymentIntent

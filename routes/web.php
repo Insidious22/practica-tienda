@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 
 // Admin Controllers
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\CategoryController;
@@ -85,10 +88,21 @@ Route::prefix('tienda/checkout')->name('shop.checkout.')->middleware(['auth', 'c
 });
 
 // ========================================
-// RUTAS DE ADMINISTRACIÓN
+// LOGIN DE ADMINISTRACIÓN
 // ========================================
-// TODO: Agregar middleware(['auth', 'admin']) cuando se configure autenticación de admin
 Route::prefix('admin')->name('admin.')->group(function () {
+    Route::middleware('guest')->group(function () {
+        Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('login');
+        Route::post('/login', [AdminAuthController::class, 'login']);
+    });
+});
+
+// ========================================
+// RUTAS DE ADMINISTRACIÓN (requiere admin middleware)
+// ========================================
+// Usamos sólo el middleware `admin.or.superadmin` porque ya verifica
+// autenticación y redirige a `admin.login` cuando el usuario no está autenticado.
+Route::prefix('admin')->name('admin.')->middleware(['admin.or.superadmin'])->group(function () {
     Route::get('/', function () {
         return redirect()->route('admin.dashboard');
     });
@@ -97,9 +111,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('productos', ProductController::class);
     Route::resource('zonas', ZoneController::class);
     Route::resource('categorias', CategoryController::class);
+    Route::resource('proveedores', SupplierController::class);
+    
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
+
+    // Rutas de usuarios (solo super admin)
+    Route::resource('usuarios', UserController::class);
 });
 
-// ========================================
-// LOGIN DE ADMIN (acceso sin middleware admin)
-// ========================================
-Route::get('/admin/login', [CustomerAuthController::class, 'showLogin'])->name('admin.login');

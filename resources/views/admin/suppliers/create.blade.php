@@ -1,0 +1,119 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="header">
+    <h1 class="title">Crear Nuevo Proveedor</h1>
+</div>
+
+<div style="max-width: 600px;">
+    <form action="{{ route('admin.suppliers.store') }}" method="POST" style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+        @csrf
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Código</label>
+            <input type="text" name="code" value="{{ old('code') }}" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+            @error('code')
+                <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Nombre</label>
+            <input type="text" name="name" value="{{ old('name') }}" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+            @error('name')
+                <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Contacto</label>
+            <input type="text" name="contact_person" value="{{ old('contact_person') }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+            @error('contact_person')
+                <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Email</label>
+                <input type="email" name="email" value="{{ old('email') }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                @error('email')
+                    <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Teléfono</label>
+                <input type="tel" name="phone" value="{{ old('phone') }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                @error('phone')
+                    <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Dirección</label>
+            <input type="text" name="address" value="{{ old('address') }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+            @error('address')
+                <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Ciudad</label>
+                <input type="text" name="city" value="{{ old('city') }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                @error('city')
+                    <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Código Postal</label>
+                <input type="text" name="postal_code" value="{{ old('postal_code') }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                @error('postal_code')
+                    <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">RUC/NIT</label>
+                <input type="text" name="tax_id" value="{{ old('tax_id') }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                @error('tax_id')
+                    <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Cuenta Bancaria</label>
+                <input type="text" name="bank_account" value="{{ old('bank_account') }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                @error('bank_account')
+                    <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+
+        <div style="margin-bottom: 30px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Estado</label>
+            <select name="status" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                <option value="active" {{ old('status') === 'active' ? 'selected' : '' }}>Activo</option>
+                <option value="inactive" {{ old('status') === 'inactive' ? 'selected' : '' }}>Inactivo</option>
+            </select>
+            @error('status')
+                <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+            <button type="submit" class="btn btn-primary" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                Crear Proveedor
+            </button>
+            <a href="{{ route('admin.suppliers.index') }}" class="btn btn-outline" style="flex: 1; padding: 12px; background: white; border: 1px solid #e5e7eb; border-radius: 8px; color: #1f2937; text-decoration: none; font-weight: 600; text-align: center;">
+                Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+@endsection

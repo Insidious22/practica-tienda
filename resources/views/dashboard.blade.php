@@ -38,7 +38,7 @@
     
     @if($recentProducts->count() > 0)
         <div style="overflow-x: auto;">
-            <table class="table">
+            <table class="table table-striped table-hover align-middle">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -79,7 +79,7 @@
         <div class="empty-state">
             <div class="empty-state-icon">📦</div>
             <div class="empty-state-text">No hay productos registrados</div>
-            <a href="{{ route('admin.productos.create') }}" class="btn primary">Crear primer producto</a>
+            <a href="{{ route('admin.productos.create') }}" class="btn btn-primary">Crear primer producto</a>
         </div>
     @endif
 </div>
@@ -107,7 +107,7 @@
         <div class="empty-state">
             <div class="empty-state-icon">🏷️</div>
             <div class="empty-state-text">No hay categorías registradas</div>
-            <a href="{{ route('admin.categorias.create') }}" class="btn primary">Crear primera categoría</a>
+            <a href="{{ route('admin.categorias.create') }}" class="btn btn-primary">Crear primera categoría</a>
         </div>
     @endif
 </div>
@@ -117,16 +117,16 @@
     <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #1f2937;">⚡ Acciones Rápidas</h2>
     
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
-        <a href="{{ route('admin.productos.create') }}" class="btn primary" style="justify-content: center;">
+        <a href="{{ route('admin.productos.create') }}" class="btn btn-primary" style="justify-content: center;">
             <span>➕ Nuevo Producto</span>
         </a>
-        <a href="{{ route('admin.categorias.create') }}" class="btn primary" style="justify-content: center;">
+        <a href="{{ route('admin.categorias.create') }}" class="btn btn-primary" style="justify-content: center;">
             <span>➕ Nueva Categoría</span>
         </a>
-        <a href="{{ route('admin.zonas.create') }}" class="btn primary" style="justify-content: center;">
+        <a href="{{ route('admin.zonas.create') }}" class="btn btn-primary" style="justify-content: center;">
             <span>➕ Nueva Zona</span>
         </a>
-        <a href="{{ route('admin.productos.index') }}" class="btn secondary" style="justify-content: center;">
+        <a href="{{ route('admin.productos.index') }}" class="btn btn-secondary" style="justify-content: center;">
             <span>📋 Ver Todos los Productos</span>
         </a>
     </div>

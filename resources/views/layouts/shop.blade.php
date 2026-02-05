@@ -10,6 +10,8 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -616,13 +618,13 @@
     <!-- Header -->
     <header class="shop-header">
         <div class="header-top">
-            <div class="header-top-content">
+            <div class="header-top-content container">
                 <span>Envio gratis en compras mayores a $50</span>
                 <span>Atencion: Lun-Sab 9am-6pm</span>
             </div>
         </div>
 
-        <div class="header-main">
+        <div class="header-main container">
             <a href="{{ route('shop.home') }}" class="shop-logo">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 32px; height: 32px; color: #667eea;">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
@@ -649,6 +651,15 @@
                         </svg>
                         {{ Auth::user()->name }}
                     </a>
+                    <form action="{{ route('shop.logout') }}" method="POST" style="margin: 0;">
+                        @csrf
+                        <button type="submit" class="header-link" style="border: none; background: none; cursor: pointer; padding: 0;">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                            </svg>
+                            Cerrar Sesion
+                        </button>
+                    </form>
                 @else
                     <a href="{{ route('shop.login') }}" class="header-link">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px;">
@@ -676,7 +687,7 @@
         </div>
 
         <nav class="shop-nav">
-            <div class="nav-content">
+            <div class="nav-content container">
                 <a href="{{ route('shop.home') }}" class="nav-link @if(Route::currentRouteName() === 'shop.home') active @endif">Inicio</a>
                 <a href="{{ route('shop.catalog') }}" class="nav-link @if(Route::currentRouteName() === 'shop.catalog') active @endif">Catalogo</a>
                 @php
@@ -690,7 +701,7 @@
     </header>
 
     <!-- Main Content -->
-    <main class="shop-main">
+    <main class="shop-main container">
         @if (session('success'))
             <div class="alert alert-success">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px;">
@@ -727,7 +738,7 @@
 
     <!-- Footer -->
     <footer class="shop-footer">
-        <div class="footer-content">
+        <div class="footer-content container">
             <div class="footer-section">
                 <h4>Mi Tienda</h4>
                 <p style="font-size: 14px; line-height: 1.6;">El comisariato de los rafatones.</p>
@@ -761,7 +772,7 @@
                 </ul>
             </div>
         </div>
-        <div class="footer-bottom">
+        <div class="footer-bottom container">
             <p>&copy; {{ date('Y') }} Todos los derechos reservados.</p>
         </div>
     </footer>
@@ -777,6 +788,7 @@
         }, 5000);
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     @stack('scripts')
 </body>
 </html>

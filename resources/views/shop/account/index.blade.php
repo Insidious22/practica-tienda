@@ -53,7 +53,7 @@
                 </div>
                 <div class="card-body" style="padding: 0;">
                     @if($recentOrders->count() > 0)
-                        <table style="width: 100%;">
+                        <table class="table table-striped align-middle" style="width: 100%;">
                             <thead>
                                 <tr style="background: #f9fafb; border-bottom: 1px solid #e5e7eb;">
                                     <th style="padding: 12px 15px; text-align: left; font-size: 12px; color: #6b7280; text-transform: uppercase;">Pedido</th>

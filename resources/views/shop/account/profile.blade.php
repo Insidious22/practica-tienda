@@ -25,31 +25,31 @@
                         @method('PUT')
 
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label class="form-label">Nombre Completo</label>
-                                <input type="text" name="name" class="form-input" value="{{ old('name', $user->name) }}" required>
+                                <input type="text" name="name" class="form-input form-control" value="{{ old('name', $user->name) }}" required>
                                 @error('name')
-                                    <span class="form-error">{{ $message }}</span>
+                                    <span class="form-error text-danger small">{{ $message }}</span>
                                 @enderror
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label class="form-label">Correo Electronico</label>
-                                <input type="email" class="form-input" value="{{ $user->email }}" disabled style="background: #f9fafb;">
+                                <input type="email" class="form-input form-control" value="{{ $user->email }}" disabled style="background: #f9fafb;">
                                 <small style="color: #6b7280; font-size: 12px;">El correo no se puede cambiar</small>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label class="form-label">Teléfono</label>
-                                <input type="tel" name="phone" class="form-input" value="{{ old('phone', $user->phone) }}" placeholder="09 9999 9999">
+                                <input type="tel" name="phone" class="form-input form-control" value="{{ old('phone', $user->phone) }}" placeholder="09 9999 9999">
                                 @error('phone')
-                                    <span class="form-error">{{ $message }}</span>
+                                    <span class="form-error text-danger small">{{ $message }}</span>
                                 @enderror
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label class="form-label">Tipo de Documento</label>
-                                <select name="document_type" class="form-input">
+                                <select name="document_type" class="form-input form-select">
                                     <option value="">Seleccionar...</option>
                                     <option value="CEDULA" @selected(old('document_type', $user->document_type) === 'CEDULA')>Cédula</option>
                                     <option value="RUC" @selected(old('document_type', $user->document_type) === 'RUC')>RUC</option>
@@ -57,12 +57,12 @@
                                 </select>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label class="form-label">Número de Documento</label>
-                                <input type="text" name="document_number" class="form-input" value="{{ old('document_number', $user->document_number) }}" placeholder="0102030405">
+                                <input type="text" name="document_number" class="form-input form-control" value="{{ old('document_number', $user->document_number) }}" placeholder="0102030405">
                                 <small style="color: #6b7280; font-size: 12px;">Cédula (10 dígitos) / RUC (13 dígitos)</small>
                                 @error('document_number')
-                                    <span class="form-error">{{ $message }}</span>
+                                    <span class="form-error text-danger small">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
@@ -71,28 +71,28 @@
 
                         <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 20px;">Dirección de Envío</h3>
 
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label class="form-label">Dirección (Calle y número)</label>
-                            <input type="text" name="address" class="form-input" value="{{ old('address', $user->address) }}" placeholder="Av. 9 de Octubre 123">
+                            <input type="text" name="address" class="form-input form-control" value="{{ old('address', $user->address) }}" placeholder="Av. 9 de Octubre 123">
                             @error('address')
-                                <span class="form-error">{{ $message }}</span>
+                                <span class="form-error text-danger small">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label class="form-label">Cantón / Ciudad</label>
-                                <input type="text" name="city" class="form-input" value="{{ old('city', $user->city) }}" placeholder="Guayaquil (Guayas)">
+                                <input type="text" name="city" class="form-input form-control" value="{{ old('city', $user->city) }}" placeholder="Guayaquil (Guayas)">
                                 @error('city')
-                                    <span class="form-error">{{ $message }}</span>
+                                    <span class="form-error text-danger small">{{ $message }}</span>
                                 @enderror
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label class="form-label">Código Postal (6 dígitos)</label>
-                                <input type="text" name="postal_code" class="form-input" value="{{ old('postal_code', $user->postal_code) }}" placeholder="090101">
+                                <input type="text" name="postal_code" class="form-input form-control" value="{{ old('postal_code', $user->postal_code) }}" placeholder="090101">
                                 @error('postal_code')
-                                    <span class="form-error">{{ $message }}</span>
+                                    <span class="form-error text-danger small">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>

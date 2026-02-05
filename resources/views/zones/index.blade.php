@@ -7,7 +7,7 @@
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="Buscar zonas..." style="padding-left: 36px;">
         </div>
-        <a class="btn primary" href="{{ route('admin.zonas.create') }}">➕ Nueva Zona</a>
+        <a class="btn btn-primary" href="{{ route('admin.zonas.create') }}">➕ Nueva Zona</a>
     </div>
 </div>
 
@@ -15,7 +15,7 @@
     <div class="empty-state">
         <div class="empty-state-icon">📍</div>
         <div class="empty-state-text">No hay zonas registradas</div>
-        <a class="btn primary" href="{{ route('admin.zonas.create') }}">Crear primera zona</a>
+        <a class="btn btn-primary" href="{{ route('admin.zonas.create') }}">Crear primera zona</a>
     </div>
 @else
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
@@ -37,12 +37,12 @@
                             📦 {{ $zone->categories->count() }} categorías
                         </div>
                         <div style="display: flex; gap: 8px;">
-                            <a class="btn secondary" href="{{ route('admin.zonas.show', $zone) }}" style="flex: 1; text-align: center; gap: 4px;">👁️</a>
-                            <a class="btn secondary" href="{{ route('admin.zonas.edit', $zone) }}" style="flex: 1; text-align: center; gap: 4px;">✏️</a>
+                            <a class="btn btn-secondary" href="{{ route('admin.zonas.show', $zone) }}" style="flex: 1; text-align: center; gap: 4px;">👁️</a>
+                            <a class="btn btn-secondary" href="{{ route('admin.zonas.edit', $zone) }}" style="flex: 1; text-align: center; gap: 4px;">✏️</a>
                             <form action="{{ route('admin.zonas.destroy', $zone) }}" method="POST" style="flex: 1;">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn danger" type="submit" style="width: 100%;" onclick="return confirm('¿Eliminar esta zona?')">🗑️</button>
+                                <button class="btn btn-danger" type="submit" style="width: 100%;" onclick="return confirm('¿Eliminar esta zona?')">🗑️</button>
                             </form>
                         </div>
                     </div>

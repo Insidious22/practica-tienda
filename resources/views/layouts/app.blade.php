@@ -9,6 +9,8 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { --scrollbar-width: thin; }
@@ -620,12 +622,35 @@
                 </svg>
                 Zonas
             </a>
+            <a href="{{ route('admin.proveedores.index') }}" class="@if(str_starts_with(Route::currentRouteName(), 'admin.proveedores')) active @endif">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 18px; height: 18px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"></path>
+                </svg>
+                Proveedores
+            </a>
+            @if (Auth::user()->isSuperAdmin())
+                <a href="{{ route('admin.usuarios.index') }}" class="@if(str_starts_with(Route::currentRouteName(), 'admin.usuarios')) active @endif">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 18px; height: 18px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 8.048M6 19h12a2 2 0 012 2v2H4v-2a2 2 0 012-2zM12 2a6 6 0 100 12 6 6 0 000-12z"></path>
+                    </svg>
+                    Usuarios
+                </a>
+            @endif
             <a href="{{ route('shop.home') }}" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 18px; height: 18px;">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                 </svg>
                 Ver Tienda
             </a>
+            <form action="{{ route('admin.logout') }}" method="POST" style="margin-top: 10px;">
+                @csrf
+                <button type="submit" style="width: 100%; padding: 12px 20px; color: #d1d5db; background: none; border: none; text-decoration: none; border-left: 3px solid transparent; transition: all 0.2s ease; display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 16px;">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 18px; height: 18px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                    Cerrar Sesión
+                </button>
+            </form>
         </nav>
     </div>
 
@@ -643,7 +668,7 @@
         <!-- Container -->
         <div class="container">
             @if (session('success'))
-                <div class="alert success">
+                <div class="alert alert-success">
                     <span>✓</span>
                     <span>{{ session('success') }}</span>
                     <span class="alert-close" onclick="this.parentElement.style.display='none'">✕</span>
@@ -651,7 +676,7 @@
             @endif
 
             @if ($errors->any())
-                <div class="alert danger">
+                <div class="alert alert-danger">
                     <span>!</span>
                     <div>
                         <strong>¡Error!</strong>
@@ -687,5 +712,6 @@
             });
         }, 5000);
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

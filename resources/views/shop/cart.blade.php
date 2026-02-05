@@ -14,7 +14,7 @@
             <!-- Cart Items -->
             <div class="card">
                 <div class="card-body" style="padding: 0;">
-                    <table style="width: 100%; border-collapse: collapse;">
+                    <table class="table table-striped align-middle" style="width: 100%; border-collapse: collapse;">
                         <thead>
                             <tr style="background: #f9fafb; border-bottom: 1px solid #e5e7eb;">
                                 <th style="padding: 15px; text-align: left; font-size: 12px; text-transform: uppercase; color: #6b7280;">Producto</th>

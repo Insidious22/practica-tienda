@@ -15,9 +15,9 @@
                 <div class="card-body">
                     <form action="{{ route('shop.catalog') }}" method="GET">
                         <!-- Categories -->
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label class="form-label">Categoria</label>
-                            <select name="category" class="form-input" onchange="this.form.submit()">
+                            <select name="category" class="form-input form-select" onchange="this.form.submit()">
                                 <option value="">Todas las categorias</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" @selected(request('category') == $category->id)>
@@ -28,20 +28,20 @@
                         </div>
 
                         <!-- Price Range -->
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label class="form-label">Precio minimo</label>
-                            <input type="number" name="min_price" class="form-input" value="{{ request('min_price') }}" placeholder="0" step="0.01">
+                            <input type="number" name="min_price" class="form-input form-control" value="{{ request('min_price') }}" placeholder="0" step="0.01">
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label class="form-label">Precio maximo</label>
-                            <input type="number" name="max_price" class="form-input" value="{{ request('max_price') }}" placeholder="1000" step="0.01">
+                            <input type="number" name="max_price" class="form-input form-control" value="{{ request('max_price') }}" placeholder="1000" step="0.01">
                         </div>
 
                         <!-- Sort -->
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label class="form-label">Ordenar por</label>
-                            <select name="sort" class="form-input" onchange="this.form.submit()">
+                            <select name="sort" class="form-input form-select" onchange="this.form.submit()">
                                 <option value="newest" @selected(request('sort') == 'newest')>Mas recientes</option>
                                 <option value="price_asc" @selected(request('sort') == 'price_asc')>Precio: menor a mayor</option>
                                 <option value="price_desc" @selected(request('sort') == 'price_desc')>Precio: mayor a menor</option>

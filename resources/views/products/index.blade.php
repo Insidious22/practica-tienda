@@ -7,7 +7,7 @@
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="Buscar productos..." style="padding-left: 36px;">
         </div>
-        <a class="btn primary" href="{{ route('admin.productos.create') }}">➕ Nuevo Producto</a>
+        <a class="btn btn-primary" href="{{ route('admin.productos.create') }}">➕ Nuevo Producto</a>
     </div>
 </div>
 
@@ -15,11 +15,11 @@
     <div class="empty-state">
         <div class="empty-state-icon">📦</div>
         <div class="empty-state-text">No hay productos registrados</div>
-        <a class="btn primary" href="{{ route('admin.productos.create') }}">Crear primer producto</a>
+        <a class="btn btn-primary" href="{{ route('admin.productos.create') }}">Crear primer producto</a>
     </div>
 @else
     <div style="overflow-x: auto;">
-        <table class="table" id="productsTable">
+        <table class="table table-striped table-hover align-middle" id="productsTable">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -76,12 +76,12 @@
                         </td>
                         <td>
                             <div class="actions">
-                                <a class="btn secondary" href="{{ route('admin.productos.show', $product) }}" title="Ver detalles">👁️</a>
-                                <a class="btn secondary" href="{{ route('admin.productos.edit', $product) }}" title="Editar">✏️</a>
+                                <a class="btn btn-secondary" href="{{ route('admin.productos.show', $product) }}" title="Ver detalles">👁️</a>
+                                <a class="btn btn-secondary" href="{{ route('admin.productos.edit', $product) }}" title="Editar">✏️</a>
                                 <form action="{{ route('admin.productos.destroy', $product) }}" method="POST" style="display: inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn danger" type="submit" title="Eliminar" onclick="return confirm('¿Eliminar este producto? Esta acción no se puede deshacer.')">🗑️</button>
+                                    <button class="btn btn-danger" type="submit" title="Eliminar" onclick="return confirm('¿Eliminar este producto? Esta acción no se puede deshacer.')">🗑️</button>
                                 </form>
                             </div>
                         </td>

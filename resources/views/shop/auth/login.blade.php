@@ -14,23 +14,23 @@
                         <input type="hidden" name="redirect" value="{{ request('redirect') }}">
                     @endif
 
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label class="form-label">Correo Electronico</label>
-                        <input type="email" name="email" class="form-input" value="{{ old('email') }}" required autofocus>
+                        <input type="email" name="email" class="form-input form-control" value="{{ old('email') }}" required autofocus>
                         @error('email')
-                            <span class="form-error">{{ $message }}</span>
+                            <span class="form-error text-danger small">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label class="form-label">Contrasena</label>
-                        <input type="password" name="password" class="form-input" required>
+                        <input type="password" name="password" class="form-input form-control" required>
                         @error('password')
-                            <span class="form-error">{{ $message }}</span>
+                            <span class="form-error text-danger small">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+                    <div class="form-group mb-3" style="display: flex; align-items: center; gap: 8px;">
                         <input type="checkbox" name="remember" id="remember" style="width: auto;">
                         <label for="remember" style="margin: 0; font-weight: normal;">Recordarme</label>
                     </div>

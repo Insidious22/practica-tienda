@@ -70,20 +70,20 @@
                         </div>
 
                         <!-- Simulated Card Input -->
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label class="form-label">Numero de tarjeta</label>
-                            <input type="text" class="form-input" value="4242 4242 4242 4242" disabled style="background: #f9fafb;">
+                            <input type="text" class="form-input form-control" value="4242 4242 4242 4242" disabled style="background: #f9fafb;">
                             <small style="color: #6b7280;">Tarjeta de prueba - no se realizara cobro</small>
                         </div>
 
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label class="form-label">Fecha de expiracion</label>
-                                <input type="text" class="form-input" value="12/28" disabled style="background: #f9fafb;">
+                                <input type="text" class="form-input form-control" value="12/28" disabled style="background: #f9fafb;">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label class="form-label">CVC</label>
-                                <input type="text" class="form-input" value="123" disabled style="background: #f9fafb;">
+                                <input type="text" class="form-input form-control" value="123" disabled style="background: #f9fafb;">
                             </div>
                         </div>
 

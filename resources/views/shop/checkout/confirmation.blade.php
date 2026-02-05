@@ -55,7 +55,7 @@
         <div class="card" style="margin-bottom: 20px;">
             <div class="card-header">Productos</div>
             <div class="card-body" style="padding: 0;">
-                <table style="width: 100%;">
+                <table class="table table-striped align-middle" style="width: 100%;">
                     @foreach($order->items as $item)
                         <tr style="border-bottom: 1px solid #e5e7eb;">
                             <td style="padding: 15px;">

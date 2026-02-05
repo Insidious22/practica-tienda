@@ -37,41 +37,41 @@
                 <form action="{{ route('shop.checkout.shipping') }}" method="POST">
                     @csrf
 
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label class="form-label">Dirección (Calle y número)</label>
-                        <input type="text" name="shipping_address" class="form-input"
+                        <input type="text" name="shipping_address" class="form-input form-control"
                                value="{{ old('shipping_address', $user->address) }}"
                                placeholder="Av. 9 de Octubre 123, Dpto 4B" required>
                         @error('shipping_address')
-                            <span class="form-error">{{ $message }}</span>
+                            <span class="form-error text-danger small">{{ $message }}</span>
                         @enderror
                     </div>
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label class="form-label">Cantón / Ciudad</label>
-                            <input type="text" name="shipping_city" class="form-input"
+                            <input type="text" name="shipping_city" class="form-input form-control"
                                    value="{{ old('shipping_city', $user->city) }}"
                                    placeholder="Guayaquil (Guayas)" required>
                             @error('shipping_city')
-                                <span class="form-error">{{ $message }}</span>
+                                <span class="form-error text-danger small">{{ $message }}</span>
                             @enderror
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label class="form-label">Código Postal (6 dígitos)</label>
-                            <input type="text" name="shipping_postal_code" class="form-input"
+                            <input type="text" name="shipping_postal_code" class="form-input form-control"
                                    value="{{ old('shipping_postal_code', $user->postal_code) }}"
                                    placeholder="090101" required>
                             @error('shipping_postal_code')
-                                <span class="form-error">{{ $message }}</span>
+                                <span class="form-error text-danger small">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label class="form-label">Referencia de entrega (opcional)</label>
-                        <textarea name="shipping_notes" class="form-input" rows="3"
+                        <textarea name="shipping_notes" class="form-input form-control" rows="3"
                                   placeholder="Casa blanca, junto a la farmacia...">{{ old('shipping_notes') }}</textarea>
                     </div>
 

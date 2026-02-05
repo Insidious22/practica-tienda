@@ -7,7 +7,7 @@
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="Buscar categorías..." style="padding-left: 36px;">
         </div>
-        <a class="btn primary" href="{{ route('admin.categorias.create') }}">➕ Nueva Categoría</a>
+        <a class="btn btn-primary" href="{{ route('admin.categorias.create') }}">➕ Nueva Categoría</a>
     </div>
 </div>
 
@@ -15,7 +15,7 @@
     <div class="empty-state">
         <div class="empty-state-icon">🏷️</div>
         <div class="empty-state-text">No hay categorías registradas</div>
-        <a class="btn primary" href="{{ route('admin.categorias.create') }}">Crear primera categoría</a>
+        <a class="btn btn-primary" href="{{ route('admin.categorias.create') }}">Crear primera categoría</a>
     </div>
 @else
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
@@ -39,12 +39,12 @@
                         </div>
                     @endif
                     <div style="padding-top: 12px; border-top: 1px solid #e5e7eb; display: flex; gap: 8px;">
-                        <a class="btn secondary" href="{{ route('admin.categorias.show', $category) }}" style="flex: 1; text-align: center; gap: 4px;">👁️</a>
-                        <a class="btn secondary" href="{{ route('admin.categorias.edit', $category) }}" style="flex: 1; text-align: center; gap: 4px;">✏️</a>
+                        <a class="btn btn-secondary" href="{{ route('admin.categorias.show', $category) }}" style="flex: 1; text-align: center; gap: 4px;">👁️</a>
+                        <a class="btn btn-secondary" href="{{ route('admin.categorias.edit', $category) }}" style="flex: 1; text-align: center; gap: 4px;">✏️</a>
                         <form action="{{ route('admin.categorias.destroy', $category) }}" method="POST" style="flex: 1;">
                             @csrf
                             @method('DELETE')
-                            <button class="btn danger" type="submit" style="width: 100%;" onclick="return confirm('¿Eliminar esta categoría?')">🗑️</button>
+                            <button class="btn btn-danger" type="submit" style="width: 100%;" onclick="return confirm('¿Eliminar esta categoría?')">🗑️</button>
                         </form>
                     </div>
                 </div>

@@ -4,8 +4,8 @@
 <div class="header">
     <h1 class="title">📦 Detalle del Producto</h1>
     <div class="header-actions">
-        <a class="btn secondary" href="{{ route('admin.productos.edit', $product) }}" style="gap: 6px;">✏️ Editar</a>
-        <a class="btn secondary" href="{{ route('admin.productos.index') }}" style="gap: 6px;">← Volver</a>
+        <a class="btn btn-secondary" href="{{ route('admin.productos.edit', $product) }}" style="gap: 6px;">✏️ Editar</a>
+        <a class="btn btn-secondary" href="{{ route('admin.productos.index') }}" style="gap: 6px;">← Volver</a>
     </div>
 </div>
 
@@ -88,12 +88,12 @@
 
 <!-- Action Buttons -->
 <div style="display: flex; gap: 12px; margin-bottom: 30px; flex-wrap: wrap;">
-    <a class="btn primary" href="{{ route('admin.productos.edit', $product) }}" style="gap: 6px;">✏️ Editar Producto</a>
-    <a class="btn secondary" href="{{ route('admin.productos.index') }}" style="gap: 6px;">← Volver a Lista</a>
+    <a class="btn btn-primary" href="{{ route('admin.productos.edit', $product) }}" style="gap: 6px;">✏️ Editar Producto</a>
+    <a class="btn btn-secondary" href="{{ route('admin.productos.index') }}" style="gap: 6px;">← Volver a Lista</a>
     <form action="{{ route('admin.productos.destroy', $product) }}" method="POST" style="display: inline;">
         @csrf
         @method('DELETE')
-        <button class="btn danger" type="submit" onclick="return confirm('¿Eliminar este producto? Esta acción no se puede deshacer.')" style="gap: 6px;">🗑️ Eliminar</button>
+        <button class="btn btn-danger" type="submit" onclick="return confirm('¿Eliminar este producto? Esta acción no se puede deshacer.')" style="gap: 6px;">🗑️ Eliminar</button>
     </form>
 </div>
 
