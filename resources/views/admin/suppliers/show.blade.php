@@ -4,8 +4,8 @@
 <div class="header">
     <h1 class="title">{{ $supplier->name }}</h1>
     <div style="display: flex; gap: 12px;">
-        <a href="{{ route('admin.suppliers.edit', $supplier) }}" class="btn btn-primary" style="padding: 10px 20px; text-decoration: none;">Editar</a>
-        <a href="{{ route('admin.suppliers.index') }}" class="btn btn-outline" style="padding: 10px 20px; text-decoration: none;">Volver</a>
+        <a href="{{ route('admin.proveedores.edit', $supplier) }}" class="btn btn-primary" style="padding: 10px 20px; text-decoration: none;">Editar</a>
+        <a href="{{ route('admin.proveedores.index') }}" class="btn btn-outline" style="padding: 10px 20px; text-decoration: none;">Volver</a>
     </div>
 </div>
 

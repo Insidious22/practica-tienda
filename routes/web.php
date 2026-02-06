@@ -116,6 +116,5 @@ Route::prefix('admin')->name('admin.')->middleware(['admin.or.superadmin'])->gro
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 
     // Rutas de usuarios (solo super admin)
-    Route::resource('usuarios', UserController::class);
+    Route::resource('usuarios', UserController::class)->names('users');
 });
-

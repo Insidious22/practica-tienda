@@ -37,7 +37,7 @@ class SupplierController extends Controller
 
         Supplier::create($data);
 
-        return redirect()->route('admin.suppliers.index')
+        return redirect()->route('admin.proveedores.index')
             ->with('success', 'Proveedor creado correctamente.');
     }
 
@@ -70,7 +70,7 @@ class SupplierController extends Controller
 
         $supplier->update($data);
 
-        return redirect()->route('admin.suppliers.index')
+        return redirect()->route('admin.proveedores.index')
             ->with('success', 'Proveedor actualizado correctamente.');
     }
 
@@ -82,7 +82,7 @@ class SupplierController extends Controller
 
         $supplier->delete();
 
-        return redirect()->route('admin.suppliers.index')
+        return redirect()->route('admin.proveedores.index')
             ->with('success', 'Proveedor eliminado correctamente.');
     }
 }

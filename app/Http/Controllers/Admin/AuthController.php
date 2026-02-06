@@ -24,7 +24,8 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             // Verificar que sea admin o super admin
-            if (!Auth::user()->isAdmin()) {
+            $user = Auth::user();
+            if (!$user || !$user->isAdmin()) {
                 Auth::logout();
                 return back()
                     ->withInput($request->only('email'))

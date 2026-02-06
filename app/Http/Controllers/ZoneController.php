@@ -28,7 +28,7 @@ class ZoneController extends Controller
 
         Zone::create($data);
 
-        return redirect()->route('zonas.index')->with('success', 'Zona creada correctamente.');
+        return redirect()->route('admin.zonas.index')->with('success', 'Zona creada correctamente.');
     }
 
     public function show(Zone $zona)
@@ -51,17 +51,17 @@ class ZoneController extends Controller
 
         $zona->update($data);
 
-        return redirect()->route('zonas.index')->with('success', 'Zona actualizada correctamente.');
+        return redirect()->route('admin.zonas.index')->with('success', 'Zona actualizada correctamente.');
     }
 
     public function destroy(Zone $zona)
     {
         if ($zona->categories()->exists()) {
-            return redirect()->route('zonas.index')->with('error', 'No se puede eliminar una zona con categorías asociadas.');
+            return redirect()->route('admin.zonas.index')->with('error', 'No se puede eliminar una zona con categorías asociadas.');
         }
 
         $zona->delete();
 
-        return redirect()->route('zonas.index')->with('success', 'Zona eliminada correctamente.');
+        return redirect()->route('admin.zonas.index')->with('success', 'Zona eliminada correctamente.');
     }
 }

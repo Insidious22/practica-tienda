@@ -3,7 +3,7 @@
 @section('content')
 <div class="header">
     <h1 class="title">Proveedores</h1>
-    <a href="{{ route('admin.suppliers.create') }}" class="btn btn-primary" style="padding: 10px 20px; text-decoration: none;">
+    <a href="{{ route('admin.proveedores.create') }}" class="btn btn-primary" style="padding: 10px 20px; text-decoration: none;">
         + Nuevo Proveedor
     </a>
 </div>
@@ -40,9 +40,9 @@
                         </span>
                     </td>
                     <td style="padding: 15px; text-align: center;">
-                        <a href="{{ route('admin.suppliers.show', $supplier) }}" class="btn btn-sm" style="padding: 6px 12px; background: #e0e7ff; color: #4f46e5; text-decoration: none; border-radius: 6px; font-size: 12px; margin-right: 4px;">Ver</a>
-                        <a href="{{ route('admin.suppliers.edit', $supplier) }}" class="btn btn-sm" style="padding: 6px 12px; background: #fef3c7; color: #92400e; text-decoration: none; border-radius: 6px; font-size: 12px; margin-right: 4px;">Editar</a>
-                        <form action="{{ route('admin.suppliers.destroy', $supplier) }}" method="POST" style="display: inline;">
+                        <a href="{{ route('admin.proveedores.show', $supplier) }}" class="btn btn-sm" style="padding: 6px 12px; background: #e0e7ff; color: #4f46e5; text-decoration: none; border-radius: 6px; font-size: 12px; margin-right: 4px;">Ver</a>
+                        <a href="{{ route('admin.proveedores.edit', $supplier) }}" class="btn btn-sm" style="padding: 6px 12px; background: #fef3c7; color: #92400e; text-decoration: none; border-radius: 6px; font-size: 12px; margin-right: 4px;">Editar</a>
+                        <form action="{{ route('admin.proveedores.destroy', $supplier) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm" style="padding: 6px 12px; background: #fee2e2; color: #991b1b; border: none; border-radius: 6px; font-size: 12px; cursor: pointer;" onclick="return confirm('¿Seguro que deseas eliminar este proveedor?')">Eliminar</button>

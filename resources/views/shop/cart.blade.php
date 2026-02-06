@@ -39,7 +39,7 @@
                                                 @endif
                                             </div>
                                             <div>
-                                                <a href="{{ route('shop.product', $item->product->slug ?? $item->product->id) }}" style="font-weight: 600; color: #1f2937; text-decoration: none;">
+                                                <a href="{{ route('shop.product', $item->product->id) }}" style="font-weight: 600; color: #1f2937; text-decoration: none;">
                                                     {{ $item->product->name }}
                                                 </a>
                                                 @if($item->product->category)

@@ -1,84 +1,168 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistema de Gestión de Tienda (Laravel)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Documentación única y unificada del proyecto.
 
-## About Laravel
+## 1. Resumen
+Aplicación web con dos caras:
+1. Tienda online (clientes): catálogo, carrito, checkout y cuenta.
+2. Administración (backoffice): productos, categorías, zonas, proveedores y usuarios.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+El objetivo es publicar productos, gestionar stock y procesar pedidos con un flujo de compra completo.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 2. Stack tecnológico
+- Backend: Laravel 11 (PHP 8.2+)
+- Frontend: Blade + CSS embebido en vistas
+- Base de datos: MySQL
+- Assets: Vite / npm
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 3. Instalación y arranque (local)
+1. Instalar dependencias:
+```bash
+composer install
+npm install
+```
 
-## Learning Laravel
+2. Configurar entorno:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
----
-
-## Inventory (Fase 1) — Integración técnica
-
-Se añadieron los siguientes elementos para la Fase 1 (núcleo de inventario):
-
-- Migraciones nuevas: `zones`, `categories` y una migración para ampliar `products` (barcode, category_id, stock_quantity, unit, status).
-- Modelos: `Zone`, `Category` y extensión del modelo `Product` (relaciones y campos nuevos).
-- Controladores y vistas CRUD para `zonas`, `categorias` y `productos` (formularios y validaciones).
-- Seeder de ejemplo: `InventorySeeder` (ejecutado con `php artisan db:seed`).
-
-Comandos recomendados:
-
+3. Migraciones y datos:
 ```bash
 php artisan migrate
 php artisan db:seed
 ```
 
-Nota: el campo `products.barcode` es manual y único para compatibilidad con scanners físicos. Las restricciones `ON DELETE RESTRICT` protegen la integridad referencial.
-
-Si necesita alterar tipos de columna y obtiene errores, instale `doctrine/dbal`:
-
+4. Assets:
 ```bash
-composer require doctrine/dbal
+npm run dev
+# o
+npm run build
 ```
+
+5. Levantar servidor:
+```bash
+php artisan serve
+```
+
+Acceso local: `http://localhost:8000`
+
+## 4. Docker (local)
+Si usas docker-compose, el panel corre en:
+- `http://localhost:8080`
+
+Comandos típicos:
+```bash
+docker compose up -d --build
+docker compose exec app php artisan migrate --seed
+```
+
+## 5. Credenciales admin (seed)
+Se crean con `php artisan migrate --seed` o `php artisan db:seed`.
+
+Super Admin:
+- Email: `superadmin@tienda.local`
+- Contraseña: `password`
+
+Admin:
+- Email: `admin@tienda.local`
+- Contraseña: `password`
+
+URL de login admin:
+- `http://localhost:8080/admin/login` (Docker)
+- `http://localhost:8000/admin/login` (local)
+
+## 6. Módulos principales
+### Administración
+- Dashboard: estadísticas de productos, categorías y zonas
+- Productos: CRUD completo, stock y estados
+- Categorías: CRUD y relación con zonas
+- Zonas: CRUD y relación con categorías
+- Proveedores: CRUD completo
+- Usuarios: solo Super Admin
+
+### Tienda
+- Home con productos destacados
+- Catálogo con filtros y búsqueda
+- Detalle de producto con relacionados
+- Carrito (actualización de cantidades)
+- Checkout con validación de stock
+- Cuenta del cliente (perfil y pedidos)
+
+## 7. Roles y seguridad
+Roles principales:
+- `super_admin`: acceso total, puede gestionar usuarios
+- `admin`: productos, categorías, zonas, proveedores
+- `customer`: tienda y cuenta
+
+El admin se protege con middleware y validación de rol en login.
+
+## 8. Flujo de compra (resumen)
+1. Cliente agrega productos al carrito
+2. Checkout valida stock
+3. Captura dirección de envío
+4. Pago simulado (PaymentService)
+5. Se crea pedido y se descuenta stock
+6. Confirmación y pedidos en “Mi cuenta”
+
+Nota: IVA configurado al 15% (Ecuador).
+
+## 9. Estructura de datos (relaciones clave)
+```
+Zone 1..N Category
+Category 1..N Product
+Cart 1..N CartItem
+SalesOrder 1..N SalesOrderItem
+User N..N Role
+Supplier 1..N PurchaseOrder
+```
+
+## 10. Endpoints principales
+Tienda:
+- `GET /tienda`
+- `GET /tienda/catalogo`
+- `GET /tienda/producto/{product}`
+- `GET /tienda/carrito`
+
+Admin:
+- `GET /admin/dashboard`
+- `GET /admin/productos`
+- `GET /admin/categorias`
+- `GET /admin/zonas`
+- `GET /admin/proveedores`
+- `GET /admin/usuarios` (solo Super Admin)
+
+## 11. Troubleshooting
+Página en blanco / errores raros:
+```bash
+php artisan optimize:clear
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+```
+
+Assets sin estilos:
+```bash
+npm run build
+```
+
+Reset contraseña (admin):
+```bash
+php artisan tinker
+$user = \App\Models\User::where('email', 'superadmin@tienda.local')->first();
+$user->update(['password' => \Illuminate\Support\Facades\Hash::make('newpassword')]);
+```
+
+## 12. Demo rápida
+1. Entra al admin y crea zona → categoría → producto
+2. Abre la tienda y agrega al carrito
+3. Completa checkout
+4. Revisa pedido en “Mi cuenta”
+
+## 13. Roadmap sugerido
+- Pasarela de pagos real (Stripe/PayPal)
+- Reportes de ventas e inventario
+- Auditoría y logs por acción
+- Exportación a Excel/PDF
+

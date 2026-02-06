@@ -6,7 +6,7 @@
 </div>
 
 <div style="max-width: 600px;">
-    <form action="{{ route('admin.suppliers.store') }}" method="POST" style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+    <form action="{{ route('admin.proveedores.store') }}" method="POST" style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
         @csrf
 
         <div style="margin-bottom: 20px;">
@@ -110,7 +110,7 @@
             <button type="submit" class="btn btn-primary" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
                 Crear Proveedor
             </button>
-            <a href="{{ route('admin.suppliers.index') }}" class="btn btn-outline" style="flex: 1; padding: 12px; background: white; border: 1px solid #e5e7eb; border-radius: 8px; color: #1f2937; text-decoration: none; font-weight: 600; text-align: center;">
+            <a href="{{ route('admin.proveedores.index') }}" class="btn btn-outline" style="flex: 1; padding: 12px; background: white; border: 1px solid #e5e7eb; border-radius: 8px; color: #1f2937; text-decoration: none; font-weight: 600; text-align: center;">
                 Cancelar
             </a>
         </div>

@@ -628,8 +628,8 @@
                 </svg>
                 Proveedores
             </a>
-            @if (Auth::user()->isSuperAdmin())
-                <a href="{{ route('admin.usuarios.index') }}" class="@if(str_starts_with(Route::currentRouteName(), 'admin.usuarios')) active @endif">
+            @if (Auth::check() && Auth::user()->isSuperAdmin())
+                <a href="{{ route('admin.users.index') }}" class="@if(str_starts_with(Route::currentRouteName(), 'admin.users')) active @endif">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 18px; height: 18px;">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 8.048M6 19h12a2 2 0 012 2v2H4v-2a2 2 0 012-2zM12 2a6 6 0 100 12 6 6 0 000-12z"></path>
                     </svg>

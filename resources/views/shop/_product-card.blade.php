@@ -15,7 +15,7 @@
             <div class="product-category">{{ $product->category->name }}</div>
         @endif
         <h3 class="product-name">
-            <a href="{{ route('shop.product', $product->slug ?? $product->id) }}">{{ $product->name }}</a>
+            <a href="{{ route('shop.product', $product->id) }}">{{ $product->name }}</a>
         </h3>
         <div class="product-price">
             ${{ number_format($product->price, 2, ',', '.') }}
