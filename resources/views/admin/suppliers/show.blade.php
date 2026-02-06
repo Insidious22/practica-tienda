@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="header">
-    <h1 class="title">{{ $supplier->name }}</h1>
+    <h1 class="title">{{ $supplier->business_name }}</h1>
     <div style="display: flex; gap: 12px;">
         <a href="{{ route('admin.proveedores.edit', $supplier) }}" class="btn btn-primary" style="padding: 10px 20px; text-decoration: none;">Editar</a>
         <a href="{{ route('admin.proveedores.index') }}" class="btn btn-outline" style="padding: 10px 20px; text-decoration: none;">Volver</a>
@@ -17,12 +17,18 @@
             {{ $supplier->code }}
         </p>
         <p style="margin-bottom: 15px;">
-            <strong style="color: #1f2937;">Nombre:</strong><br>
-            {{ $supplier->name }}
+            <strong style="color: #1f2937;">Razon Social:</strong><br>
+            {{ $supplier->business_name }}
         </p>
+        @if($supplier->trade_name)
+        <p style="margin-bottom: 15px;">
+            <strong style="color: #1f2937;">Nombre Comercial:</strong><br>
+            {{ $supplier->trade_name }}
+        </p>
+        @endif
         <p style="margin-bottom: 15px;">
             <strong style="color: #1f2937;">Contacto:</strong><br>
-            {{ $supplier->contact_person ?? '-' }}
+            {{ $supplier->contact_name ?? '-' }}
         </p>
         <p style="margin-bottom: 15px;">
             <strong style="color: #1f2937;">Email:</strong><br>
@@ -45,8 +51,8 @@
             {{ $supplier->city ?? '-' }}
         </p>
         <p style="margin-bottom: 15px;">
-            <strong style="color: #1f2937;">Código Postal:</strong><br>
-            {{ $supplier->postal_code ?? '-' }}
+            <strong style="color: #1f2937;">Condiciones de Pago:</strong><br>
+            {{ $supplier->payment_terms ?? '-' }}
         </p>
         <p>
             <strong style="color: #1f2937;">Estado:</strong><br>
@@ -63,8 +69,8 @@
             {{ $supplier->tax_id ?? '-' }}
         </p>
         <p>
-            <strong style="color: #1f2937;">Cuenta Bancaria:</strong><br>
-            {{ $supplier->bank_account ?? '-' }}
+            <strong style="color: #1f2937;">Notas:</strong><br>
+            {{ $supplier->notes ?? '-' }}
         </p>
     </div>
 

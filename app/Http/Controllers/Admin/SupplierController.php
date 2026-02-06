@@ -23,15 +23,16 @@ class SupplierController extends Controller
     {
         $data = $request->validate([
             'code' => 'required|string|max:32|unique:suppliers,code',
-            'name' => 'required|string|max:255',
-            'contact_person' => 'nullable|string|max:255',
+            'business_name' => 'required|string|max:255',
+            'trade_name' => 'nullable|string|max:255',
+            'contact_name' => 'nullable|string|max:128',
             'email' => 'nullable|email',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:32',
             'address' => 'nullable|string',
             'city' => 'nullable|string|max:128',
-            'postal_code' => 'nullable|string|max:20',
             'tax_id' => 'nullable|string|max:32',
-            'bank_account' => 'nullable|string',
+            'payment_terms' => 'nullable|string|max:128',
+            'notes' => 'nullable|string',
             'status' => 'required|in:active,inactive',
         ]);
 
@@ -56,15 +57,16 @@ class SupplierController extends Controller
     {
         $data = $request->validate([
             'code' => 'required|string|max:32|unique:suppliers,code,' . $supplier->id,
-            'name' => 'required|string|max:255',
-            'contact_person' => 'nullable|string|max:255',
+            'business_name' => 'required|string|max:255',
+            'trade_name' => 'nullable|string|max:255',
+            'contact_name' => 'nullable|string|max:128',
             'email' => 'nullable|email',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:32',
             'address' => 'nullable|string',
             'city' => 'nullable|string|max:128',
-            'postal_code' => 'nullable|string|max:20',
             'tax_id' => 'nullable|string|max:32',
-            'bank_account' => 'nullable|string',
+            'payment_terms' => 'nullable|string|max:128',
+            'notes' => 'nullable|string',
             'status' => 'required|in:active,inactive',
         ]);
 

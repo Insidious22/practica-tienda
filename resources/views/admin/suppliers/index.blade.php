@@ -31,8 +31,8 @@
             @foreach ($suppliers as $supplier)
                 <tr style="border-bottom: 1px solid #e5e7eb;">
                     <td style="padding: 15px; color: #1f2937; font-weight: 500;">{{ $supplier->code }}</td>
-                    <td style="padding: 15px; color: #1f2937;">{{ $supplier->name }}</td>
-                    <td style="padding: 15px; color: #6b7280;">{{ $supplier->contact_person ?? '-' }}</td>
+                    <td style="padding: 15px; color: #1f2937;">{{ $supplier->business_name }}</td>
+                    <td style="padding: 15px; color: #6b7280;">{{ $supplier->contact_name ?? '-' }}</td>
                     <td style="padding: 15px; color: #6b7280;">{{ $supplier->phone ?? '-' }}</td>
                     <td style="padding: 15px;">
                         <span style="background: {{ $supplier->status === 'active' ? '#d1fae5' : '#fee2e2' }}; color: {{ $supplier->status === 'active' ? '#065f46' : '#991b1b' }}; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">

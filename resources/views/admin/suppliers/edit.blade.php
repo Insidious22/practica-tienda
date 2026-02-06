@@ -11,7 +11,7 @@
         @method('PUT')
 
         <div style="margin-bottom: 20px;">
-            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Código</label>
+            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Codigo</label>
             <input type="text" name="code" value="{{ old('code', $supplier->code) }}" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
             @error('code')
                 <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
@@ -19,17 +19,25 @@
         </div>
 
         <div style="margin-bottom: 20px;">
-            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Nombre</label>
-            <input type="text" name="name" value="{{ old('name', $supplier->name) }}" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
-            @error('name')
+            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Razon Social</label>
+            <input type="text" name="business_name" value="{{ old('business_name', $supplier->business_name) }}" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+            @error('business_name')
                 <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
             @enderror
         </div>
 
         <div style="margin-bottom: 20px;">
-            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Contacto</label>
-            <input type="text" name="contact_person" value="{{ old('contact_person', $supplier->contact_person) }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
-            @error('contact_person')
+            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Nombre Comercial</label>
+            <input type="text" name="trade_name" value="{{ old('trade_name', $supplier->trade_name) }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+            @error('trade_name')
+                <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Persona de Contacto</label>
+            <input type="text" name="contact_name" value="{{ old('contact_name', $supplier->contact_name) }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+            @error('contact_name')
                 <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
             @enderror
         </div>
@@ -44,7 +52,7 @@
             </div>
 
             <div>
-                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Teléfono</label>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Telefono</label>
                 <input type="tel" name="phone" value="{{ old('phone', $supplier->phone) }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
                 @error('phone')
                     <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
@@ -53,7 +61,7 @@
         </div>
 
         <div style="margin-bottom: 20px;">
-            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Dirección</label>
+            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Direccion</label>
             <input type="text" name="address" value="{{ old('address', $supplier->address) }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
             @error('address')
                 <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
@@ -70,30 +78,28 @@
             </div>
 
             <div>
-                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Código Postal</label>
-                <input type="text" name="postal_code" value="{{ old('postal_code', $supplier->postal_code) }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
-                @error('postal_code')
-                    <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
-                @enderror
-            </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-            <div>
                 <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">RUC/NIT</label>
                 <input type="text" name="tax_id" value="{{ old('tax_id', $supplier->tax_id) }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
                 @error('tax_id')
                     <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
                 @enderror
             </div>
+        </div>
 
-            <div>
-                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Cuenta Bancaria</label>
-                <input type="text" name="bank_account" value="{{ old('bank_account', $supplier->bank_account) }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
-                @error('bank_account')
-                    <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
-                @enderror
-            </div>
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Condiciones de Pago</label>
+            <input type="text" name="payment_terms" value="{{ old('payment_terms', $supplier->payment_terms) }}" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+            @error('payment_terms')
+                <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Notas</label>
+            <textarea name="notes" rows="3" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; box-sizing: border-box;">{{ old('notes', $supplier->notes) }}</textarea>
+            @error('notes')
+                <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+            @enderror
         </div>
 
         <div style="margin-bottom: 30px;">

@@ -32,7 +32,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = Role::where('is_system', false)->get();
+        $roles = Role::orderBy('name')->get();
         return view('admin.users.create', compact('roles'));
     }
 
@@ -73,7 +73,7 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $roles = Role::where('is_system', false)->get();
+        $roles = Role::orderBy('name')->get();
         $user->load('roles');
 
         return view('admin.users.edit', compact('user', 'roles'));

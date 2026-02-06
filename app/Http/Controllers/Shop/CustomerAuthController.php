@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class CustomerAuthController extends Controller
 {
@@ -31,7 +30,9 @@ class CustomerAuthController extends Controller
             app(CartService::class)->mergeGuestCartToUser(Auth::user());
 
             // Redirect based on role
-            if (Auth::user()->isAdmin()) {
+            /** @var User $user */
+            $user = Auth::user();
+            if ($user->isAdmin()) {
                 return redirect()->route('admin.dashboard');
             }
 
@@ -65,7 +66,7 @@ class CustomerAuthController extends Controller
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => $data['password'],
             'phone' => $data['phone'] ?? null,
         ]);
 

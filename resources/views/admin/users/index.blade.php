@@ -29,6 +29,13 @@
     </div>
 @endif
 
+@if (session('error'))
+    <div class="alert danger" style="margin-bottom: 20px;">
+        <span>!</span>
+        <span>{{ session('error') }}</span>
+    </div>
+@endif
+
 @if ($users->count() > 0)
     <table style="width: 100%; border-collapse: collapse;">
         <thead>

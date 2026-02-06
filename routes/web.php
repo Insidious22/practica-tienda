@@ -18,16 +18,12 @@ use App\Http\Controllers\Shop\CustomerAuthController;
 use App\Http\Controllers\Shop\CheckoutController;
 use App\Http\Controllers\Shop\CustomerAccountController;
 
-// ========================================
 // REDIRECCIÓN RAÍZ
-// ========================================
 Route::get('/', function () {
     return redirect()->route('shop.home');
 });
 
-// ========================================
 // RUTAS PÚBLICAS DE LA TIENDA
-// ========================================
 Route::prefix('tienda')->name('shop.')->group(function () {
     // Página principal
     Route::get('/', [ShopController::class, 'home'])->name('home');
@@ -49,9 +45,7 @@ Route::prefix('tienda')->name('shop.')->group(function () {
     Route::get('/api/carrito', [CartController::class, 'getCartData'])->name('cart.data');
 });
 
-// ========================================
 // AUTENTICACIÓN DE CLIENTES
-// ========================================
 Route::prefix('tienda')->name('shop.')->group(function () {
     Route::middleware('guest')->group(function () {
         Route::get('/login', [CustomerAuthController::class, 'showLogin'])->name('login');
@@ -65,9 +59,7 @@ Route::prefix('tienda')->name('shop.')->group(function () {
     });
 });
 
-// ========================================
 // ÁREA DE CLIENTE (requiere login)
-// ========================================
 Route::prefix('tienda/mi-cuenta')->name('shop.account.')->middleware(['auth', 'customer'])->group(function () {
     Route::get('/', [CustomerAccountController::class, 'index'])->name('index');
     Route::get('/pedidos', [CustomerAccountController::class, 'orders'])->name('orders');
@@ -76,9 +68,7 @@ Route::prefix('tienda/mi-cuenta')->name('shop.account.')->middleware(['auth', 'c
     Route::put('/perfil', [CustomerAccountController::class, 'updateProfile'])->name('profile.update');
 });
 
-// ========================================
 // CHECKOUT (requiere login como cliente)
-// ========================================
 Route::prefix('tienda/checkout')->name('shop.checkout.')->middleware(['auth', 'customer'])->group(function () {
     Route::get('/', [CheckoutController::class, 'index'])->name('index');
     Route::post('/envio', [CheckoutController::class, 'saveShipping'])->name('shipping');
@@ -87,9 +77,7 @@ Route::prefix('tienda/checkout')->name('shop.checkout.')->middleware(['auth', 'c
     Route::get('/confirmacion/{order}', [CheckoutController::class, 'confirmation'])->name('confirmation');
 });
 
-// ========================================
 // LOGIN DE ADMINISTRACIÓN
-// ========================================
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest')->group(function () {
         Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('login');
@@ -97,12 +85,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 });
 
-// ========================================
 // RUTAS DE ADMINISTRACIÓN (requiere admin middleware)
 // ========================================
 // Usamos sólo el middleware `admin.or.superadmin` porque ya verifica
 // autenticación y redirige a `admin.login` cuando el usuario no está autenticado.
-Route::prefix('admin')->name('admin.')->middleware(['admin.or.superadmin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin.or.superadmin'])->group(function () {
     Route::get('/', function () {
         return redirect()->route('admin.dashboard');
     });

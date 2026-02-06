@@ -45,26 +45,26 @@
 
     <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
         <h3 style="margin-bottom: 20px; color: #1f2937;">Órdenes de Venta</h3>
-        <p style="font-size: 32px; font-weight: 700; color: #667eea;">{{ $salesOrders->count() }}</p>
-        @if ($salesOrders->count() > 0)
+        <p style="font-size: 32px; font-weight: 700; color: #667eea;">{{ $user->salesOrders->count() }}</p>
+        @if ($user->salesOrders->count() > 0)
             <p style="color: #6b7280; font-size: 14px;">
-                Monto total: <strong>${{ number_format($salesOrders->sum('total'), 2) }}</strong>
+                Monto total: <strong>${{ number_format($user->salesOrders->sum('total'), 2) }}</strong>
             </p>
         @endif
     </div>
 
     <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
         <h3 style="margin-bottom: 20px; color: #1f2937;">Órdenes de Compra</h3>
-        <p style="font-size: 32px; font-weight: 700; color: #10b981;">{{ $purchaseOrders->count() }}</p>
-        @if ($purchaseOrders->count() > 0)
+        <p style="font-size: 32px; font-weight: 700; color: #10b981;">{{ $user->purchaseOrders->count() }}</p>
+        @if ($user->purchaseOrders->count() > 0)
             <p style="color: #6b7280; font-size: 14px;">
-                Monto total: <strong>${{ number_format($purchaseOrders->sum('total'), 2) }}</strong>
+                Monto total: <strong>${{ number_format($user->purchaseOrders->sum('total'), 2) }}</strong>
             </p>
         @endif
     </div>
 </div>
 
-@if ($salesOrders->count() > 0)
+@if ($user->salesOrders->count() > 0)
     <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-top: 20px;">
         <h3 style="margin-bottom: 20px; color: #1f2937;">Últimas Órdenes de Venta</h3>
         <table style="width: 100%; border-collapse: collapse;">
@@ -77,7 +77,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($salesOrders->take(5) as $order)
+                @foreach ($user->salesOrders->take(5) as $order)
                     <tr style="border-bottom: 1px solid #e5e7eb;">
                         <td style="padding: 12px;">{{ $order->order_number }}</td>
                         <td style="padding: 12px;">{{ $order->created_at->format('d/m/Y') }}</td>

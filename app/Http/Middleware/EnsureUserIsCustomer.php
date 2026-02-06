@@ -10,7 +10,7 @@ class EnsureUserIsCustomer
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->user() || !$request->user()->isCustomer()) {
+        if (!$request->user() || (!$request->user()->isCustomer() && !$request->user()->isAdmin())) {
             if ($request->expectsJson()) {
                 return response()->json(['message' => 'No autorizado'], 403);
             }
