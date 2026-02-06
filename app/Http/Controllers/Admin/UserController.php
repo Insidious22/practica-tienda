@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -33,7 +32,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = Role::where('code', '!=', 'super_admin')->get();
+        $roles = Role::where('is_system', false)->get();
         return view('admin.users.create', compact('roles'));
     }
 
@@ -51,13 +50,13 @@ class UserController extends Controller
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => $data['password'],
             'phone' => $data['phone'] ?? null,
         ]);
 
         // Asignar roles
         $user->roles()->attach($data['roles'], [
-            'assigned_by' => auth()->id(),
+            'assigned_by' => $request->user()->id,
             'assigned_at' => now(),
         ]);
 
@@ -74,7 +73,7 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $roles = Role::where('code', '!=', 'super_admin')->get();
+        $roles = Role::where('is_system', false)->get();
         $user->load('roles');
 
         return view('admin.users.edit', compact('user', 'roles'));
@@ -97,16 +96,19 @@ class UserController extends Controller
         ]);
 
         // Actualizar roles
-        $user->roles()->sync($data['roles']);
+        $syncData = collect($data['roles'])->mapWithKeys(fn($roleId) => [
+            $roleId => ['assigned_by' => $request->user()->id, 'assigned_at' => now()],
+        ])->toArray();
+        $user->roles()->sync($syncData);
 
         return redirect()->route('admin.users.index')
             ->with('success', 'Usuario actualizado correctamente.');
     }
 
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
         // No permitir eliminar al mismo usuario
-        if ($user->id === auth()->id()) {
+        if ($user->id === $request->user()->id) {
             return back()->with('error', 'No puedes eliminar tu propia cuenta.');
         }
 
