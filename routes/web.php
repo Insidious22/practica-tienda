@@ -111,10 +111,10 @@ Route::prefix('admin')->name('admin.')->middleware(['admin.or.superadmin'])->gro
     Route::resource('productos', ProductController::class);
     Route::resource('zonas', ZoneController::class);
     Route::resource('categorias', CategoryController::class);
-    Route::resource('proveedores', SupplierController::class);
+    Route::resource('proveedores', SupplierController::class)->parameters(['proveedores' => 'supplier']);
     
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 
     // Rutas de usuarios (solo super admin)
-    Route::resource('usuarios', UserController::class)->names('users');
+    Route::resource('usuarios', UserController::class)->names('users')->parameters(['usuarios' => 'user']);
 });
