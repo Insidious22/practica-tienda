@@ -2,25 +2,64 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\Zone;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Zone;
+use Illuminate\Database\Seeder;
 
 class InventorySeeder extends Seeder
 {
     public function run(): void
     {
-        $z1 = Zone::create(['code' => 'Z-001', 'name' => 'Frutas', 'description' => 'Zona de frutas frescas']);
-        $z2 = Zone::create(['code' => 'Z-002', 'name' => 'Lácteos', 'description' => 'Zona de lácteos y refrigerados']);
+        $z1 = Zone::where('code', 'Z-001')
+            ->orWhere('name', 'Frutas')
+            ->first();
 
-        $c1 = Category::create(['zone_id' => $z1->id, 'name' => 'Cítricos', 'code' => 'CAT-001']);
-        $c2 = Category::create(['zone_id' => $z1->id, 'name' => 'Tropicales', 'code' => 'CAT-002']);
-        $c3 = Category::create(['zone_id' => $z2->id, 'name' => 'Leches', 'code' => 'CAT-010']);
+        if (!$z1) {
+            $z1 = new Zone();
+        }
 
-        Product::create([
-            'category_id' => $c1->id,
+        $z1->fill([
+            'code' => 'Z-001',
+            'name' => 'Frutas',
+            'description' => 'Zona de frutas frescas',
+        ]);
+        $z1->save();
+
+        $z2 = Zone::where('code', 'Z-002')
+            ->orWhereIn('name', ['Lacteos', 'Lacteos', 'Lácteos'])
+            ->first();
+
+        if (!$z2) {
+            $z2 = new Zone();
+        }
+
+        $z2->fill([
+            'code' => 'Z-002',
+            'name' => 'Lacteos',
+            'description' => 'Zona de lacteos y refrigerados',
+        ]);
+        $z2->save();
+
+        $c1 = Category::updateOrCreate(
+            ['zone_id' => $z1->id, 'name' => 'Citricos'],
+            ['code' => 'CAT-001']
+        );
+
+        Category::updateOrCreate(
+            ['zone_id' => $z1->id, 'name' => 'Tropicales'],
+            ['code' => 'CAT-002']
+        );
+
+        $c3 = Category::updateOrCreate(
+            ['zone_id' => $z2->id, 'name' => 'Leches'],
+            ['code' => 'CAT-010']
+        );
+
+        Product::updateOrCreate([
             'barcode' => '1234567890123',
+        ], [
+            'category_id' => $c1->id,
             'sku' => 'NAR-001',
             'name' => 'Naranja',
             'description' => 'Naranja fresca por kilo',
@@ -29,9 +68,10 @@ class InventorySeeder extends Seeder
             'unit' => 'kg',
         ]);
 
-        Product::create([
-            'category_id' => $c3->id,
+        Product::updateOrCreate([
             'barcode' => '9876543210987',
+        ], [
+            'category_id' => $c3->id,
             'sku' => 'MLE-001',
             'name' => 'Leche entera 1L',
             'description' => 'Leche pasteurizada envasada',

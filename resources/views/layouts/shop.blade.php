@@ -535,33 +535,70 @@
 
         /* Pagination */
         .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
             margin-top: 30px;
         }
 
-        .pagination a,
-        .pagination span {
-            padding: 8px 14px;
-            border-radius: 6px;
-            text-decoration: none;
-            border: 1px solid #e5e7eb;
-            color: #374151;
-            font-size: 14px;
-            transition: all 0.2s;
+        .pagination nav {
+            width: 100%;
         }
 
-        .pagination a:hover {
+        .pagination nav > div {
+            display: flex;
+            justify-content: center;
+        }
+
+        .pagination nav > div > div:first-child {
+            display: none;
+        }
+
+        .pagination nav .inline-flex {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .pagination nav a,
+        .pagination nav [aria-current="page"] > span,
+        .pagination nav [aria-disabled="true"] > span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 38px;
+            height: 38px;
+            padding: 0 12px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            color: #374151;
+            font-size: 14px;
+            line-height: 1;
+            text-decoration: none;
+        }
+
+        .pagination nav a:hover {
             background: #f3f4f6;
             border-color: #667eea;
             color: #667eea;
         }
 
-        .pagination .active {
+        .pagination nav [aria-current="page"] > span {
             background: #667eea;
-            color: white;
+            color: #fff;
             border-color: #667eea;
+            font-weight: 700;
+        }
+
+        .pagination nav [aria-disabled="true"] > span {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination nav svg {
+            width: 16px;
+            height: 16px;
+            display: block;
         }
 
         /* Utilities */
