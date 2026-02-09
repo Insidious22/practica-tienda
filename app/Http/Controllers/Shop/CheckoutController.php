@@ -8,6 +8,7 @@ use App\Services\CartService;
 use App\Services\CheckoutService;
 use App\Services\PaymentService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
 {
@@ -39,7 +40,7 @@ class CheckoutController extends Controller
         }
 
         $totals = $this->checkoutService->calculateTotals($cart);
-        $user = auth()->user();
+        $user = Auth::user();
 
         return view('shop.checkout.index', compact('cart', 'totals', 'user'));
     }
@@ -97,7 +98,7 @@ class CheckoutController extends Controller
             $order = $this->checkoutService->createOrder(
                 $cart,
                 $shippingData,
-                auth()->user()
+                Auth::user()
             );
 
             // Process payment (simplified version)
@@ -130,7 +131,7 @@ class CheckoutController extends Controller
     public function confirmation(SalesOrder $order)
     {
         // Verify order belongs to current user
-        if ($order->user_id !== auth()->id()) {
+        if ($order->user_id !== Auth::id()) {
             abort(403);
         }
 

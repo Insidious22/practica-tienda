@@ -4,14 +4,16 @@ namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
 use App\Models\SalesOrder;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class CustomerAccountController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         $recentOrders = SalesOrder::where('user_id', $user->id)
             ->where('channel', 'online')
@@ -33,7 +35,7 @@ class CustomerAccountController extends Controller
 
     public function orders()
     {
-        $orders = SalesOrder::where('user_id', auth()->id())
+        $orders = SalesOrder::where('user_id', Auth::id())
             ->where('channel', 'online')
             ->with('items')
             ->latest()
@@ -44,7 +46,7 @@ class CustomerAccountController extends Controller
 
     public function orderDetail(SalesOrder $order)
     {
-        if ($order->user_id !== auth()->id()) {
+        if ($order->user_id !== Auth::id()) {
             abort(403);
         }
 
@@ -55,12 +57,16 @@ class CustomerAccountController extends Controller
 
     public function profile()
     {
-        return view('shop.account.profile', ['user' => auth()->user()]);
+        return view('shop.account.profile', ['user' => Auth::user()]);
     }
 
     public function updateProfile(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
+        if (!$user) {
+            abort(401);
+        }
+        /** @var User $user */
 
         $data = $request->validate([
             'name' => 'required|string|max:255',

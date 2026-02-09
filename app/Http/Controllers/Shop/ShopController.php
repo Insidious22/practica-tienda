@@ -38,7 +38,6 @@ class ShopController extends Controller
             $query->where('category_id', $request->category);
         }
 
-        // Filter by price range
         if ($request->filled('min_price')) {
             $query->where('price', '>=', $request->min_price);
         }
@@ -47,7 +46,6 @@ class ShopController extends Controller
             $query->where('price', '<=', $request->max_price);
         }
 
-        // Sort
         $sort = $request->get('sort', 'newest');
         switch ($sort) {
             case 'price_asc':

@@ -9,18 +9,10 @@ use App\Models\User;
 
 class PaymentService
 {
-    /**
-     * Process a payment for an order
-     * This is a simplified version - in production, integrate with Stripe/PayPal
-     */
+    
     public function processPayment(SalesOrder $order, string $paymentMethodCode = 'wallet'): array
     {
-        // In production, this would integrate with Stripe:
-        // 1. Create PaymentIntent
-        // 2. Return client secret for frontend
-        // 3. Handle webhook for confirmation
-
-        // For now, we simulate a successful payment
+    
         $paymentMethod = PaymentMethod::where('code', $paymentMethodCode)->first();
 
         if (!$paymentMethod) {
@@ -30,7 +22,6 @@ class PaymentService
             ];
         }
 
-        // Create payment record
         $payment = SalesOrderPayment::create([
             'sales_order_id' => $order->id,
             'payment_method_id' => $paymentMethod->id,
@@ -46,20 +37,9 @@ class PaymentService
         ];
     }
 
-    /**
-     * For future Stripe integration
-     */
     public function createStripePaymentIntent(SalesOrder $order): array
     {
-        // Placeholder for Stripe integration
-        // In production:
-        // $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
-        // $paymentIntent = $stripe->paymentIntents->create([
-        //     'amount' => (int)($order->total * 100),
-        //     'currency' => 'pen',
-        //     'metadata' => ['order_id' => $order->id],
-        // ]);
-
+     
         return [
             'success' => true,
             'client_secret' => 'pi_simulated_' . uniqid(),
@@ -67,12 +47,8 @@ class PaymentService
         ];
     }
 
-    /**
-     * Handle Stripe webhook
-     */
     public function handleStripeWebhook(array $payload): void
     {
-        // Placeholder for webhook handling
-        // In production, verify signature and handle events
+        // Aquí se procesaría el webhook real de Stripe
     }
 }

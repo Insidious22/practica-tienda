@@ -23,20 +23,19 @@ class CustomerAuthController extends Controller
             'password' => 'required'
         ]);
 
+        $guestSessionId = $request->session()->getId();
+
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            // Merge guest cart
-            app(CartService::class)->mergeGuestCartToUser(Auth::user());
+            app(CartService::class)->mergeGuestCartToUser(Auth::user(), $guestSessionId);
 
-            // Redirect based on role
             /** @var User $user */
             $user = Auth::user();
             if ($user->isAdmin()) {
                 return redirect()->route('admin.dashboard');
             }
 
-            // Check if there's a redirect parameter
             if ($request->has('redirect') && $request->redirect === 'checkout') {
                 return redirect()->route('shop.checkout.index');
             }
@@ -70,7 +69,6 @@ class CustomerAuthController extends Controller
             'phone' => $data['phone'] ?? null,
         ]);
 
-        // Assign customer role
         $customerRole = Role::where('code', 'customer')->first();
         if ($customerRole) {
             $user->roles()->attach($customerRole->id);
@@ -78,7 +76,6 @@ class CustomerAuthController extends Controller
 
         Auth::login($user);
 
-        // Merge guest cart
         app(CartService::class)->mergeGuestCartToUser($user);
 
         return redirect()->route('shop.home')

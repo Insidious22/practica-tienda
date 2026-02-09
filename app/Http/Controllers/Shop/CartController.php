@@ -23,6 +23,8 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
+        //dd($request->all());
+        
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|numeric|min:1'
@@ -55,7 +57,6 @@ class CartController extends Controller
     {
         $request->validate(['quantity' => 'required|numeric|min:0']);
 
-        // Verify the item belongs to the current cart
         $cart = $this->cartService->getCart();
         if ($item->cart_id !== $cart->id) {
             abort(403);
@@ -66,7 +67,6 @@ class CartController extends Controller
             return back()->with('success', 'Producto eliminado del carrito');
         }
 
-        // Check stock
         if ($item->product->stock_quantity < $request->quantity) {
             return back()->with('error', 'Stock insuficiente. Solo hay ' . $item->product->stock_quantity . ' unidades disponibles.');
         }
@@ -78,7 +78,6 @@ class CartController extends Controller
 
     public function remove(CartItem $item)
     {
-        // Verify the item belongs to the current cart
         $cart = $this->cartService->getCart();
         if ($item->cart_id !== $cart->id) {
             abort(403);

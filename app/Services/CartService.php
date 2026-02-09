@@ -65,9 +65,9 @@ class CartService
         $cart->items()->delete();
     }
 
-    public function mergeGuestCartToUser(User $user): void
+    public function mergeGuestCartToUser(User $user, ?string $guestSessionId = null): void
     {
-        $sessionId = session()->getId();
+        $sessionId = $guestSessionId ?? session()->getId();
 
         $userCart = Cart::firstOrCreate(
             ['user_id' => $user->id],

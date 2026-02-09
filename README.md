@@ -10,7 +10,7 @@ Aplicación web con dos caras:
 El objetivo es publicar productos, gestionar stock y procesar pedidos con un flujo de compra completo.
 
 ## 2. Stack tecnológico
-- Backend: Laravel 11 (PHP 8.2+)
+- Backend: Laravel 12 (PHP 8.2+)
 - Frontend: Blade + CSS embebido en vistas
 - Base de datos: MySQL
 - Assets: Vite / npm

@@ -19,44 +19,50 @@ class DemoDataSeeder extends Seeder
             [
                 'code' => 'Z-001',
                 'name' => 'Zona Norte',
-                'description' => 'Sector norte del almacén - Productos electrónicos',
+                'description' => 'Sector norte del almacÃ©n - Productos electrÃ³nicos',
             ],
             [
                 'code' => 'Z-002',
                 'name' => 'Zona Sur',
-                'description' => 'Sector sur del almacén - Productos básicos',
+                'description' => 'Sector sur del almacÃ©n - Productos bÃ¡sicos',
             ],
             [
                 'code' => 'Z-003',
                 'name' => 'Zona Este',
-                'description' => 'Sector este del almacén - Alimentos y bebidas',
+                'description' => 'Sector este del almacÃ©n - Alimentos y bebidas',
             ],
             [
                 'code' => 'Z-004',
                 'name' => 'Zona Oeste',
-                'description' => 'Sector oeste del almacén - Ropa y accesorios',
+                'description' => 'Sector oeste del almacÃ©n - Ropa y accesorios',
             ],
         ];
 
         $createdZones = [];
         foreach ($zones as $zone) {
-            $createdZones[] = Zone::create($zone);
+            $createdZones[] = Zone::updateOrCreate(
+                ['code' => $zone['code']],
+                [
+                    'name' => $zone['name'],
+                    'description' => $zone['description'],
+                ]
+            );
         }
 
         // Crear Categorías
         $categories = [
-            // Zona Norte - Electrónica
+            // Zona Norte - Electronica
             [
                 'zone_id' => $createdZones[0]->id,
                 'name' => 'Laptops',
                 'code' => 'CAT-001',
-                'description' => 'Computadoras portátiles de última generación',
+                'description' => 'Computadoras portatiles de ultima generación',
             ],
             [
                 'zone_id' => $createdZones[0]->id,
                 'name' => 'Smartphones',
                 'code' => 'CAT-002',
-                'description' => 'Teléfonos inteligentes de marcas reconocidas',
+                'description' => 'Telefonos inteligentes de marcas reconocidas',
             ],
             [
                 'zone_id' => $createdZones[0]->id,
@@ -107,7 +113,14 @@ class DemoDataSeeder extends Seeder
 
         $createdCategories = [];
         foreach ($categories as $category) {
-            $createdCategories[] = Category::create($category);
+            $createdCategories[] = Category::updateOrCreate(
+                ['code' => $category['code']],
+                [
+                    'zone_id' => $category['zone_id'],
+                    'name' => $category['name'],
+                    'description' => $category['description'] ?? null,
+                ]
+            );
         }
 
         // Crear Productos
@@ -174,7 +187,7 @@ class DemoDataSeeder extends Seeder
                 'category_id' => $createdCategories[2]->id,
                 'barcode' => '8471234567895',
                 'sku' => 'SKU-IPAD-PRO',
-                'name' => 'iPad Pro 12.9"',
+                'name' => 'iPad Pro 12.9\"',
                 'description' => 'Tablet profesional de Apple con chip M1',
                 'price' => 1099.00,
                 'stock_quantity' => 2,
@@ -278,12 +291,24 @@ class DemoDataSeeder extends Seeder
         ];
 
         foreach ($products as $product) {
-            Product::create($product);
+            Product::updateOrCreate(
+                ['sku' => $product['sku']],
+                [
+                    'category_id' => $product['category_id'],
+                    'barcode' => $product['barcode'],
+                    'name' => $product['name'],
+                    'description' => $product['description'],
+                    'price' => $product['price'],
+                    'stock_quantity' => $product['stock_quantity'],
+                    'unit' => $product['unit'],
+                    'status' => $product['status'],
+                ]
+            );
         }
 
-        echo "✅ Datos de demostración creados exitosamente!\n";
-        echo "📊 Zonas creadas: " . count($createdZones) . "\n";
-        echo "🏷️  Categorías creadas: " . count($createdCategories) . "\n";
-        echo "📦 Productos creados: " . count($products) . "\n";
+        echo "Datos de demostración creados exitosamente!\n";
+        echo "Zonas creadas: " . count($createdZones) . "\n";
+        echo "Categorías creadas: " . count($createdCategories) . "\n";
+        echo "Productos creados: " . count($products) . "\n";
     }
 }
