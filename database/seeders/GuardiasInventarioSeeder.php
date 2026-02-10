@@ -26,4 +26,3 @@ class GuardiasInventarioSeeder extends Seeder
         }
     }
 }
-

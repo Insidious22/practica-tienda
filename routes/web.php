@@ -10,6 +10,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\GuardiaController as AdminGuardiaController;
+use App\Http\Controllers\Admin\ItemController as AdminItemController;
 
 // Shop Controllers
 use App\Http\Controllers\Shop\ShopController;
@@ -104,4 +106,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin.or.superadmin
 
     // Rutas de usuarios (solo super admin)
     Route::resource('usuarios', UserController::class)->names('users')->parameters(['usuarios' => 'user']);
+
+    // Guardias
+    Route::patch('guardias/{id}/reactivar', [AdminGuardiaController::class, 'reactivar'])->name('guardias.reactivar');
+    Route::post('guardias/{guardia}/items', [AdminGuardiaController::class, 'addItem'])->name('guardias.addItem');
+    Route::delete('guardia-items/{id}', [AdminItemController::class, 'destroy'])->name('guardias.items.destroy');
+    Route::resource('guardias', AdminGuardiaController::class)->names('guardias');
 });
