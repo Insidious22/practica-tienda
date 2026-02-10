@@ -659,6 +659,13 @@
                 </svg>
                 Proveedores
             </a>
+            <a href="{{ route('admin.guardias.index') }}" class="@if(str_starts_with(Route::currentRouteName(), 'admin.guardias')) active @endif">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 18px; height: 18px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 10-8 0v1a4 4 0 108 0V7z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14a7 7 0 00-7 7v1h14v-1a7 7 0 00-7-7z"></path>
+                </svg>
+                Guardias
+            </a>
             @if (Auth::check() && Auth::user()->isSuperAdmin())
                 <a href="{{ route('admin.users.index') }}" class="@if(str_starts_with(Route::currentRouteName(), 'admin.users')) active @endif">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 18px; height: 18px;">
