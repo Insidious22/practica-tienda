@@ -13,7 +13,7 @@ class RolesSeeder extends Seeder
             [
                 'code' => 'super_admin',
                 'name' => 'Super Admin',
-                'description' => 'Acceso total y gestiÃ³n de usuarios',
+                'description' => 'Acceso total y gestión de usuarios',
                 'is_system' => true,
             ],
             [
