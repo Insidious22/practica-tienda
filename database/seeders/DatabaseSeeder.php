@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             PaymentMethodsSeeder::class,
             InventoryMovementTypesSeeder::class,
             InventorySeeder::class,
+            GuardiasInventarioSeeder::class,
             AdminUserSeeder::class,  // Usuarios admin
             DemoDataSeeder::class,  // Datos de demostración para el frontend
         ]);
