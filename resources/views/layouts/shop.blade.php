@@ -656,7 +656,7 @@
     <header class="shop-header">
         <div class="header-top">
             <div class="header-top-content container">
-                <span>Envio gratis en compras mayores a $50</span>
+                <span>Envio gratis a todas tus compras</span>
                 <span>Atencion: Lun-Sab 9am-6pm</span>
             </div>
         </div>
