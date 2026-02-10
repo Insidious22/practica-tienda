@@ -24,8 +24,8 @@ class DemoDataSeeder extends Seeder
         $zones = [
             [
                 'code' => 'Z-101',
-                'name' => 'Zona Tecnologia',
-                'description' => 'Sector de tecnologia y dispositivos',
+                'name' => 'Zona TecnologÃ­a',
+                'description' => 'Sector de tecnologÃ­a y dispositivos',
             ],
             [
                 'code' => 'Z-102',
@@ -57,15 +57,15 @@ class DemoDataSeeder extends Seeder
         }
 
         $categories = [
-            ['zone_code' => 'Z-101', 'name' => 'Laptops', 'code' => 'CAT-101', 'description' => 'Portatiles para trabajo y estudio'],
-            ['zone_code' => 'Z-101', 'name' => 'Smartphones', 'code' => 'CAT-102', 'description' => 'Telefonos inteligentes de gama media y alta'],
+            ['zone_code' => 'Z-101', 'name' => 'Laptops', 'code' => 'CAT-101', 'description' => 'PortÃ¡tiles para trabajo y estudio'],
+            ['zone_code' => 'Z-101', 'name' => 'Smartphones', 'code' => 'CAT-102', 'description' => 'TelÃ©fonos inteligentes de gama media y alta'],
             ['zone_code' => 'Z-101', 'name' => 'Audio', 'code' => 'CAT-103', 'description' => 'Auriculares y parlantes'],
-            ['zone_code' => 'Z-102', 'name' => 'Herramientas', 'code' => 'CAT-104', 'description' => 'Herramientas para construccion y mantenimiento'],
-            ['zone_code' => 'Z-102', 'name' => 'Iluminacion', 'code' => 'CAT-105', 'description' => 'Bombillas y luminarias'],
-            ['zone_code' => 'Z-103', 'name' => 'Bebidas', 'code' => 'CAT-106', 'description' => 'Bebidas frias y calientes'],
+            ['zone_code' => 'Z-102', 'name' => 'Herramientas', 'code' => 'CAT-104', 'description' => 'Herramientas para construcciÃ³n y mantenimiento'],
+            ['zone_code' => 'Z-102', 'name' => 'IluminaciÃ³n', 'code' => 'CAT-105', 'description' => 'Bombillas y luminarias'],
+            ['zone_code' => 'Z-103', 'name' => 'Bebidas', 'code' => 'CAT-106', 'description' => 'Bebidas frÃ­as y calientes'],
             ['zone_code' => 'Z-103', 'name' => 'Snacks', 'code' => 'CAT-107', 'description' => 'Botanas y productos de impulso'],
             ['zone_code' => 'Z-104', 'name' => 'Camisetas', 'code' => 'CAT-108', 'description' => 'Camisetas y polos'],
-            ['zone_code' => 'Z-104', 'name' => 'Pantalones', 'code' => 'CAT-109', 'description' => 'Jeans y pantalones casuales'],
+            ['zone_code' => 'Z-104', 'name' => 'Pantalónes', 'code' => 'CAT-109', 'description' => 'Jeans y pantalones casuales'],
         ];
 
         $categoriesByCode = [];
@@ -90,17 +90,17 @@ class DemoDataSeeder extends Seeder
             ['category_code' => 'CAT-102', 'barcode' => '8471234568005', 'sku' => 'SKU-IPHONE-13', 'name' => 'iPhone 13 Pro', 'description' => 'Smartphone Apple con 256GB', 'price' => 999.00, 'stock_quantity' => 7, 'unit' => 'unidad', 'status' => 'active'],
             ['category_code' => 'CAT-102', 'barcode' => '8471234568006', 'sku' => 'SKU-SAMSUNG-S21', 'name' => 'Samsung Galaxy S21', 'description' => 'Pantalla AMOLED de 6.2 pulgadas', 'price' => 799.99, 'stock_quantity' => 13, 'unit' => 'unidad', 'status' => 'active'],
             ['category_code' => 'CAT-102', 'barcode' => '8471234568007', 'sku' => 'SKU-XIAOMI-12', 'name' => 'Xiaomi 12', 'description' => 'Smartphone gama alta de 128GB', 'price' => 649.99, 'stock_quantity' => 17, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-102', 'barcode' => '8471234568008', 'sku' => 'SKU-MOTO-G84', 'name' => 'Motorola G84', 'description' => 'Smartphone gama media de gran bateria', 'price' => 349.99, 'stock_quantity' => 6, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-102', 'barcode' => '8471234568008', 'sku' => 'SKU-MOTO-G84', 'name' => 'Motorola G84', 'description' => 'Smartphone gama media de gran baterÃ­a', 'price' => 349.99, 'stock_quantity' => 6, 'unit' => 'unidad', 'status' => 'active'],
 
-            ['category_code' => 'CAT-103', 'barcode' => '8471234568009', 'sku' => 'SKU-AUDIO-SONY', 'name' => 'Sony WH-1000XM4', 'description' => 'Auriculares con cancelacion de ruido', 'price' => 329.99, 'stock_quantity' => 8, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-103', 'barcode' => '8471234568009', 'sku' => 'SKU-AUDIO-SONY', 'name' => 'Sony WH-1000XM4', 'description' => 'Auriculares con cancelaciÃ³n de ruido', 'price' => 329.99, 'stock_quantity' => 8, 'unit' => 'unidad', 'status' => 'active'],
             ['category_code' => 'CAT-103', 'barcode' => '8471234568010', 'sku' => 'SKU-AUDIO-JBL', 'name' => 'JBL Flip 6', 'description' => 'Parlante bluetooth resistente al agua', 'price' => 139.99, 'stock_quantity' => 16, 'unit' => 'unidad', 'status' => 'active'],
 
-            ['category_code' => 'CAT-104', 'barcode' => '8471234568011', 'sku' => 'SKU-HAMMER-001', 'name' => 'Martillo Stanley 16oz', 'description' => 'Martillo profesional con mango ergonomico', 'price' => 25.99, 'stock_quantity' => 42, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-104', 'barcode' => '8471234568012', 'sku' => 'SKU-DRILL-001', 'name' => 'Taladro DeWalt 18V', 'description' => 'Taladro inalambrico con bateria', 'price' => 149.99, 'stock_quantity' => 10, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-104', 'barcode' => '8471234568013', 'sku' => 'SKU-SCREW-SET', 'name' => 'Set Destornilladores 8p', 'description' => 'Set de destornilladores magneticos', 'price' => 19.90, 'stock_quantity' => 36, 'unit' => 'set', 'status' => 'active'],
+            ['category_code' => 'CAT-104', 'barcode' => '8471234568011', 'sku' => 'SKU-HAMMER-001', 'name' => 'Martillo Stanley 16oz', 'description' => 'Martillo profesional con mango ergonÃ³mico', 'price' => 25.99, 'stock_quantity' => 42, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-104', 'barcode' => '8471234568012', 'sku' => 'SKU-DRILL-001', 'name' => 'Taladro DeWalt 18V', 'description' => 'Taladro inalÃ¡mbrico con baterÃ­a', 'price' => 149.99, 'stock_quantity' => 10, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-104', 'barcode' => '8471234568013', 'sku' => 'SKU-SCREW-SET', 'name' => 'Set Destornilladores 8p', 'description' => 'Set de destornilladores magnÃ©ticos', 'price' => 19.90, 'stock_quantity' => 36, 'unit' => 'set', 'status' => 'active'],
 
             ['category_code' => 'CAT-105', 'barcode' => '8471234568014', 'sku' => 'SKU-LED-BULB', 'name' => 'Bombilla LED 10W', 'description' => 'Bombilla LED de bajo consumo', 'price' => 12.99, 'stock_quantity' => 180, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-105', 'barcode' => '8471234568015', 'sku' => 'SKU-LAMP-DESK', 'name' => 'Lampara de Escritorio', 'description' => 'Lampara LED regulable', 'price' => 39.90, 'stock_quantity' => 21, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-105', 'barcode' => '8471234568015', 'sku' => 'SKU-LAMP-DESK', 'name' => 'LÃ¡mpara de Escritorio', 'description' => 'LÃ¡mpara LED regulable', 'price' => 39.90, 'stock_quantity' => 21, 'unit' => 'unidad', 'status' => 'active'],
 
             ['category_code' => 'CAT-106', 'barcode' => '8471234568016', 'sku' => 'SKU-COLA-2L', 'name' => 'Refresco Cola 2L', 'description' => 'Botella de 2 litros', 'price' => 2.99, 'stock_quantity' => 240, 'unit' => 'botella', 'status' => 'active'],
             ['category_code' => 'CAT-106', 'barcode' => '8471234568017', 'sku' => 'SKU-JUICE-1L', 'name' => 'Jugo Natural 1L', 'description' => 'Jugo de naranja sin conservantes', 'price' => 3.49, 'stock_quantity' => 12, 'unit' => 'botella', 'status' => 'active'],
@@ -109,11 +109,11 @@ class DemoDataSeeder extends Seeder
             ['category_code' => 'CAT-107', 'barcode' => '8471234568019', 'sku' => 'SKU-CHIPS-100G', 'name' => 'Papas Fritas 100g', 'description' => 'Bolsa individual de papas fritas', 'price' => 1.49, 'stock_quantity' => 260, 'unit' => 'bolsa', 'status' => 'active'],
             ['category_code' => 'CAT-107', 'barcode' => '8471234568020', 'sku' => 'SKU-COOKIES-90G', 'name' => 'Galletas 90g', 'description' => 'Galletas dulces surtidas', 'price' => 1.79, 'stock_quantity' => 190, 'unit' => 'paquete', 'status' => 'active'],
 
-            ['category_code' => 'CAT-108', 'barcode' => '8471234568021', 'sku' => 'SKU-TSHIRT-BLK-M', 'name' => 'Camiseta Negra Basica M', 'description' => 'Camiseta de algodon talle M', 'price' => 19.99, 'stock_quantity' => 40, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-108', 'barcode' => '8471234568022', 'sku' => 'SKU-TSHIRT-WHT-L', 'name' => 'Camiseta Blanca Basica L', 'description' => 'Camiseta de algodon talle L', 'price' => 19.99, 'stock_quantity' => 33, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-108', 'barcode' => '8471234568021', 'sku' => 'SKU-TSHIRT-BLK-M', 'name' => 'Camiseta Negra BÃ¡sica M', 'description' => 'Camiseta de algodÃ³n talle M', 'price' => 19.99, 'stock_quantity' => 40, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-108', 'barcode' => '8471234568022', 'sku' => 'SKU-TSHIRT-WHT-L', 'name' => 'Camiseta Blanca BÃ¡sica L', 'description' => 'Camiseta de algodÃ³n talle L', 'price' => 19.99, 'stock_quantity' => 33, 'unit' => 'unidad', 'status' => 'active'],
 
-            ['category_code' => 'CAT-109', 'barcode' => '8471234568023', 'sku' => 'SKU-JEANS-BLU-32', 'name' => 'Jeans Azul Oscuro 32', 'description' => 'Jean clasico azul oscuro', 'price' => 59.99, 'stock_quantity' => 18, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-109', 'barcode' => '8471234568024', 'sku' => 'SKU-JOGGER-GRY-M', 'name' => 'Jogger Gris M', 'description' => 'Pantalon jogger para uso diario', 'price' => 34.90, 'stock_quantity' => 3, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-109', 'barcode' => '8471234568023', 'sku' => 'SKU-JEANS-BLU-32', 'name' => 'Jeans Azul Oscuro 32', 'description' => 'Jean clÃ¡sico azul oscuro', 'price' => 59.99, 'stock_quantity' => 18, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-109', 'barcode' => '8471234568024', 'sku' => 'SKU-JOGGER-GRY-M', 'name' => 'Jogger Gris M', 'description' => 'PantalÃ³n jogger para uso diario', 'price' => 34.90, 'stock_quantity' => 3, 'unit' => 'unidad', 'status' => 'active'],
         ];
 
         $productsBySku = [];
@@ -147,7 +147,7 @@ class DemoDataSeeder extends Seeder
                 'address' => 'Av. Primavera 1234',
                 'city' => 'Guayaquil',
                 'payment_terms' => 'Credito 30 dias',
-                'notes' => 'Proveedor principal de tecnologia',
+                'notes' => 'Proveedor principal de tecnología',
                 'status' => 'active',
             ],
             [
@@ -244,7 +244,7 @@ class DemoDataSeeder extends Seeder
                     'tax_rate' => 18,
                     'shipping_cost' => 35.00,
                     'expected_date' => now()->addDays(7)->toDateString(),
-                    'notes' => 'Reposicion de tecnologia',
+                    'notes' => 'Reposicion de tecnología',
                     'approved_by' => $purchasingUser->id,
                     'approved_at' => now()->subDays(10),
                     'items' => [
@@ -411,3 +411,4 @@ class DemoDataSeeder extends Seeder
         echo "DemoDataSeeder ejecutado: zonas, categorias, productos, proveedores y compras demo creados o actualizados.\n";
     }
 }
+

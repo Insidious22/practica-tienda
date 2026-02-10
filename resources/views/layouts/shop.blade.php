@@ -656,7 +656,11 @@
     <header class="shop-header">
         <div class="header-top">
             <div class="header-top-content container">
+<<<<<<< Updated upstream
                 <span>Envio gratis a todas tus compras</span>
+=======
+                <span>Envio gratis en todas tus compras</span>
+>>>>>>> Stashed changes
                 <span>Atencion: Lun-Sab 9am-6pm</span>
             </div>
         </div>
@@ -805,7 +809,7 @@
                 <ul>
                     <li>Tel: +593 4 123-4567</li>
                     <li>Email: info@sapo.com</li>
-                    <li>Dirección: Av. 9 de Octubre 123, Guayaquil</li>
+                    <li>Dirección: Av. 9 de Octubre no, En la Chile y Colon tampoco, en Guayaquil</li>
                 </ul>
             </div>
         </div>

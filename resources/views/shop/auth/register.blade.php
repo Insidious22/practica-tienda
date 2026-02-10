@@ -35,7 +35,7 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label class="form-label">Contrasena</label>
+                        <label class="form-label">Contraseña</label>
                         <input type="password" name="password" class="form-input form-control" required>
                         <small style="color: #6b7280; font-size: 12px;">Minimo 8 caracteres</small>
                         @error('password')
@@ -44,7 +44,7 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label class="form-label">Confirmar Contrasena</label>
+                        <label class="form-label">Confirmar Contraseña</label>
                         <input type="password" name="password_confirmation" class="form-input form-control" required>
                     </div>
 

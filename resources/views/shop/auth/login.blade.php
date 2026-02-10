@@ -23,7 +23,7 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label class="form-label">Contrasena</label>
+                        <label class="form-label">Contraseña</label>
                         <input type="password" name="password" class="form-input form-control" required>
                         @error('password')
                             <span class="form-error text-danger small">{{ $message }}</span>
