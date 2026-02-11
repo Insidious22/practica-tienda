@@ -60,7 +60,7 @@
             <div class="form-group">
                 <label for="turno">Turno</label>
                 <select id="turno" name="turno" required>
-                    <option value="Manana" @selected(old('turno') === 'Manana')>Manana</option>
+                    <option value="Mañana" @selected(old('turno') === 'Mañana')>Mañana</option>
                     <option value="Tarde" @selected(old('turno') === 'Tarde')>Tarde</option>
                     <option value="Noche" @selected(old('turno') === 'Noche')>Noche</option>
                 </select>
@@ -155,6 +155,7 @@
                     <td>Del inventario</td>
                     <td>
                         <button type="button" class="btn danger btn-delete" data-index="${rowIndex}">Eliminar</button>
+                        <button type="button" class="btn danger btn-delete" data-id="${itemId}">Eliminar</button>
                     </td>
                 `;
                 tbody.appendChild(row);
@@ -164,6 +165,13 @@
                     const index = parseInt(this.getAttribute('data-index'));
                     items.splice(index, 1);
                     tbody.deleteRow(index);
+                    const idToRemove = this.getAttribute('data-id');
+                    const itemIndex = items.findIndex(i => i.id === idToRemove);
+                    if (itemIndex > -1) {
+                        items.splice(itemIndex, 1);
+                    }
+                    this.closest('tr').remove();
+                    
                     if (items.length === 0) {
                         table.style.display = 'none';
                     }
