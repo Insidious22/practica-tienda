@@ -656,11 +656,7 @@
     <header class="shop-header">
         <div class="header-top">
             <div class="header-top-content container">
-<<<<<<< Updated upstream
                 <span>Envio gratis a todas tus compras</span>
-=======
-                <span>Envio gratis en todas tus compras</span>
->>>>>>> Stashed changes
                 <span>Atencion: Lun-Sab 9am-6pm</span>
             </div>
         </div>

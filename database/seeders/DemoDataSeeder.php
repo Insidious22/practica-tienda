@@ -24,8 +24,8 @@ class DemoDataSeeder extends Seeder
         $zones = [
             [
                 'code' => 'Z-101',
-                'name' => 'Zona TecnologÃ­a',
-                'description' => 'Sector de tecnologÃ­a y dispositivos',
+                'name' => 'Zona Tecnologí­a',
+                'description' => 'Sector de tecnologí­a y dispositivos',
             ],
             [
                 'code' => 'Z-102',
@@ -57,12 +57,12 @@ class DemoDataSeeder extends Seeder
         }
 
         $categories = [
-            ['zone_code' => 'Z-101', 'name' => 'Laptops', 'code' => 'CAT-101', 'description' => 'PortÃ¡tiles para trabajo y estudio'],
-            ['zone_code' => 'Z-101', 'name' => 'Smartphones', 'code' => 'CAT-102', 'description' => 'TelÃ©fonos inteligentes de gama media y alta'],
+            ['zone_code' => 'Z-101', 'name' => 'Laptops', 'code' => 'CAT-101', 'description' => 'Portátiles para trabajo y estudio'],
+            ['zone_code' => 'Z-101', 'name' => 'Smartphones', 'code' => 'CAT-102', 'description' => 'Teléfonos inteligentes de gama media y alta'],
             ['zone_code' => 'Z-101', 'name' => 'Audio', 'code' => 'CAT-103', 'description' => 'Auriculares y parlantes'],
-            ['zone_code' => 'Z-102', 'name' => 'Herramientas', 'code' => 'CAT-104', 'description' => 'Herramientas para construcciÃ³n y mantenimiento'],
-            ['zone_code' => 'Z-102', 'name' => 'IluminaciÃ³n', 'code' => 'CAT-105', 'description' => 'Bombillas y luminarias'],
-            ['zone_code' => 'Z-103', 'name' => 'Bebidas', 'code' => 'CAT-106', 'description' => 'Bebidas frÃ­as y calientes'],
+            ['zone_code' => 'Z-102', 'name' => 'Herramientas', 'code' => 'CAT-104', 'description' => 'Herramientas para construcción y mantenimiento'],
+            ['zone_code' => 'Z-102', 'name' => 'Iluminación', 'code' => 'CAT-105', 'description' => 'Bombillas y luminarias'],
+            ['zone_code' => 'Z-103', 'name' => 'Bebidas', 'code' => 'CAT-106', 'description' => 'Bebidas frías y calientes'],
             ['zone_code' => 'Z-103', 'name' => 'Snacks', 'code' => 'CAT-107', 'description' => 'Botanas y productos de impulso'],
             ['zone_code' => 'Z-104', 'name' => 'Camisetas', 'code' => 'CAT-108', 'description' => 'Camisetas y polos'],
             ['zone_code' => 'Z-104', 'name' => 'Pantalónes', 'code' => 'CAT-109', 'description' => 'Jeans y pantalones casuales'],
@@ -90,35 +90,35 @@ class DemoDataSeeder extends Seeder
             ['category_code' => 'CAT-102', 'barcode' => '8471234568005', 'sku' => 'SKU-IPHONE-13', 'name' => 'iPhone 13 Pro', 'description' => 'Smartphone Apple con 256GB', 'price' => 999.00, 'stock_quantity' => 7, 'unit' => 'unidad', 'status' => 'active'],
             ['category_code' => 'CAT-102', 'barcode' => '8471234568006', 'sku' => 'SKU-SAMSUNG-S21', 'name' => 'Samsung Galaxy S21', 'description' => 'Pantalla AMOLED de 6.2 pulgadas', 'price' => 799.99, 'stock_quantity' => 13, 'unit' => 'unidad', 'status' => 'active'],
             ['category_code' => 'CAT-102', 'barcode' => '8471234568007', 'sku' => 'SKU-XIAOMI-12', 'name' => 'Xiaomi 12', 'description' => 'Smartphone gama alta de 128GB', 'price' => 649.99, 'stock_quantity' => 17, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-102', 'barcode' => '8471234568008', 'sku' => 'SKU-MOTO-G84', 'name' => 'Motorola G84', 'description' => 'Smartphone gama media de gran baterÃ­a', 'price' => 349.99, 'stock_quantity' => 6, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-102', 'barcode' => '8471234568008', 'sku' => 'SKU-MOTO-G84', 'name' => 'Motorola G84', 'description' => 'Smartphone gama media de gran batería', 'price' => 349.99, 'stock_quantity' => 6, 'unit' => 'unidad', 'status' => 'active'],
 
-            ['category_code' => 'CAT-103', 'barcode' => '8471234568009', 'sku' => 'SKU-AUDIO-SONY', 'name' => 'Sony WH-1000XM4', 'description' => 'Auriculares con cancelaciÃ³n de ruido', 'price' => 329.99, 'stock_quantity' => 8, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-103', 'barcode' => '8471234568009', 'sku' => 'SKU-AUDIO-SONY', 'name' => 'Sony WH-1000XM4', 'description' => 'Auriculares con cancelación de ruido', 'price' => 329.99, 'stock_quantity' => 8, 'unit' => 'unidad', 'status' => 'active'],
             ['category_code' => 'CAT-103', 'barcode' => '8471234568010', 'sku' => 'SKU-AUDIO-JBL', 'name' => 'JBL Flip 6', 'description' => 'Parlante bluetooth resistente al agua', 'price' => 139.99, 'stock_quantity' => 16, 'unit' => 'unidad', 'status' => 'active'],
 
-            ['category_code' => 'CAT-104', 'barcode' => '8471234568011', 'sku' => 'SKU-HAMMER-001', 'name' => 'Martillo Stanley 16oz', 'description' => 'Martillo profesional con mango ergonÃ³mico', 'price' => 25.99, 'stock_quantity' => 42, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-104', 'barcode' => '8471234568012', 'sku' => 'SKU-DRILL-001', 'name' => 'Taladro DeWalt 18V', 'description' => 'Taladro inalÃ¡mbrico con baterÃ­a', 'price' => 149.99, 'stock_quantity' => 10, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-104', 'barcode' => '8471234568013', 'sku' => 'SKU-SCREW-SET', 'name' => 'Set Destornilladores 8p', 'description' => 'Set de destornilladores magnÃ©ticos', 'price' => 19.90, 'stock_quantity' => 36, 'unit' => 'set', 'status' => 'active'],
-
-            ['category_code' => 'CAT-105', 'barcode' => '8471234568014', 'sku' => 'SKU-LED-BULB', 'name' => 'Bombilla LED 10W', 'description' => 'Bombilla LED de bajo consumo', 'price' => 12.99, 'stock_quantity' => 180, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-105', 'barcode' => '8471234568015', 'sku' => 'SKU-LAMP-DESK', 'name' => 'LÃ¡mpara de Escritorio', 'description' => 'LÃ¡mpara LED regulable', 'price' => 39.90, 'stock_quantity' => 21, 'unit' => 'unidad', 'status' => 'active'],
-
-            ['category_code' => 'CAT-106', 'barcode' => '8471234568016', 'sku' => 'SKU-COLA-2L', 'name' => 'Refresco Cola 2L', 'description' => 'Botella de 2 litros', 'price' => 2.99, 'stock_quantity' => 240, 'unit' => 'botella', 'status' => 'active'],
-            ['category_code' => 'CAT-106', 'barcode' => '8471234568017', 'sku' => 'SKU-JUICE-1L', 'name' => 'Jugo Natural 1L', 'description' => 'Jugo de naranja sin conservantes', 'price' => 3.49, 'stock_quantity' => 12, 'unit' => 'botella', 'status' => 'active'],
-            ['category_code' => 'CAT-106', 'barcode' => '8471234568018', 'sku' => 'SKU-WATER-600', 'name' => 'Agua Mineral 600ml', 'description' => 'Botella individual de agua', 'price' => 1.15, 'stock_quantity' => 320, 'unit' => 'botella', 'status' => 'active'],
-
-            ['category_code' => 'CAT-107', 'barcode' => '8471234568019', 'sku' => 'SKU-CHIPS-100G', 'name' => 'Papas Fritas 100g', 'description' => 'Bolsa individual de papas fritas', 'price' => 1.49, 'stock_quantity' => 260, 'unit' => 'bolsa', 'status' => 'active'],
+            ['category_code' => 'CAT-104', 'barcode' => '8471234568011', 'sku' => 'SKU-HAMMER-001', 'name' => 'Martillo Stanley 16oz', 'description' => 'Martillo profesional con mango ergonómico', 'price' => 25.99, 'stock_quantity' => 42, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-104', 'barcode' => '8471234568012', 'sku' => 'SKU-DRILL-001', 'name' => 'Taladro DeWalt 18V', 'description' => 'Taladro inalámbrico con batería', 'price' => 149.99, 'stock_quantity' => 10, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-104', 'barcode' => '8471234568013', 'sku' => 'SKU-SCREW-SET', 'name' => 'Set Destornilladores 8p', 'description' => 'Set de destornilladores magnéticos', 'price' => 19.90, 'stock_quantity' => 36, 'unit' => 'set', 'status' => 'active'],
+            ['category_code' => '', 'barcode' => '8471234568014', 'sku' => 'SKU-UNKNOWN-001', 'name' => 'Producto Desconocido', 'description' => 'Producto sin categoría definida', 'price' => 9.99, 'stock_quantity' => 50, 'unit' => 'unidad', 'status' => 'active'],
             ['category_code' => 'CAT-107', 'barcode' => '8471234568020', 'sku' => 'SKU-COOKIES-90G', 'name' => 'Galletas 90g', 'description' => 'Galletas dulces surtidas', 'price' => 1.79, 'stock_quantity' => 190, 'unit' => 'paquete', 'status' => 'active'],
 
-            ['category_code' => 'CAT-108', 'barcode' => '8471234568021', 'sku' => 'SKU-TSHIRT-BLK-M', 'name' => 'Camiseta Negra BÃ¡sica M', 'description' => 'Camiseta de algodÃ³n talle M', 'price' => 19.99, 'stock_quantity' => 40, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-108', 'barcode' => '8471234568022', 'sku' => 'SKU-TSHIRT-WHT-L', 'name' => 'Camiseta Blanca BÃ¡sica L', 'description' => 'Camiseta de algodÃ³n talle L', 'price' => 19.99, 'stock_quantity' => 33, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-108', 'barcode' => '8471234568021', 'sku' => 'SKU-TSHIRT-BLK-M', 'name' => 'Camiseta Negra Básica M', 'description' => 'Camiseta de algodón talle M', 'price' => 19.99, 'stock_quantity' => 40, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-108', 'barcode' => '8471234568022', 'sku' => 'SKU-TSHIRT-WHT-L', 'name' => 'Camiseta Blanca Básica L', 'description' => 'Camiseta de algodón talle L', 'price' => 19.99, 'stock_quantity' => 33, 'unit' => 'unidad', 'status' => 'active'],
 
-            ['category_code' => 'CAT-109', 'barcode' => '8471234568023', 'sku' => 'SKU-JEANS-BLU-32', 'name' => 'Jeans Azul Oscuro 32', 'description' => 'Jean clÃ¡sico azul oscuro', 'price' => 59.99, 'stock_quantity' => 18, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-109', 'barcode' => '8471234568024', 'sku' => 'SKU-JOGGER-GRY-M', 'name' => 'Jogger Gris M', 'description' => 'PantalÃ³n jogger para uso diario', 'price' => 34.90, 'stock_quantity' => 3, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-109', 'barcode' => '8471234568023', 'sku' => 'SKU-JEANS-BLU-32', 'name' => 'Jeans Azul Oscuro 32', 'description' => 'Jean clásico azul oscuro', 'price' => 59.99, 'stock_quantity' => 18, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => '', 'barcode' => '8471234568024', 'sku' => 'SKU-UNKNOWN-002', 'name' => 'Producto Sin Categoría', 'description' => 'Producto sin categoría definida', 'price' => 12.99, 'stock_quantity' => 25, 'unit' => 'unidad', 'status' => 'active'],
         ];
 
         $productsBySku = [];
+        $skippedProducts = [];
         foreach ($products as $productData) {
-            $category = $categoriesByCode[$productData['category_code']];
+            $categoryCode = $productData['category_code'] ?? null;
+            $category = $categoryCode ? ($categoriesByCode[$categoryCode] ?? null) : null;
+
+            if (!$category) {
+                $skippedProducts[] = $productData['sku'];
+                continue;
+            }
+
             $product = Product::updateOrCreate(
                 ['barcode' => $productData['barcode']],
                 [
@@ -408,7 +408,10 @@ class DemoDataSeeder extends Seeder
             }
         }
 
+        if (!empty($skippedProducts)) {
+            echo 'DemoDataSeeder: productos omitidos por category_code invalido: '.implode(', ', $skippedProducts).".\n";
+        }
+
         echo "DemoDataSeeder ejecutado: zonas, categorias, productos, proveedores y compras demo creados o actualizados.\n";
     }
 }
-
