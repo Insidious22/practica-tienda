@@ -1,0 +1,52 @@
+@import './forms.css';
+@import './tables.css';
+
+.page-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.details-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.details-title {
+    margin-bottom: 20px;
+    color: #1f2937;
+}
+
+.detail-item {
+    margin-bottom: 15px;
+}
+
+.detail-label {
+    color: #1f2937;
+}
+
+.details-stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.details-stat-value--success {
+    color: #10b981;
+}
+
+.details-stat-text {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.section-card {
+    margin-top: 20px;
+}

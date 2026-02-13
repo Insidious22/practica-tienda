@@ -43,7 +43,7 @@ class CheckoutService
                     // Snapshot of product data
                     'product_name' => $cartItem->product->name,
                     'product_barcode' => $cartItem->product->barcode,
-                    'unit' => $cartItem->product->unit ?? 'unidad',
+                    'unit' => $cartItem->product->unit ?? 'UNI',
                 ]);
             }
 
@@ -109,3 +109,4 @@ class CheckoutService
         $this->reserveStock($order);
     }
 }
+

@@ -1,11 +1,15 @@
 @extends('layouts.app')
 
+@push('styles')
+    @vite(['resources/css/admin/products.css'])
+@endpush
+
 @section('content')
 <div class="header">
     <h1 class="title">📦 Gestión de Productos</h1>
     <div class="header-actions">
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Buscar productos..." style="padding-left: 36px;">
+            <input type="text" id="searchInput" class="product-search-input" placeholder="Buscar productos...">
         </div>
         <a class="btn btn-primary" href="{{ route('admin.productos.create') }}">➕ Nuevo Producto</a>
     </div>
@@ -18,7 +22,7 @@
         <a class="btn btn-primary" href="{{ route('admin.productos.create') }}">Crear primer producto</a>
     </div>
 @else
-    <div style="overflow-x: auto;">
+    <div class="product-table-wrap">
         <table class="table table-striped table-hover align-middle" id="productsTable">
             <thead>
                 <tr>
@@ -55,7 +59,7 @@
                         </td>
                         <td>
                             @if($product->price)
-                                <strong style="color: #10b981;">${{ number_format($product->price, 2, ',', '.') }}</strong>
+                                <strong class="product-price">${{ number_format($product->price, 2, ',', '.') }}</strong>
                             @else
                                 <span class="muted">-</span>
                             @endif
@@ -66,9 +70,9 @@
                             </span>
                         </td>
                         <td>
-                            @if($product->status === 'active')
+                            @if($product->status === 'ACT')
                                 <span class="badge success">✓ Activo</span>
-                            @elseif($product->status === 'inactive')
+                            @elseif($product->status === 'INA')
                                 <span class="badge warning">⊘ Inactivo</span>
                             @else
                                 <span class="badge danger">✗ Descontinuado</span>
@@ -78,7 +82,7 @@
                             <div class="actions">
                                 <a class="btn btn-secondary" href="{{ route('admin.productos.show', $product) }}" title="Ver detalles">👁️</a>
                                 <a class="btn btn-secondary" href="{{ route('admin.productos.edit', $product) }}" title="Editar">✏️</a>
-                                <form action="{{ route('admin.productos.destroy', $product) }}" method="POST" style="display: inline;">
+                                <form action="{{ route('admin.productos.destroy', $product) }}" method="POST" class="product-inline-form">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-danger" type="submit" title="Eliminar" onclick="return confirm('¿Eliminar este producto? Esta acción no se puede deshacer.')">🗑️</button>
@@ -92,7 +96,7 @@
     </div>
 
     @if($products->hasPages())
-        <div style="margin-top: 30px;">
+        <div class="product-pagination">
             {{ $products->links() }}
         </div>
     @endif
@@ -112,3 +116,4 @@
 </script>
 
 @endsection
+

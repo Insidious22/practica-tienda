@@ -1,18 +1,22 @@
 @extends('layouts.app')
 
+@push('styles')
+    @vite(['resources/css/admin/auth.css'])
+@endpush
+
 @section('content')
-<div style="max-width: 500px; margin: 100px auto;">
+<div class="auth-wrapper">
     <div class="container">
-        <div class="header" style="justify-content: center; margin-bottom: 40px;">
-            <h1 class="title" style="text-align: center;">ACCESO ADMINISTRACIÓN</h1>
+        <div class="header auth-header">
+            <h1 class="title auth-title">ACCESO ADMINISTRACIÓN</h1>
         </div>
 
         @if ($errors->any())
-            <div class="alert danger" style="margin-bottom: 20px;">
+            <div class="alert danger">
                 <span>!</span>
                 <div>
                     <strong>Error al iniciar sesión</strong>
-                    <ul style="margin: 5px 0 0 0; padding-left: 20px;">
+                    <ul class="alert-list">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
@@ -21,36 +25,36 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.login') }}" method="POST" style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+        <form action="{{ route('admin.login') }}" method="POST" class="admin-form-card">
             @csrf
 
-            <div style="margin-bottom: 20px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Correo Electrónico</label>
-                <input type="email" name="email" class="form-input" value="{{ old('email') }}" required autofocus style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px;">
+            <div class="admin-form-group">
+                <label class="admin-form-label">Correo Electrónico</label>
+                <input type="email" name="email" value="{{ old('email') }}" required autofocus class="admin-form-input">
                 @error('email')
-                    <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+                    <span class="admin-form-error">{{ $message }}</span>
                 @enderror
             </div>
 
-            <div style="margin-bottom: 20px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #1f2937;">Contraseña</label>
-                <input type="password" name="password" class="form-input" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px;">
+            <div class="admin-form-group">
+                <label class="admin-form-label">Contraseña</label>
+                <input type="password" name="password" required class="admin-form-input">
                 @error('password')
-                    <span style="color: #ef4444; font-size: 12px;">{{ $message }}</span>
+                    <span class="admin-form-error">{{ $message }}</span>
                 @enderror
             </div>
 
-            <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
-                <input type="checkbox" name="remember" id="remember" style="width: auto;">
-                <label for="remember" style="margin: 0; font-weight: normal;">Recordarme</label>
+            <div class="admin-form-checkbox-row">
+                <input type="checkbox" name="remember" id="remember" class="admin-form-checkbox">
+                <label for="remember" class="admin-form-checkbox-label">Recordarme</label>
             </div>
 
-            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+            <button type="submit" class="btn btn-primary admin-form-button">
                 Iniciar Sesión
             </button>
         </form>
 
-        <p style="text-align: center; margin-top: 20px; color: #6b7280; font-size: 13px;">
+        <p class="auth-footer">
             ¿No tienes cuenta? Contacta al administrador del sistema.
         </p>
     </div>

@@ -1,0 +1,56 @@
+.auth-wrap {
+    max-width: 500px;
+    margin: 40px auto;
+}
+
+.auth-wrap--sm {
+    max-width: 450px;
+}
+
+.auth-card-title {
+    text-align: center;
+    font-size: 20px;
+}
+
+.auth-remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.auth-checkbox {
+    width: auto;
+}
+
+.auth-checkbox-label {
+    margin: 0;
+    font-weight: normal;
+}
+
+.auth-submit {
+    width: 100%;
+    padding: 14px;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.auth-footer-text {
+    color: #6b7280;
+    margin-bottom: 10px;
+}
+
+.auth-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-helper {
+    color: #6b7280;
+    font-size: 12px;
+}

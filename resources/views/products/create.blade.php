@@ -1,11 +1,15 @@
 @extends('layouts.app')
 
+@push('styles')
+    @vite(['resources/css/admin/products.css'])
+@endpush
+
 @section('content')
 <div class="header">
     <h1 class="title">➕ Crear Nuevo Producto</h1>
 </div>
 
-<form action="{{ route('admin.productos.store') }}" method="POST" style="background: #f9fafb; padding: 20px; border-radius: 8px;">
+<form action="{{ route('admin.productos.store') }}" method="POST" class="product-form-card">
     @csrf
     @include('products._form')
 </form>

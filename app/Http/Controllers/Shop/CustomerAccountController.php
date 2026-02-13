@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Models\Diccionario;
 use App\Models\SalesOrder;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class CustomerAccountController extends Controller
 {
@@ -57,7 +58,14 @@ class CustomerAccountController extends Controller
 
     public function profile()
     {
-        return view('shop.account.profile', ['user' => Auth::user()]);
+        $documentTypes = $this->obtenerCatalogo('cliente_tipo_documento', [
+            ['numero' => 1, 'descripcion' => 'Cedula', 'siglas' => 'CED'],
+            ['numero' => 2, 'descripcion' => 'RUC', 'siglas' => 'RUC'],
+            ['numero' => 3, 'descripcion' => 'Pasaporte', 'siglas' => 'PAS'],
+            ['numero' => 4, 'descripcion' => 'Otro', 'siglas' => 'OTR'],
+        ]);
+
+        return view('shop.account.profile', ['user' => Auth::user(), 'documentTypes' => $documentTypes]);
     }
 
     public function updateProfile(Request $request)
@@ -68,13 +76,15 @@ class CustomerAccountController extends Controller
         }
         /** @var User $user */
 
+        $documentTypeSiglas = $this->obtenerSiglasCatalogo('cliente_tipo_documento', ['CED', 'RUC', 'PAS', 'OTR']);
+
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:100',
             'postal_code' => 'nullable|string|max:20',
-            'document_type' => 'nullable|in:CEDULA,RUC,PASAPORTE',
+            'document_type' => ['nullable', Rule::in($documentTypeSiglas)],
             'document_number' => 'nullable|string|max:20',
         ]);
 
@@ -82,4 +92,19 @@ class CustomerAccountController extends Controller
 
         return back()->with('success', 'Perfil actualizado correctamente');
     }
+
+    private function obtenerCatalogo(string $tipo, array $fallback)
+    {
+        $catalogo = Diccionario::porTipo($tipo)->orderBy('numero')->get();
+
+        return $catalogo->isNotEmpty() ? $catalogo : collect($fallback);
+    }
+
+    private function obtenerSiglasCatalogo(string $tipo, array $fallback): array
+    {
+        $siglas = Diccionario::porTipo($tipo)->orderBy('numero')->pluck('siglas')->all();
+
+        return !empty($siglas) ? $siglas : $fallback;
+    }
 }
+

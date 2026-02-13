@@ -1,5 +1,9 @@
 @extends('layouts.shop')
 
+@push('styles')
+    @vite(['resources/css/shop/account.css'])
+@endpush
+
 @section('content')
     <div class="breadcrumb">
         <a href="{{ route('shop.home') }}">Inicio</a>
@@ -9,9 +13,9 @@
         <span>Mi Perfil</span>
     </div>
 
-    <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 30px;">Mi Perfil</h1>
+    <h1 class="account-title">Mi Perfil</h1>
 
-    <div style="display: grid; grid-template-columns: 250px 1fr; gap: 30px;">
+    <div class="account-layout">
         <!-- Sidebar -->
         @include('shop.account._sidebar')
 
@@ -24,7 +28,7 @@
                         @csrf
                         @method('PUT')
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="account-profile-grid">
                             <div class="form-group mb-3">
                                 <label class="form-label">Nombre Completo</label>
                                 <input type="text" name="name" class="form-input form-control" value="{{ old('name', $user->name) }}" required>
@@ -35,8 +39,8 @@
 
                             <div class="form-group mb-3">
                                 <label class="form-label">Correo Electronico</label>
-                                <input type="email" class="form-input form-control" value="{{ $user->email }}" disabled style="background: #f9fafb;">
-                                <small style="color: #6b7280; font-size: 12px;">El correo no se puede cambiar</small>
+                                <input type="email" class="form-input form-control account-profile-input-disabled" value="{{ $user->email }}" disabled>
+                                <small class="account-profile-helper">El correo no se puede cambiar</small>
                             </div>
 
                             <div class="form-group mb-3">
@@ -51,25 +55,25 @@
                                 <label class="form-label">Tipo de Documento</label>
                                 <select name="document_type" class="form-input form-select">
                                     <option value="">Seleccionar...</option>
-                                    <option value="CEDULA" @selected(old('document_type', $user->document_type) === 'CEDULA')>Cédula</option>
-                                    <option value="RUC" @selected(old('document_type', $user->document_type) === 'RUC')>RUC</option>
-                                    <option value="PASAPORTE" @selected(old('document_type', $user->document_type) === 'PASAPORTE')>Pasaporte</option>
+                                    @foreach($documentTypes as $documentType)
+                                        <option value="{{ $documentType->siglas }}" @selected(old('document_type', $user->document_type) === $documentType->siglas)>{{ $documentType->descripcion }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
                             <div class="form-group mb-3">
                                 <label class="form-label">Número de Documento</label>
                                 <input type="text" name="document_number" class="form-input form-control" value="{{ old('document_number', $user->document_number) }}" placeholder="0102030405">
-                                <small style="color: #6b7280; font-size: 12px;">Cédula (10 dígitos) / RUC (13 dígitos)</small>
+                                <small class="account-profile-helper">Cédula (10 dígitos) / RUC (13 dígitos)</small>
                                 @error('document_number')
                                     <span class="form-error text-danger small">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
 
-                        <hr style="margin: 30px 0; border: none; border-top: 1px solid #e5e7eb;">
+                        <hr class="account-profile-divider">
 
-                        <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 20px;">Dirección de Envío</h3>
+                        <h3 class="account-profile-section-title">Dirección de Envío</h3>
 
                         <div class="form-group mb-3">
                             <label class="form-label">Dirección (Calle y número)</label>
@@ -79,7 +83,7 @@
                             @enderror
                         </div>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="account-profile-grid">
                             <div class="form-group mb-3">
                                 <label class="form-label">Cantón / Ciudad</label>
                                 <input type="text" name="city" class="form-input form-control" value="{{ old('city', $user->city) }}" placeholder="Guayaquil (Guayas)">
@@ -97,7 +101,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary" style="margin-top: 10px;">
+                        <button type="submit" class="btn btn-primary account-profile-submit">
                             Guardar Cambios
                         </button>
                     </form>
@@ -105,15 +109,5 @@
             </div>
         </div>
     </div>
-
-    <style>
-        @media (max-width: 768px) {
-            [style*="grid-template-columns: 250px 1fr"] {
-                grid-template-columns: 1fr !important;
-            }
-            [style*="grid-template-columns: 1fr 1fr"] {
-                grid-template-columns: 1fr !important;
-            }
-        }
-    </style>
 @endsection
+

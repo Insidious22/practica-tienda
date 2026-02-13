@@ -1,51 +1,55 @@
 @extends('layouts.app')
 
+@push('styles')
+    @vite(['resources/css/admin/suppliers.css'])
+@endpush
+
 @section('content')
 <div class="header">
     <h1 class="title">Proveedores</h1>
-    <a href="{{ route('admin.proveedores.create') }}" class="btn btn-primary" style="padding: 10px 20px; text-decoration: none;">
+    <a href="{{ route('admin.proveedores.create') }}" class="btn btn-primary">
         + Nuevo Proveedor
     </a>
 </div>
 
 @if (session('success'))
-    <div class="alert success" style="margin-bottom: 20px;">
+    <div class="alert success">
         <span>✓</span>
         <span>{{ session('success') }}</span>
     </div>
 @endif
 
 @if ($suppliers->count() > 0)
-    <table style="width: 100%; border-collapse: collapse;">
+    <table class="admin-table">
         <thead>
-            <tr style="background: #f9fafb; border-bottom: 2px solid #e5e7eb;">
-                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1f2937;">Código</th>
-                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1f2937;">Nombre</th>
-                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1f2937;">Contacto</th>
-                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1f2937;">Teléfono</th>
-                <th style="padding: 15px; text-align: left; font-weight: 600; color: #1f2937;">Estado</th>
-                <th style="padding: 15px; text-align: center; font-weight: 600; color: #1f2937;">Acciones</th>
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Contacto</th>
+                <th>Teléfono</th>
+                <th>Estado</th>
+                <th class="admin-table-actions">Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($suppliers as $supplier)
-                <tr style="border-bottom: 1px solid #e5e7eb;">
-                    <td style="padding: 15px; color: #1f2937; font-weight: 500;">{{ $supplier->code }}</td>
-                    <td style="padding: 15px; color: #1f2937;">{{ $supplier->business_name }}</td>
-                    <td style="padding: 15px; color: #6b7280;">{{ $supplier->contact_name ?? '-' }}</td>
-                    <td style="padding: 15px; color: #6b7280;">{{ $supplier->phone ?? '-' }}</td>
-                    <td style="padding: 15px;">
-                        <span style="background: {{ $supplier->status === 'active' ? '#d1fae5' : '#fee2e2' }}; color: {{ $supplier->status === 'active' ? '#065f46' : '#991b1b' }}; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">
+                <tr>
+                    <td>{{ $supplier->code }}</td>
+                    <td>{{ $supplier->business_name }}</td>
+                    <td class="admin-table-muted">{{ $supplier->contact_name ?? '-' }}</td>
+                    <td class="admin-table-muted">{{ $supplier->phone ?? '-' }}</td>
+                    <td>
+                        <span class="status-pill {{ $supplier->status === 'ACT' ? 'status-pill--success' : 'status-pill--danger' }}">
                             {{ ucfirst($supplier->status) }}
                         </span>
                     </td>
-                    <td style="padding: 15px; text-align: center;">
-                        <a href="{{ route('admin.proveedores.show', $supplier) }}" class="btn btn-sm" style="padding: 6px 12px; background: #e0e7ff; color: #4f46e5; text-decoration: none; border-radius: 6px; font-size: 12px; margin-right: 4px;">Ver</a>
-                        <a href="{{ route('admin.proveedores.edit', $supplier) }}" class="btn btn-sm" style="padding: 6px 12px; background: #fef3c7; color: #92400e; text-decoration: none; border-radius: 6px; font-size: 12px; margin-right: 4px;">Editar</a>
-                        <form action="{{ route('admin.proveedores.destroy', $supplier) }}" method="POST" style="display: inline;">
+                    <td class="admin-table-actions">
+                        <a href="{{ route('admin.proveedores.show', $supplier) }}" class="action-tag action-tag--info">Ver</a>
+                        <a href="{{ route('admin.proveedores.edit', $supplier) }}" class="action-tag action-tag--warn">Editar</a>
+                        <form action="{{ route('admin.proveedores.destroy', $supplier) }}" method="POST" class="admin-inline-form">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm" style="padding: 6px 12px; background: #fee2e2; color: #991b1b; border: none; border-radius: 6px; font-size: 12px; cursor: pointer;" onclick="return confirm('¿Seguro que deseas eliminar este proveedor?')">Eliminar</button>
+                            <button type="submit" class="action-tag action-tag--danger" onclick="return confirm('¿Seguro que deseas eliminar este proveedor?')">Eliminar</button>
                         </form>
                     </td>
                 </tr>
@@ -53,12 +57,14 @@
         </tbody>
     </table>
 
-    <div style="margin-top: 30px; display: flex; justify-content: center;">
+    <div class="admin-table-pagination">
         {{ $suppliers->links() }}
     </div>
 @else
-    <div style="background: white; padding: 60px 20px; border-radius: 12px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-        <p style="color: #6b7280; font-size: 16px;">No hay proveedores registrados.</p>
+    <div class="admin-empty-card">
+        <p class="admin-empty-text">No hay proveedores registrados.</p>
     </div>
 @endif
 @endsection
+
+

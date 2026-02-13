@@ -32,7 +32,7 @@ class CartController extends Controller
 
         $product = Product::findOrFail($request->product_id);
 
-        if ($product->status !== 'active') {
+        if ($product->status !== 'ACT') {
             return back()->with('error', 'Producto no disponible');
         }
 
@@ -106,3 +106,4 @@ class CartController extends Controller
         ]);
     }
 }
+

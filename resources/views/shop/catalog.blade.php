@@ -1,5 +1,9 @@
 @extends('layouts.shop')
 
+@push('styles')
+    @vite(['resources/css/shop/catalog.css'])
+@endpush
+
 @section('content')
     <div class="breadcrumb">
         <a href="{{ route('shop.home') }}">Inicio</a>
@@ -7,7 +11,7 @@
         <span>Catalogo</span>
     </div>
 
-    <div style="display: grid; grid-template-columns: 250px 1fr; gap: 30px;">
+    <div class="catalog-layout">
         <!-- Sidebar Filters -->
         <aside>
             <div class="card">
@@ -49,10 +53,10 @@
                             </select>
                         </div>
 
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Aplicar filtros</button>
+                        <button type="submit" class="btn btn-primary catalog-filter-btn">Aplicar filtros</button>
 
                         @if(request()->hasAny(['category', 'min_price', 'max_price', 'sort']))
-                            <a href="{{ route('shop.catalog') }}" class="btn btn-secondary" style="width: 100%; margin-top: 10px;">Limpiar filtros</a>
+                            <a href="{{ route('shop.catalog') }}" class="btn btn-secondary catalog-clear-btn">Limpiar filtros</a>
                         @endif
                     </form>
                 </div>
@@ -61,9 +65,9 @@
 
         <!-- Products -->
         <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h1 style="font-size: 24px; font-weight: 700;">Catalogo</h1>
-                <span style="color: #6b7280;">{{ $products->total() }} productos encontrados</span>
+            <div class="catalog-header">
+                <h1 class="catalog-title">Catalogo</h1>
+                <span class="catalog-count">{{ $products->total() }} productos encontrados</span>
             </div>
 
             @if($products->count() > 0)
@@ -78,23 +82,15 @@
                 </div>
             @else
                 <div class="card">
-                    <div class="card-body text-center" style="padding: 60px;">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 64px; height: 64px; opacity: 0.3; margin: 0 auto 20px;">
+                    <div class="card-body text-center catalog-empty-body">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="empty-icon">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                         </svg>
-                        <p style="color: #6b7280; font-size: 16px;">No se encontraron productos con los filtros seleccionados.</p>
-                        <a href="{{ route('shop.catalog') }}" class="btn btn-primary" style="margin-top: 20px;">Ver todos los productos</a>
+                        <p class="catalog-empty-text">No se encontraron productos con los filtros seleccionados.</p>
+                        <a href="{{ route('shop.catalog') }}" class="btn btn-primary catalog-empty-btn">Ver todos los productos</a>
                     </div>
                 </div>
             @endif
         </div>
     </div>
-
-    <style>
-        @media (max-width: 768px) {
-            [style*="grid-template-columns: 250px 1fr"] {
-                grid-template-columns: 1fr !important;
-            }
-        }
-    </style>
 @endsection

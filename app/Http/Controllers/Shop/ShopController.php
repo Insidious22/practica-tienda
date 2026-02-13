@@ -11,7 +11,7 @@ class ShopController extends Controller
 {
     public function home()
     {
-        $featuredProducts = Product::where('status', 'active')
+        $featuredProducts = Product::where('status', 'ACT')
             ->whereNotNull('price')
             ->where('price', '>', 0)
             ->with('category')
@@ -20,7 +20,7 @@ class ShopController extends Controller
             ->get();
 
         $categories = Category::withCount(['products' => function ($query) {
-            $query->where('status', 'active');
+            $query->where('status', 'ACT');
         }])->get();
 
         return view('shop.home', compact('featuredProducts', 'categories'));
@@ -28,7 +28,7 @@ class ShopController extends Controller
 
     public function catalog(Request $request)
     {
-        $query = Product::where('status', 'active')
+        $query = Product::where('status', 'ACT')
             ->whereNotNull('price')
             ->where('price', '>', 0)
             ->with('category');
@@ -70,7 +70,7 @@ class ShopController extends Controller
     public function category(Category $category)
     {
         $products = Product::where('category_id', $category->id)
-            ->where('status', 'active')
+            ->where('status', 'ACT')
             ->whereNotNull('price')
             ->where('price', '>', 0)
             ->with('category')
@@ -81,13 +81,13 @@ class ShopController extends Controller
 
     public function product(Product $product)
     {
-        if ($product->status !== 'active') {
+        if ($product->status !== 'ACT') {
             abort(404);
         }
 
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
-            ->where('status', 'active')
+            ->where('status', 'ACT')
             ->limit(4)
             ->get();
 
@@ -98,7 +98,7 @@ class ShopController extends Controller
     {
         $query = $request->get('q', '');
 
-        $products = Product::where('status', 'active')
+        $products = Product::where('status', 'ACT')
             ->whereNotNull('price')
             ->where('price', '>', 0)
             ->where(function ($q) use ($query) {
@@ -114,3 +114,4 @@ class ShopController extends Controller
         return view('shop.search', compact('products', 'query'));
     }
 }
+

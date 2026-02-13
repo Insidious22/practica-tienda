@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Diccionario;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SupplierController extends Controller
 {
@@ -16,11 +18,18 @@ class SupplierController extends Controller
 
     public function create()
     {
-        return view('admin.suppliers.create');
+        $statusOptions = $this->obtenerCatalogo('proveedor_estado', [
+            ['numero' => 1, 'descripcion' => 'Activo', 'siglas' => 'ACT'],
+            ['numero' => 2, 'descripcion' => 'Inactivo', 'siglas' => 'INA'],
+        ]);
+
+        return view('admin.suppliers.create', compact('statusOptions'));
     }
 
     public function store(Request $request)
     {
+        $statusSiglas = $this->obtenerSiglasCatalogo('proveedor_estado', ['ACT', 'INA']);
+
         $data = $request->validate([
             'code' => 'required|string|max:32|unique:suppliers,code',
             'business_name' => 'required|string|max:255',
@@ -33,7 +42,7 @@ class SupplierController extends Controller
             'tax_id' => 'nullable|string|max:32',
             'payment_terms' => 'nullable|string|max:128',
             'notes' => 'nullable|string',
-            'status' => 'required|in:active,inactive',
+            'status' => ['required', Rule::in($statusSiglas)],
         ]);
 
         Supplier::create($data);
@@ -50,11 +59,18 @@ class SupplierController extends Controller
 
     public function edit(Supplier $supplier)
     {
-        return view('admin.suppliers.edit', compact('supplier'));
+        $statusOptions = $this->obtenerCatalogo('proveedor_estado', [
+            ['numero' => 1, 'descripcion' => 'Activo', 'siglas' => 'ACT'],
+            ['numero' => 2, 'descripcion' => 'Inactivo', 'siglas' => 'INA'],
+        ]);
+
+        return view('admin.suppliers.edit', compact('supplier', 'statusOptions'));
     }
 
     public function update(Request $request, Supplier $supplier)
     {
+        $statusSiglas = $this->obtenerSiglasCatalogo('proveedor_estado', ['ACT', 'INA']);
+
         $data = $request->validate([
             'code' => 'required|string|max:32|unique:suppliers,code,' . $supplier->id,
             'business_name' => 'required|string|max:255',
@@ -67,7 +83,7 @@ class SupplierController extends Controller
             'tax_id' => 'nullable|string|max:32',
             'payment_terms' => 'nullable|string|max:128',
             'notes' => 'nullable|string',
-            'status' => 'required|in:active,inactive',
+            'status' => ['required', Rule::in($statusSiglas)],
         ]);
 
         $supplier->update($data);
@@ -86,5 +102,19 @@ class SupplierController extends Controller
 
         return redirect()->route('admin.proveedores.index')
             ->with('success', 'Proveedor eliminado correctamente.');
+    }
+
+    private function obtenerCatalogo(string $tipo, array $fallback)
+    {
+        $catalogo = Diccionario::porTipo($tipo)->orderBy('numero')->get();
+
+        return $catalogo->isNotEmpty() ? $catalogo : collect($fallback);
+    }
+
+    private function obtenerSiglasCatalogo(string $tipo, array $fallback): array
+    {
+        $siglas = Diccionario::porTipo($tipo)->orderBy('numero')->pluck('siglas')->all();
+
+        return !empty($siglas) ? $siglas : $fallback;
     }
 }

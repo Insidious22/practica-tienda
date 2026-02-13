@@ -1,11 +1,15 @@
 @extends('layouts.app')
 
+@push('styles')
+    @vite(['resources/css/admin/zones.css'])
+@endpush
+
 @section('content')
 <div class="header">
     <h1 class="title">📍 Gestión de Zonas</h1>
     <div class="header-actions">
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Buscar zonas..." style="padding-left: 36px;">
+            <input type="text" id="searchInput" placeholder="Buscar zonas..." class="zone-search-input">
         </div>
         <a class="btn btn-primary" href="{{ route('admin.zonas.create') }}">➕ Nueva Zona</a>
     </div>
@@ -18,31 +22,31 @@
         <a class="btn btn-primary" href="{{ route('admin.zonas.create') }}">Crear primera zona</a>
     </div>
 @else
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+    <div class="zone-grid">
         @foreach ($zones as $zone)
-            <div style="background: white; border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: all 0.3s ease;" onmouseenter="this.style.boxShadow='0 8px 16px rgba(0,0,0,0.12)'" onmouseleave="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.06)'">
-                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 16px; color: white;">
-                    <h3 style="margin: 0; font-size: 20px;">{{ $zone->name }}</h3>
-                    <span class="muted" style="color: rgba(255,255,255,0.8); font-size: 12px;">Código: <strong>{{ $zone->code }}</strong></span>
+            <div class="zone-card">
+                <div class="zone-card-header">
+                    <h3 class="zone-card-title">{{ $zone->name }}</h3>
+                    <span class="muted zone-card-code">Código: <strong>{{ $zone->code }}</strong></span>
                 </div>
-                <div style="padding: 16px;">
+                <div class="zone-card-body">
                     @if($zone->description)
-                        <div style="margin-bottom: 12px;">
+                        <div class="zone-card-desc-wrap">
                             <span class="muted">Descripción:</span>
-                            <div style="color: #6b7280; margin-top: 4px; font-size: 13px;">{{ Str::limit($zone->description, 70) }}</div>
+                            <div class="zone-card-desc">{{ Str::limit($zone->description, 70) }}</div>
                         </div>
                     @endif
-                    <div style="padding-top: 12px; border-top: 1px solid #e5e7eb;">
-                        <div class="muted" style="font-size: 12px; margin-bottom: 12px;">
+                    <div class="zone-card-footer">
+                        <div class="muted zone-card-meta">
                             📦 {{ $zone->categories->count() }} categorías
                         </div>
-                        <div style="display: flex; gap: 8px;">
-                            <a class="btn btn-secondary" href="{{ route('admin.zonas.show', $zone) }}" style="flex: 1; text-align: center; gap: 4px;">👁️</a>
-                            <a class="btn btn-secondary" href="{{ route('admin.zonas.edit', $zone) }}" style="flex: 1; text-align: center; gap: 4px;">✏️</a>
-                            <form action="{{ route('admin.zonas.destroy', $zone) }}" method="POST" style="flex: 1;">
+                        <div class="zone-card-actions">
+                            <a class="btn btn-secondary zone-card-action" href="{{ route('admin.zonas.show', $zone) }}">👁️</a>
+                            <a class="btn btn-secondary zone-card-action" href="{{ route('admin.zonas.edit', $zone) }}">✏️</a>
+                            <form action="{{ route('admin.zonas.destroy', $zone) }}" method="POST" class="zone-card-action">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-danger" type="submit" style="width: 100%;" onclick="return confirm('¿Eliminar esta zona?')">🗑️</button>
+                                <button class="btn btn-danger zone-card-action-button" type="submit" onclick="return confirm('¿Eliminar esta zona?')">🗑️</button>
                             </form>
                         </div>
                     </div>
@@ -52,7 +56,7 @@
     </div>
 
     @if($zones->hasPages())
-        <div style="margin-top: 30px;">
+        <div class="zone-pagination">
             {{ $zones->links() }}
         </div>
     @endif
@@ -61,7 +65,7 @@
 <script>
     document.getElementById('searchInput')?.addEventListener('keyup', function() {
         const searchTerm = this.value.toLowerCase();
-        document.querySelectorAll('[style*="background: white"]').forEach(card => {
+        document.querySelectorAll('.zone-card').forEach(card => {
             const text = card.textContent.toLowerCase();
             card.style.display = text.includes(searchTerm) ? '' : 'none';
         });

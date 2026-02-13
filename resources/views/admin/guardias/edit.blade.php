@@ -27,9 +27,9 @@
             <div class="form-group">
                 <label for="tipo_documento">Tipo de documento</label>
                 <select id="tipo_documento" name="tipo_documento" required>
-                    <option value="cedula" @selected(old('tipo_documento', $guardia->tipo_documento) === 'cedula')>Cedula</option>
-                    <option value="pasaporte" @selected(old('tipo_documento', $guardia->tipo_documento) === 'pasaporte')>Pasaporte</option>
-                    <option value="otro" @selected(old('tipo_documento', $guardia->tipo_documento) === 'otro')>Otro</option>
+                    @foreach ($tiposDocumento as $tipo)
+                        <option value="{{ $tipo->siglas }}" @selected(old('tipo_documento', $guardia->tipo_documento) === $tipo->siglas)>{{ $tipo->descripcion }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="form-group">
@@ -42,9 +42,9 @@
             <div class="form-group">
                 <label for="turno">Turno</label>
                 <select id="turno" name="turno" required>
-                    <option value="Manana" @selected(old('turno', $guardia->turno) === 'Manana')>Manana</option>
-                    <option value="Tarde" @selected(old('turno', $guardia->turno) === 'Tarde')>Tarde</option>
-                    <option value="Noche" @selected(old('turno', $guardia->turno) === 'Noche')>Noche</option>
+                    @foreach ($turnos as $turno)
+                        <option value="{{ $turno->siglas }}" @selected(old('turno', $guardia->turno) === $turno->siglas)>{{ $turno->descripcion }}</option>
+                    @endforeach
                 </select>
             </div>
         </div>

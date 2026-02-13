@@ -1,124 +1,121 @@
 @extends('layouts.app')
 
+@push('styles')
+    @vite(['resources/css/admin/suppliers.css'])
+@endpush
+
 @section('content')
 <div class="header">
     <h1 class="title">{{ $supplier->business_name }}</h1>
-    <div style="display: flex; gap: 12px;">
-        <a href="{{ route('admin.proveedores.edit', $supplier) }}" class="btn btn-primary" style="padding: 10px 20px; text-decoration: none;">Editar</a>
-        <a href="{{ route('admin.proveedores.index') }}" class="btn btn-outline" style="padding: 10px 20px; text-decoration: none;">Volver</a>
+    <div class="page-actions">
+        <a href="{{ route('admin.proveedores.edit', $supplier) }}" class="btn btn-primary">Editar</a>
+        <a href="{{ route('admin.proveedores.index') }}" class="btn btn-outline">Volver</a>
     </div>
 </div>
 
-<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-        <h3 style="margin-bottom: 20px; color: #1f2937;">Información General</h3>
-        <p style="margin-bottom: 15px;">
-            <strong style="color: #1f2937;">Código:</strong><br>
+<div class="details-grid">
+    <div class="details-card">
+        <h3 class="details-title">Información General</h3>
+        <p class="detail-item">
+            <strong class="detail-label">Código:</strong><br>
             {{ $supplier->code }}
         </p>
-        <p style="margin-bottom: 15px;">
-            <strong style="color: #1f2937;">Razon Social:</strong><br>
+        <p class="detail-item">
+            <strong class="detail-label">Razon Social:</strong><br>
             {{ $supplier->business_name }}
         </p>
         @if($supplier->trade_name)
-        <p style="margin-bottom: 15px;">
-            <strong style="color: #1f2937;">Nombre Comercial:</strong><br>
+        <p class="detail-item">
+            <strong class="detail-label">Nombre Comercial:</strong><br>
             {{ $supplier->trade_name }}
         </p>
         @endif
-        <p style="margin-bottom: 15px;">
-            <strong style="color: #1f2937;">Contacto:</strong><br>
+        <p class="detail-item">
+            <strong class="detail-label">Contacto:</strong><br>
             {{ $supplier->contact_name ?? '-' }}
         </p>
-        <p style="margin-bottom: 15px;">
-            <strong style="color: #1f2937;">Email:</strong><br>
+        <p class="detail-item">
+            <strong class="detail-label">Email:</strong><br>
             {{ $supplier->email ?? '-' }}
         </p>
         <p>
-            <strong style="color: #1f2937;">Teléfono:</strong><br>
+            <strong class="detail-label">Teléfono:</strong><br>
             {{ $supplier->phone ?? '-' }}
         </p>
     </div>
 
-    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-        <h3 style="margin-bottom: 20px; color: #1f2937;">Información de Contacto</h3>
-        <p style="margin-bottom: 15px;">
-            <strong style="color: #1f2937;">Dirección:</strong><br>
+    <div class="details-card">
+        <h3 class="details-title">Información de Contacto</h3>
+        <p class="detail-item">
+            <strong class="detail-label">Dirección:</strong><br>
             {{ $supplier->address ?? '-' }}
         </p>
-        <p style="margin-bottom: 15px;">
-            <strong style="color: #1f2937;">Ciudad:</strong><br>
+        <p class="detail-item">
+            <strong class="detail-label">Ciudad:</strong><br>
             {{ $supplier->city ?? '-' }}
         </p>
-        <p style="margin-bottom: 15px;">
-            <strong style="color: #1f2937;">Condiciones de Pago:</strong><br>
+        <p class="detail-item">
+            <strong class="detail-label">Condiciones de Pago:</strong><br>
             {{ $supplier->payment_terms ?? '-' }}
         </p>
         <p>
-            <strong style="color: #1f2937;">Estado:</strong><br>
-            <span style="background: {{ $supplier->status === 'active' ? '#d1fae5' : '#fee2e2' }}; color: {{ $supplier->status === 'active' ? '#065f46' : '#991b1b' }}; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">
+            <strong class="detail-label">Estado:</strong><br>
+            <span class="status-pill {{ $supplier->status === 'ACT' ? 'status-pill--success' : 'status-pill--danger' }}">
                 {{ ucfirst($supplier->status) }}
             </span>
         </p>
     </div>
 
-    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-        <h3 style="margin-bottom: 20px; color: #1f2937;">Información Fiscal</h3>
-        <p style="margin-bottom: 15px;">
-            <strong style="color: #1f2937;">RUC/NIT:</strong><br>
+    <div class="details-card">
+        <h3 class="details-title">Información Fiscal</h3>
+        <p class="detail-item">
+            <strong class="detail-label">RUC/NIT:</strong><br>
             {{ $supplier->tax_id ?? '-' }}
         </p>
         <p>
-            <strong style="color: #1f2937;">Notas:</strong><br>
+            <strong class="detail-label">Notas:</strong><br>
             {{ $supplier->notes ?? '-' }}
         </p>
     </div>
 
-    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-        <h3 style="margin-bottom: 20px; color: #1f2937;">Estadísticas</h3>
-        <p style="margin-bottom: 15px;">
-            <strong style="color: #1f2937; font-size: 18px;">{{ $supplier->purchaseOrders->count() }}</strong><br>
-            <span style="color: #6b7280; font-size: 12px;">Órdenes de Compra</span>
+    <div class="details-card">
+        <h3 class="details-title">Estadísticas</h3>
+        <p class="detail-item">
+            <strong class="details-stat-value">{{ $supplier->purchaseOrders->count() }}</strong><br>
+            <span class="details-stat-text">Órdenes de Compra</span>
         </p>
         <p>
-            <strong style="color: #1f2937; font-size: 18px;">{{ $supplier->products->count() }}</strong><br>
-            <span style="color: #6b7280; font-size: 12px;">Productos Asociados</span>
+            <strong class="details-stat-value">{{ $supplier->products->count() }}</strong><br>
+            <span class="details-stat-text">Productos Asociados</span>
         </p>
     </div>
 </div>
 
 @if ($supplier->purchaseOrders->count() > 0)
-    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-top: 20px;">
-        <h3 style="margin-bottom: 20px; color: #1f2937;">Últimas Órdenes de Compra</h3>
-        <table style="width: 100%; border-collapse: collapse;">
+    <div class="details-card section-card">
+        <h3 class="details-title">Últimas Órdenes de Compra</h3>
+        <table class="admin-table admin-table--compact">
             <thead>
-                <tr style="background: #f9fafb; border-bottom: 2px solid #e5e7eb;">
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Número</th>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Fecha</th>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Total</th>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Estado</th>
+                <tr>
+                    <th>Número</th>
+                    <th>Fecha</th>
+                    <th>Total</th>
+                    <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($supplier->purchaseOrders->take(5) as $order)
-                    <tr style="border-bottom: 1px solid #e5e7eb;">
-                        <td style="padding: 12px;">{{ $order->order_number }}</td>
-                        <td style="padding: 12px;">{{ $order->created_at->format('d/m/Y') }}</td>
-                        <td style="padding: 12px;">{{ number_format($order->total, 2) }}</td>
-                        <td style="padding: 12px;">
-                            <span style="background: 
-                                @if($order->status === 'received') #d1fae5
-                                @elseif($order->status === 'pending' || $order->status === 'draft') #fef3c7
-                                @elseif($order->status === 'cancelled') #fee2e2
-                                @else #e5e7eb
-                                @endif;
-                                color: 
-                                @if($order->status === 'received') #065f46
-                                @elseif($order->status === 'pending' || $order->status === 'draft') #92400e
-                                @elseif($order->status === 'cancelled') #991b1b
-                                @else #374151
-                                @endif;
-                                padding: 4px 8px; border-radius: 4px; font-size: 12px;">
+                    <tr>
+                        <td>{{ $order->order_number }}</td>
+                        <td>{{ $order->created_at->format('d/m/Y') }}</td>
+                        <td>{{ number_format($order->total, 2) }}</td>
+                        <td>
+                            <span class="status-pill
+                                @if($order->status === 'received') status-pill--success
+                                @elseif($order->status === 'pending' || $order->status === 'draft') status-pill--warning
+                                @elseif($order->status === 'cancelled') status-pill--danger
+                                @else status-pill--neutral
+                                @endif">
                                 {{ ucfirst($order->status) }}
                             </span>
                         </td>
@@ -129,3 +126,5 @@
     </div>
 @endif
 @endsection
+
+

@@ -1,0 +1,237 @@
+@import './forms.css';
+@import './tables.css';
+
+.zone-search-input {
+    padding-left: 36px;
+}
+
+.zone-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.zone-card {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+}
+
+.zone-card:hover {
+    box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+}
+
+.zone-card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 16px;
+    color: white;
+}
+
+.zone-card-title {
+    margin: 0;
+    font-size: 20px;
+}
+
+.zone-card-code {
+    color: rgba(255,255,255,0.8);
+    font-size: 12px;
+}
+
+.zone-card-body {
+    padding: 16px;
+}
+
+.zone-card-desc {
+    margin-top: 4px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.zone-card-desc-wrap {
+    margin-bottom: 12px;
+}
+
+.zone-card-footer {
+    padding-top: 12px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.zone-card-meta {
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.zone-card-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.zone-card-action {
+    flex: 1;
+    text-align: center;
+    gap: 4px;
+}
+
+.zone-card-action-button {
+    width: 100%;
+}
+
+.zone-pagination {
+    margin-top: 30px;
+}
+
+.zone-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 24px;
+    color: white;
+    margin-bottom: 30px;
+}
+
+.zone-hero-title {
+    margin: 0 0 8px 0;
+    font-size: 28px;
+}
+
+.zone-hero-text {
+    margin: 0;
+    opacity: 0.9;
+}
+
+.zone-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.zone-info-card {
+    background: #f9fafb;
+    border-radius: 10px;
+    padding: 16px;
+    border-left: 4px solid #667eea;
+}
+
+.zone-info-card--success {
+    border-left-color: #10b981;
+}
+
+.zone-info-title {
+    margin: 0 0 12px 0;
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.zone-info-item {
+    margin-bottom: 12px;
+}
+
+.zone-info-value {
+    font-weight: 600;
+    color: #1f2937;
+    margin-top: 4px;
+}
+
+.zone-info-stat {
+    font-size: 28px;
+    font-weight: 700;
+    color: #10b981;
+}
+
+.zone-info-stat--primary {
+    font-size: 24px;
+    color: #667eea;
+}
+
+.zone-categories {
+    margin-bottom: 30px;
+}
+
+.zone-categories-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #1f2937;
+}
+
+.zone-categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.zone-category-card {
+    background: white;
+    border-radius: 10px;
+    padding: 14px;
+    border: 1px solid #e5e7eb;
+}
+
+.zone-category-title {
+    margin: 0 0 8px 0;
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.zone-category-code {
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.zone-category-count {
+    font-size: 13px;
+}
+
+.zone-category-link {
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+    padding: 8px 12px;
+    font-size: 12px;
+}
+
+.zone-empty {
+    padding: 40px 20px;
+}
+
+.zone-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.zone-action {
+    gap: 6px;
+}
+
+.zone-action-form {
+    display: inline;
+}
+
+.zone-form-card {
+    background: #f9fafb;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.zone-required {
+    color: #ef4444;
+}
+
+.zone-error {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.zone-form-actions {
+    gap: 8px;
+}
+
+.zone-action-btn {
+    gap: 8px;
+}

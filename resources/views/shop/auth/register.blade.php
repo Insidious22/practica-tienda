@@ -1,9 +1,13 @@
 @extends('layouts.shop')
 
+@push('styles')
+    @vite(['resources/css/shop/auth.css'])
+@endpush
+
 @section('content')
-    <div style="max-width: 500px; margin: 40px auto;">
+    <div class="auth-wrap">
         <div class="card">
-            <div class="card-header" style="text-align: center; font-size: 20px;">
+            <div class="card-header auth-card-title">
                 Crear Cuenta
             </div>
             <div class="card-body">
@@ -37,7 +41,7 @@
                     <div class="form-group mb-3">
                         <label class="form-label">Contraseña</label>
                         <input type="password" name="password" class="form-input form-control" required>
-                        <small style="color: #6b7280; font-size: 12px;">Minimo 8 caracteres</small>
+                        <small class="auth-helper">Minimo 8 caracteres</small>
                         @error('password')
                             <span class="form-error text-danger small">{{ $message }}</span>
                         @enderror
@@ -48,15 +52,15 @@
                         <input type="password" name="password_confirmation" class="form-input form-control" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px;">
+                    <button type="submit" class="btn btn-primary auth-submit">
                         Crear Cuenta
                     </button>
                 </form>
 
-                <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-                    <p style="color: #6b7280;">
+                <div class="auth-footer">
+                    <p class="auth-footer-text">
                         ¿Ya tienes una cuenta?
-                        <a href="{{ route('shop.login') }}" style="color: #667eea; text-decoration: none; font-weight: 500;">Iniciar sesion</a>
+                        <a href="{{ route('shop.login') }}" class="auth-link">Iniciar sesion</a>
                     </p>
                 </div>
             </div>

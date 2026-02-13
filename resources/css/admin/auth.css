@@ -1,0 +1,22 @@
+@import './forms.css';
+
+.auth-wrapper {
+    max-width: 500px;
+    margin: 100px auto;
+}
+
+.auth-header {
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.auth-title {
+    text-align: center;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #6b7280;
+    font-size: 13px;
+}

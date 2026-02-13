@@ -42,7 +42,7 @@ class InventorySeeder extends Seeder
                 'description' => 'Naranja fresca por kilo',
                 'price' => 0.95,
                 'stock_quantity' => 120.500,
-                'unit' => 'kg',
+                'unit' => 'KGM',
             ]
         );
 
@@ -55,8 +55,9 @@ class InventorySeeder extends Seeder
                 'description' => 'Leche pasteurizada envasada',
                 'price' => 1.25,
                 'stock_quantity' => 50,
-                'unit' => 'unidad',
+                'unit' => 'UNI',
             ]
         );
     }
 }
+

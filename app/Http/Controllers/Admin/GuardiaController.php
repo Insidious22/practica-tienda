@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exceptions\GuardiaYaExisteException;
 use App\Http\Controllers\Controller;
+use App\Models\Diccionario;
 use App\Models\Guardia;
 use App\Models\InventarioItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class GuardiaController extends Controller
 {
@@ -20,20 +22,35 @@ class GuardiaController extends Controller
     public function create()
     {
         $inventarioItems = InventarioItem::where('cantidad', '>', 0)->orderBy('nombre')->get();
-        return view('admin.guardias.create', compact('inventarioItems'));
+        $tiposDocumento = $this->obtenerCatalogo('guardia_tipo_documento', [
+            ['numero' => 1, 'descripcion' => 'Cedula', 'siglas' => 'CED'],
+            ['numero' => 2, 'descripcion' => 'RUC', 'siglas' => 'RUC'],
+            ['numero' => 3, 'descripcion' => 'Pasaporte', 'siglas' => 'PAS'],
+            ['numero' => 4, 'descripcion' => 'Otro', 'siglas' => 'OTR'],
+        ]);
+        $turnos = $this->obtenerCatalogo('guardia_turno', [
+            ['numero' => 1, 'descripcion' => 'Manana', 'siglas' => 'MAN'],
+            ['numero' => 2, 'descripcion' => 'Tarde', 'siglas' => 'TAR'],
+            ['numero' => 3, 'descripcion' => 'Noche', 'siglas' => 'NOC'],
+        ]);
+
+        return view('admin.guardias.create', compact('inventarioItems', 'tiposDocumento', 'turnos'));
     }
 
     public function store(Request $request)
     {
+        $tipoDocumentoSiglas = $this->obtenerSiglasCatalogo('guardia_tipo_documento', ['CED', 'RUC', 'PAS', 'OTR']);
+        $turnoSiglas = $this->obtenerSiglasCatalogo('guardia_turno', ['MAN', 'TAR', 'NOC']);
+
         $rules = [
             'nombre' => 'required|string|max:100',
             'apellido' => 'required|string|max:100',
-            'tipo_documento' => 'required|string|max:20',
-            'turno' => 'required|string|max:20',
+            'tipo_documento' => ['required', 'string', 'max:20', Rule::in($tipoDocumentoSiglas)],
+            'turno' => ['required', 'string', 'max:20', Rule::in($turnoSiglas)],
             'items' => 'required|array|min:1',
         ];
 
-        if ($request->tipo_documento === 'cedula') {
+        if ($request->tipo_documento === 'CED') {
             $rules['cedula'] = 'required|numeric|max_digits:10|min_digits:8';
         } else {
             $rules['cedula'] = 'required|alpha_num|max:30';
@@ -45,7 +62,9 @@ class GuardiaController extends Controller
 
         if ($guardiaExistente) {
             if ($guardiaExistente->activo) {
-                throw new GuardiaYaExisteException($request->cedula);
+                throw ValidationException::withMessages([
+                    'cedula' => 'El guardia con cedula ' . $request->cedula . ' ya se encuentra registrado en el sistema.',
+                ]);
             }
 
             return redirect()->back()
@@ -95,11 +114,34 @@ class GuardiaController extends Controller
     public function edit(string $id)
     {
         $guardia = Guardia::findOrFail($id);
-        return view('admin.guardias.edit', compact('guardia'));
+        $tiposDocumento = $this->obtenerCatalogo('guardia_tipo_documento', [
+            ['numero' => 1, 'descripcion' => 'Cedula', 'siglas' => 'CED'],
+            ['numero' => 2, 'descripcion' => 'RUC', 'siglas' => 'RUC'],
+            ['numero' => 3, 'descripcion' => 'Pasaporte', 'siglas' => 'PAS'],
+            ['numero' => 4, 'descripcion' => 'Otro', 'siglas' => 'OTR'],
+        ]);
+        $turnos = $this->obtenerCatalogo('guardia_turno', [
+            ['numero' => 1, 'descripcion' => 'Manana', 'siglas' => 'MAN'],
+            ['numero' => 2, 'descripcion' => 'Tarde', 'siglas' => 'TAR'],
+            ['numero' => 3, 'descripcion' => 'Noche', 'siglas' => 'NOC'],
+        ]);
+
+        return view('admin.guardias.edit', compact('guardia', 'tiposDocumento', 'turnos'));
     }
 
     public function update(Request $request, string $id)
     {
+        $tipoDocumentoSiglas = $this->obtenerSiglasCatalogo('guardia_tipo_documento', ['CED', 'RUC', 'PAS', 'OTR']);
+        $turnoSiglas = $this->obtenerSiglasCatalogo('guardia_turno', ['MAN', 'TAR', 'NOC']);
+
+        $request->validate([
+            'nombre' => 'required|string|max:100',
+            'apellido' => 'required|string|max:100',
+            'tipo_documento' => ['required', 'string', 'max:20', Rule::in($tipoDocumentoSiglas)],
+            'turno' => ['required', 'string', 'max:20', Rule::in($turnoSiglas)],
+            'cedula' => 'required|string|max:30',
+        ]);
+
         $guardia = Guardia::findOrFail($id);
         $guardia->update($request->only(['nombre', 'apellido', 'cedula', 'tipo_documento', 'turno']));
 
@@ -177,5 +219,19 @@ class GuardiaController extends Controller
 
         return redirect()->route('admin.guardias.create')
             ->with('success', 'El guardia ' . $guardia->nombre . ' ' . $guardia->apellido . ' ha sido reactivado exitosamente.');
+    }
+
+    private function obtenerCatalogo(string $tipo, array $fallback)
+    {
+        $catalogo = Diccionario::porTipo($tipo)->orderBy('numero')->get();
+
+        return $catalogo->isNotEmpty() ? $catalogo : collect($fallback);
+    }
+
+    private function obtenerSiglasCatalogo(string $tipo, array $fallback): array
+    {
+        $siglas = Diccionario::porTipo($tipo)->orderBy('numero')->pluck('siglas')->all();
+
+        return !empty($siglas) ? $siglas : $fallback;
     }
 }

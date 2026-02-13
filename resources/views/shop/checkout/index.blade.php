@@ -1,5 +1,9 @@
 @extends('layouts.shop')
 
+@push('styles')
+    @vite(['resources/css/shop/checkout.css'])
+@endpush
+
 @section('content')
     <div class="breadcrumb">
         <a href="{{ route('shop.home') }}">Inicio</a>
@@ -9,27 +13,27 @@
         <span>Checkout</span>
     </div>
 
-    <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 30px;">Checkout</h1>
+    <h1 class="checkout-title">Checkout</h1>
 
     <!-- Progress Steps -->
-    <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 40px;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="width: 32px; height: 32px; background: #667eea; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600;">1</div>
-            <span style="font-weight: 600; color: #667eea;">Envio</span>
+    <div class="checkout-steps">
+        <div class="checkout-step">
+            <div class="checkout-step-number checkout-step-number--active">1</div>
+            <span class="checkout-step-label checkout-step-label--active">Envio</span>
         </div>
-        <div style="width: 60px; height: 2px; background: #e5e7eb; align-self: center;"></div>
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="width: 32px; height: 32px; background: #e5e7eb; color: #6b7280; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600;">2</div>
-            <span style="color: #6b7280;">Pago</span>
+        <div class="checkout-step-divider"></div>
+        <div class="checkout-step">
+            <div class="checkout-step-number checkout-step-number--idle">2</div>
+            <span class="checkout-step-label">Pago</span>
         </div>
-        <div style="width: 60px; height: 2px; background: #e5e7eb; align-self: center;"></div>
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="width: 32px; height: 32px; background: #e5e7eb; color: #6b7280; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600;">3</div>
-            <span style="color: #6b7280;">Confirmacion</span>
+        <div class="checkout-step-divider"></div>
+        <div class="checkout-step">
+            <div class="checkout-step-number checkout-step-number--idle">3</div>
+            <span class="checkout-step-label">Confirmacion</span>
         </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 380px; gap: 30px;">
+    <div class="checkout-layout">
         <!-- Shipping Form -->
         <div class="card">
             <div class="card-header">Dirección de Envío</div>
@@ -47,7 +51,7 @@
                         @enderror
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="shipping-grid">
                         <div class="form-group mb-3">
                             <label class="form-label">Cantón / Ciudad</label>
                             <input type="text" name="shipping_city" class="form-input form-control"
@@ -75,9 +79,9 @@
                                   placeholder="Casa blanca, junto a la farmacia...">{{ old('shipping_notes') }}</textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px;">
+                    <button type="submit" class="btn btn-primary checkout-submit">
                         Continuar al pago
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 18px; height: 18px;">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="icon-18">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                         </svg>
                     </button>
@@ -87,52 +91,44 @@
 
         <!-- Order Summary -->
         <div>
-            <div class="card" style="position: sticky; top: 100px;">
+            <div class="card checkout-card-sticky">
                 <div class="card-header">Resumen del Pedido</div>
                 <div class="card-body">
                     <!-- Items -->
-                    <div style="max-height: 250px; overflow-y: auto; margin-bottom: 20px;">
+                    <div class="summary-list">
                         @foreach($cart->items as $item)
-                            <div style="display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f3f4f6;">
-                                <div style="width: 50px; height: 50px; background: #f3f4f6; border-radius: 6px; flex-shrink: 0;"></div>
-                                <div style="flex: 1; min-width: 0;">
-                                    <p style="font-weight: 500; font-size: 14px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $item->product->name }}</p>
-                                    <p style="font-size: 13px; color: #6b7280;">Cant: {{ (int)$item->quantity }} x ${{ number_format($item->unit_price, 2, ',', '.') }}</p>
+                            <div class="summary-item">
+                                <div class="summary-thumb"></div>
+                                <div class="summary-info">
+                                    <p class="summary-name">{{ $item->product->name }}</p>
+                                    <p class="summary-qty">Cant: {{ (int)$item->quantity }} x ${{ number_format($item->unit_price, 2, ',', '.') }}</p>
                                 </div>
-                                <div style="font-weight: 600; font-size: 14px;">
+                                <div class="summary-price">
                                     ${{ number_format($item->total, 2, ',', '.') }}
                                 </div>
                             </div>
                         @endforeach
                     </div>
 
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px;">
-                        <span style="color: #6b7280;">Subtotal</span>
+                    <div class="summary-row">
+                        <span class="summary-label">Subtotal</span>
                         <span>${{ number_format($totals['subtotal'], 2, ',', '.') }}</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px;">
-                        <span style="color: #6b7280;">IVA ({{ $totals['tax_rate'] }}%)</span>
+                    <div class="summary-row">
+                        <span class="summary-label">IVA ({{ $totals['tax_rate'] }}%)</span>
                         <span>${{ number_format($totals['tax_total'], 2, ',', '.') }}</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px;">
-                        <span style="color: #6b7280;">Envio</span>
-                        <span style="color: #10b981;">Gratis</span>
+                    <div class="summary-row">
+                        <span class="summary-label">Envio</span>
+                        <span class="summary-free">Gratis</span>
                     </div>
-                    <hr style="margin: 15px 0; border: none; border-top: 1px solid #e5e7eb;">
-                    <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 700;">
+                    <hr class="summary-divider">
+                    <div class="summary-total">
                         <span>Total</span>
-                        <span style="color: #667eea;">${{ number_format($totals['total'], 2, ',', '.') }}</span>
+                        <span class="summary-total-value">${{ number_format($totals['total'], 2, ',', '.') }}</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <style>
-        @media (max-width: 900px) {
-            [style*="grid-template-columns: 1fr 380px"] {
-                grid-template-columns: 1fr !important;
-            }
-        }
-    </style>
 @endsection

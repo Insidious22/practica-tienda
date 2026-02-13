@@ -82,30 +82,30 @@ class DemoDataSeeder extends Seeder
         }
 
         $products = [
-            ['category_code' => 'CAT-101', 'barcode' => '8471234568001', 'sku' => 'SKU-DELL-001', 'name' => 'Dell XPS 13', 'description' => 'Laptop ultradelgada de 13 pulgadas', 'price' => 1299.99, 'stock_quantity' => 14, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-101', 'barcode' => '8471234568002', 'sku' => 'SKU-HP-001', 'name' => 'HP Pavilion 15', 'description' => 'Laptop de uso mixto con 16GB RAM', 'price' => 749.99, 'stock_quantity' => 9, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-101', 'barcode' => '8471234568003', 'sku' => 'SKU-LENOVO-001', 'name' => 'Lenovo ThinkPad E14', 'description' => 'Laptop empresarial de 14 pulgadas', 'price' => 899.99, 'stock_quantity' => 4, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-101', 'barcode' => '8471234568004', 'sku' => 'SKU-ASUS-001', 'name' => 'ASUS VivoBook 14', 'description' => 'Laptop compacta para productividad', 'price' => 679.99, 'stock_quantity' => 11, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-101', 'barcode' => '8471234568001', 'sku' => 'SKU-DELL-001', 'name' => 'Dell XPS 13', 'description' => 'Laptop ultradelgada de 13 pulgadas', 'price' => 1299.99, 'stock_quantity' => 14, 'unit' => 'UNI', 'status' => 'ACT'],
+            ['category_code' => 'CAT-101', 'barcode' => '8471234568002', 'sku' => 'SKU-HP-001', 'name' => 'HP Pavilion 15', 'description' => 'Laptop de uso mixto con 16GB RAM', 'price' => 749.99, 'stock_quantity' => 9, 'unit' => 'UNI', 'status' => 'ACT'],
+            ['category_code' => 'CAT-101', 'barcode' => '8471234568003', 'sku' => 'SKU-LENOVO-001', 'name' => 'Lenovo ThinkPad E14', 'description' => 'Laptop empresarial de 14 pulgadas', 'price' => 899.99, 'stock_quantity' => 4, 'unit' => 'UNI', 'status' => 'ACT'],
+            ['category_code' => 'CAT-101', 'barcode' => '8471234568004', 'sku' => 'SKU-ASUS-001', 'name' => 'ASUS VivoBook 14', 'description' => 'Laptop compacta para productividad', 'price' => 679.99, 'stock_quantity' => 11, 'unit' => 'UNI', 'status' => 'ACT'],
 
-            ['category_code' => 'CAT-102', 'barcode' => '8471234568005', 'sku' => 'SKU-IPHONE-13', 'name' => 'iPhone 13 Pro', 'description' => 'Smartphone Apple con 256GB', 'price' => 999.00, 'stock_quantity' => 7, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-102', 'barcode' => '8471234568006', 'sku' => 'SKU-SAMSUNG-S21', 'name' => 'Samsung Galaxy S21', 'description' => 'Pantalla AMOLED de 6.2 pulgadas', 'price' => 799.99, 'stock_quantity' => 13, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-102', 'barcode' => '8471234568007', 'sku' => 'SKU-XIAOMI-12', 'name' => 'Xiaomi 12', 'description' => 'Smartphone gama alta de 128GB', 'price' => 649.99, 'stock_quantity' => 17, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-102', 'barcode' => '8471234568008', 'sku' => 'SKU-MOTO-G84', 'name' => 'Motorola G84', 'description' => 'Smartphone gama media de gran batería', 'price' => 349.99, 'stock_quantity' => 6, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-102', 'barcode' => '8471234568005', 'sku' => 'SKU-IPHONE-13', 'name' => 'iPhone 13 Pro', 'description' => 'Smartphone Apple con 256GB', 'price' => 999.00, 'stock_quantity' => 7, 'unit' => 'UNI', 'status' => 'ACT'],
+            ['category_code' => 'CAT-102', 'barcode' => '8471234568006', 'sku' => 'SKU-SAMSUNG-S21', 'name' => 'Samsung Galaxy S21', 'description' => 'Pantalla AMOLED de 6.2 pulgadas', 'price' => 799.99, 'stock_quantity' => 13, 'unit' => 'UNI', 'status' => 'ACT'],
+            ['category_code' => 'CAT-102', 'barcode' => '8471234568007', 'sku' => 'SKU-XIAOMI-12', 'name' => 'Xiaomi 12', 'description' => 'Smartphone gama alta de 128GB', 'price' => 649.99, 'stock_quantity' => 17, 'unit' => 'UNI', 'status' => 'ACT'],
+            ['category_code' => 'CAT-102', 'barcode' => '8471234568008', 'sku' => 'SKU-MOTO-G84', 'name' => 'Motorola G84', 'description' => 'Smartphone gama media de gran batería', 'price' => 349.99, 'stock_quantity' => 6, 'unit' => 'UNI', 'status' => 'ACT'],
 
-            ['category_code' => 'CAT-103', 'barcode' => '8471234568009', 'sku' => 'SKU-AUDIO-SONY', 'name' => 'Sony WH-1000XM4', 'description' => 'Auriculares con cancelación de ruido', 'price' => 329.99, 'stock_quantity' => 8, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-103', 'barcode' => '8471234568010', 'sku' => 'SKU-AUDIO-JBL', 'name' => 'JBL Flip 6', 'description' => 'Parlante bluetooth resistente al agua', 'price' => 139.99, 'stock_quantity' => 16, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-103', 'barcode' => '8471234568009', 'sku' => 'SKU-AUDIO-SONY', 'name' => 'Sony WH-1000XM4', 'description' => 'Auriculares con cancelación de ruido', 'price' => 329.99, 'stock_quantity' => 8, 'unit' => 'UNI', 'status' => 'ACT'],
+            ['category_code' => 'CAT-103', 'barcode' => '8471234568010', 'sku' => 'SKU-AUDIO-JBL', 'name' => 'JBL Flip 6', 'description' => 'Parlante bluetooth resistente al agua', 'price' => 139.99, 'stock_quantity' => 16, 'unit' => 'UNI', 'status' => 'ACT'],
 
-            ['category_code' => 'CAT-104', 'barcode' => '8471234568011', 'sku' => 'SKU-HAMMER-001', 'name' => 'Martillo Stanley 16oz', 'description' => 'Martillo profesional con mango ergonómico', 'price' => 25.99, 'stock_quantity' => 42, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-104', 'barcode' => '8471234568012', 'sku' => 'SKU-DRILL-001', 'name' => 'Taladro DeWalt 18V', 'description' => 'Taladro inalámbrico con batería', 'price' => 149.99, 'stock_quantity' => 10, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-104', 'barcode' => '8471234568013', 'sku' => 'SKU-SCREW-SET', 'name' => 'Set Destornilladores 8p', 'description' => 'Set de destornilladores magnéticos', 'price' => 19.90, 'stock_quantity' => 36, 'unit' => 'set', 'status' => 'active'],
-            ['category_code' => '', 'barcode' => '8471234568014', 'sku' => 'SKU-UNKNOWN-001', 'name' => 'Producto Desconocido', 'description' => 'Producto sin categoría definida', 'price' => 9.99, 'stock_quantity' => 50, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-107', 'barcode' => '8471234568020', 'sku' => 'SKU-COOKIES-90G', 'name' => 'Galletas 90g', 'description' => 'Galletas dulces surtidas', 'price' => 1.79, 'stock_quantity' => 190, 'unit' => 'paquete', 'status' => 'active'],
+            ['category_code' => 'CAT-104', 'barcode' => '8471234568011', 'sku' => 'SKU-HAMMER-001', 'name' => 'Martillo Stanley 16oz', 'description' => 'Martillo profesional con mango ergonómico', 'price' => 25.99, 'stock_quantity' => 42, 'unit' => 'UNI', 'status' => 'ACT'],
+            ['category_code' => 'CAT-104', 'barcode' => '8471234568012', 'sku' => 'SKU-DRILL-001', 'name' => 'Taladro DeWalt 18V', 'description' => 'Taladro inalámbrico con batería', 'price' => 149.99, 'stock_quantity' => 10, 'unit' => 'UNI', 'status' => 'ACT'],
+            ['category_code' => 'CAT-104', 'barcode' => '8471234568013', 'sku' => 'SKU-SCREW-SET', 'name' => 'Set Destornilladores 8p', 'description' => 'Set de destornilladores magnéticos', 'price' => 19.90, 'stock_quantity' => 36, 'unit' => 'SET', 'status' => 'ACT'],
+            ['category_code' => '', 'barcode' => '8471234568014', 'sku' => 'SKU-UNKNOWN-001', 'name' => 'Producto Desconocido', 'description' => 'Producto sin categoría definida', 'price' => 9.99, 'stock_quantity' => 50, 'unit' => 'UNI', 'status' => 'ACT'],
+            ['category_code' => 'CAT-107', 'barcode' => '8471234568020', 'sku' => 'SKU-COOKIES-90G', 'name' => 'Galletas 90g', 'description' => 'Galletas dulces surtidas', 'price' => 1.79, 'stock_quantity' => 190, 'unit' => 'PAQ', 'status' => 'ACT'],
 
-            ['category_code' => 'CAT-108', 'barcode' => '8471234568021', 'sku' => 'SKU-TSHIRT-BLK-M', 'name' => 'Camiseta Negra Básica M', 'description' => 'Camiseta de algodón talle M', 'price' => 19.99, 'stock_quantity' => 40, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => 'CAT-108', 'barcode' => '8471234568022', 'sku' => 'SKU-TSHIRT-WHT-L', 'name' => 'Camiseta Blanca Básica L', 'description' => 'Camiseta de algodón talle L', 'price' => 19.99, 'stock_quantity' => 33, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-108', 'barcode' => '8471234568021', 'sku' => 'SKU-TSHIRT-BLK-M', 'name' => 'Camiseta Negra Básica M', 'description' => 'Camiseta de algodón talle M', 'price' => 19.99, 'stock_quantity' => 40, 'unit' => 'UNI', 'status' => 'ACT'],
+            ['category_code' => 'CAT-108', 'barcode' => '8471234568022', 'sku' => 'SKU-TSHIRT-WHT-L', 'name' => 'Camiseta Blanca Básica L', 'description' => 'Camiseta de algodón talle L', 'price' => 19.99, 'stock_quantity' => 33, 'unit' => 'UNI', 'status' => 'ACT'],
 
-            ['category_code' => 'CAT-109', 'barcode' => '8471234568023', 'sku' => 'SKU-JEANS-BLU-32', 'name' => 'Jeans Azul Oscuro 32', 'description' => 'Jean clásico azul oscuro', 'price' => 59.99, 'stock_quantity' => 18, 'unit' => 'unidad', 'status' => 'active'],
-            ['category_code' => '', 'barcode' => '8471234568024', 'sku' => 'SKU-UNKNOWN-002', 'name' => 'Producto Sin Categoría', 'description' => 'Producto sin categoría definida', 'price' => 12.99, 'stock_quantity' => 25, 'unit' => 'unidad', 'status' => 'active'],
+            ['category_code' => 'CAT-109', 'barcode' => '8471234568023', 'sku' => 'SKU-JEANS-BLU-32', 'name' => 'Jeans Azul Oscuro 32', 'description' => 'Jean clásico azul oscuro', 'price' => 59.99, 'stock_quantity' => 18, 'unit' => 'UNI', 'status' => 'ACT'],
+            ['category_code' => '', 'barcode' => '8471234568024', 'sku' => 'SKU-UNKNOWN-002', 'name' => 'Producto Sin Categoría', 'description' => 'Producto sin categoría definida', 'price' => 12.99, 'stock_quantity' => 25, 'unit' => 'UNI', 'status' => 'ACT'],
         ];
 
         $productsBySku = [];
@@ -148,7 +148,7 @@ class DemoDataSeeder extends Seeder
                 'city' => 'Guayaquil',
                 'payment_terms' => 'Credito 30 dias',
                 'notes' => 'Proveedor principal de tecnología',
-                'status' => 'active',
+                'status' => 'ACT',
             ],
             [
                 'code' => 'SUP-002',
@@ -162,7 +162,7 @@ class DemoDataSeeder extends Seeder
                 'city' => 'Manta',
                 'payment_terms' => 'Credito 15 dias',
                 'notes' => 'Especialistas en herramientas y hogar',
-                'status' => 'active',
+                'status' => 'ACT',
             ],
             [
                 'code' => 'SUP-003',
@@ -176,7 +176,7 @@ class DemoDataSeeder extends Seeder
                 'city' => 'Quito',
                 'payment_terms' => 'Contado',
                 'notes' => 'Entrega semanal para bebidas y snacks',
-                'status' => 'active',
+                'status' => 'ACT',
             ],
         ];
 
@@ -415,3 +415,4 @@ class DemoDataSeeder extends Seeder
         echo "DemoDataSeeder ejecutado: zonas, categorias, productos, proveedores y compras demo creados o actualizados.\n";
     }
 }
+

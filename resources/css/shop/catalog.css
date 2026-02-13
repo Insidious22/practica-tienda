@@ -1,0 +1,51 @@
+@import './components.css';
+
+.catalog-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 30px;
+}
+
+.catalog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.catalog-title {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.catalog-count {
+    color: #6b7280;
+}
+
+.catalog-filter-btn {
+    width: 100%;
+}
+
+.catalog-clear-btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.catalog-empty-body {
+    padding: 60px;
+}
+
+.catalog-empty-text {
+    color: #6b7280;
+    font-size: 16px;
+}
+
+.catalog-empty-btn {
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .catalog-layout {
+        grid-template-columns: 1fr;
+    }
+}

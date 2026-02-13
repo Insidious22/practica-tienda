@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('styles')
+    @vite(['resources/css/admin/dashboard.css'])
+@endpush
+
 @section('content')
 <div class="header">
     <h1 class="title">📊 Dashboard</h1>
@@ -33,11 +37,11 @@
 </div>
 
 <!-- Recent Products -->
-<div style="margin-top: 40px;">
-    <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #1f2937;">📦 Productos Recientes</h2>
+<div class="dashboard-section">
+    <h2 class="dashboard-section-title">📦 Productos Recientes</h2>
     
     @if($recentProducts->count() > 0)
-        <div style="overflow-x: auto;">
+        <div class="dashboard-table-container">
             <table class="table table-striped table-hover align-middle">
                 <thead>
                     <tr>
@@ -66,7 +70,7 @@
                                 </span>
                             </td>
                             <td>
-                                <span class="badge @if($product->status === 'active') success @elseif($product->status === 'inactive') warning @else danger @endif">
+                                <span class="badge @if($product->status === 'ACT') success @elseif($product->status === 'INA') warning @else danger @endif">
                                     {{ ucfirst($product->status) }}
                                 </span>
                             </td>
@@ -85,19 +89,19 @@
 </div>
 
 <!-- Categories Overview -->
-<div style="margin-top: 40px;">
-    <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #1f2937;">🏷️ Categorías</h2>
+<div class="dashboard-section">
+    <h2 class="dashboard-section-title">🏷️ Categorías</h2>
     
     @if($categories->count() > 0)
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+        <div class="dashboard-categories-grid">
             @foreach($categories as $category)
-                <div style="background: #f9fafb; border-radius: 10px; padding: 16px; border-left: 4px solid #667eea;">
-                    <h3 style="margin: 0 0 8px 0; color: #1f2937; font-weight: 600;">{{ $category->name }}</h3>
-                    <p class="muted" style="margin: 0 0 12px 0;">{{ $category->description ?? 'Sin descripción' }}</p>
-                    <div style="font-size: 12px; color: #667eea; font-weight: 600;">
+                <div class="dashboard-category-card">
+                    <h3 class="dashboard-category-title">{{ $category->name }}</h3>
+                    <p class="muted dashboard-category-desc">{{ $category->description ?? 'Sin descripción' }}</p>
+                    <div class="dashboard-category-zone">
                          Zona: {{ $category->zone->name ?? 'N/A' }}
                     </div>
-                    <div style="font-size: 12px; color: #6b7280; margin-top: 8px;">
+                    <div class="dashboard-category-count">
                         {{ $category->products_count ?? 0 }} productos
                     </div>
                 </div>
@@ -113,23 +117,25 @@
 </div>
 
 <!-- Quick Actions -->
-<div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-    <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #1f2937;">⚡ Acciones Rápidas</h2>
+<div class="dashboard-actions-section">
+    <h2 class="dashboard-section-title">⚡ Acciones Rápidas</h2>
     
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
-        <a href="{{ route('admin.productos.create') }}" class="btn btn-primary" style="justify-content: center;">
+    <div class="dashboard-actions-grid">
+        <a href="{{ route('admin.productos.create') }}" class="btn btn-primary dashboard-action-btn">
             <span>➕ Nuevo Producto</span>
         </a>
-        <a href="{{ route('admin.categorias.create') }}" class="btn btn-primary" style="justify-content: center;">
+        <a href="{{ route('admin.categorias.create') }}" class="btn btn-primary dashboard-action-btn">
             <span>➕ Nueva Categoría</span>
         </a>
-        <a href="{{ route('admin.zonas.create') }}" class="btn btn-primary" style="justify-content: center;">
+        <a href="{{ route('admin.zonas.create') }}" class="btn btn-primary dashboard-action-btn">
             <span>➕ Nueva Zona</span>
         </a>
-        <a href="{{ route('admin.productos.index') }}" class="btn btn-secondary" style="justify-content: center;">
+        <a href="{{ route('admin.productos.index') }}" class="btn btn-secondary dashboard-action-btn">
             <span>📋 Ver Todos los Productos</span>
         </a>
     </div>
 </div>
 
 @endsection
+
+

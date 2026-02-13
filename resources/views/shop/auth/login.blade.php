@@ -1,9 +1,13 @@
 @extends('layouts.shop')
 
+@push('styles')
+    @vite(['resources/css/shop/auth.css'])
+@endpush
+
 @section('content')
-    <div style="max-width: 450px; margin: 40px auto;">
+    <div class="auth-wrap auth-wrap--sm">
         <div class="card">
-            <div class="card-header" style="text-align: center; font-size: 20px;">
+            <div class="card-header auth-card-title">
                 Iniciar Sesion
             </div>
             <div class="card-body">
@@ -30,19 +34,19 @@
                         @enderror
                     </div>
 
-                    <div class="form-group mb-3" style="display: flex; align-items: center; gap: 8px;">
-                        <input type="checkbox" name="remember" id="remember" style="width: auto;">
-                        <label for="remember" style="margin: 0; font-weight: normal;">Recordarme</label>
+                    <div class="form-group mb-3 auth-remember">
+                        <input type="checkbox" name="remember" id="remember" class="auth-checkbox">
+                        <label for="remember" class="auth-checkbox-label">Recordarme</label>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px;">
+                    <button type="submit" class="btn btn-primary auth-submit">
                         Iniciar Sesion
                     </button>
                 </form>
 
-                <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-                    <p style="color: #6b7280; margin-bottom: 10px;">¿No tienes una cuenta?</p>
-                    <a href="{{ route('shop.register') }}" class="btn btn-outline" style="width: 100%;">
+                <div class="auth-footer">
+                    <p class="auth-footer-text">¿No tienes una cuenta?</p>
+                    <a href="{{ route('shop.register') }}" class="btn btn-outline auth-submit">
                         Crear cuenta
                     </a>
                 </div>

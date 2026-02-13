@@ -12,6 +12,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\GuardiaController as AdminGuardiaController;
 use App\Http\Controllers\Admin\ItemController as AdminItemController;
+use App\Http\Controllers\Admin\DiccionarioController as AdminDiccionarioController;
 
 // Shop Controllers
 use App\Http\Controllers\Shop\ShopController;
@@ -101,6 +102,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin.or.superadmin
     Route::resource('zonas', ZoneController::class);
     Route::resource('categorias', CategoryController::class);
     Route::resource('proveedores', SupplierController::class)->parameters(['proveedores' => 'supplier']);
+    Route::resource('diccionario', AdminDiccionarioController::class)->names('diccionario')->except(['show']);
     
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 

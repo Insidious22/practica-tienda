@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('styles')
+    @vite(['resources/css/admin/guardias.css'])
+@endpush
+
 @section('content')
     <div class="header">
         <h2 class="title">Registrar Guardia</h2>
@@ -12,7 +16,7 @@
         <div class="alert warning">
             <span>!</span>
             <span>{{ session('warning') }}</span>
-            <form action="{{ route('admin.guardias.reactivar', session('reactivar_id')) }}" method="POST" style="margin-left: auto;">
+            <form action="{{ route('admin.guardias.reactivar', session('reactivar_id')) }}" method="POST" class="alert-action">
                 @csrf
                 @method('PATCH')
                 <button type="submit" class="btn secondary">Reactivar</button>
@@ -45,9 +49,9 @@
             <div class="form-group">
                 <label for="tipo_documento">Tipo de documento</label>
                 <select id="tipo_documento" name="tipo_documento" required>
-                    <option value="cedula" @selected(old('tipo_documento') === 'cedula')>Cedula</option>
-                    <option value="pasaporte" @selected(old('tipo_documento') === 'pasaporte')>Pasaporte</option>
-                    <option value="otro" @selected(old('tipo_documento') === 'otro')>Otro</option>
+                    @foreach ($tiposDocumento as $tipo)
+                        <option value="{{ $tipo->siglas }}" @selected(old('tipo_documento') === $tipo->siglas)>{{ $tipo->descripcion }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="form-group">
@@ -60,15 +64,15 @@
             <div class="form-group">
                 <label for="turno">Turno</label>
                 <select id="turno" name="turno" required>
-                    <option value="Mañana" @selected(old('turno') === 'Mañana')>Mañana</option>
-                    <option value="Tarde" @selected(old('turno') === 'Tarde')>Tarde</option>
-                    <option value="Noche" @selected(old('turno') === 'Noche')>Noche</option>
+                    @foreach ($turnos as $turno)
+                        <option value="{{ $turno->siglas }}" @selected(old('turno') === $turno->siglas)>{{ $turno->descripcion }}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
 
-        <div class="header" style="margin-top: 20px;">
-            <h3 class="title" style="font-size: 18px;">Equipamiento</h3>
+        <div class="header section-header">
+            <h3 class="title section-title">Equipamiento</h3>
         </div>
 
         @if ($inventarioItems->isEmpty())
@@ -89,12 +93,12 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group" style="display: flex; align-items: flex-end;">
+                <div class="form-group form-group--align-end">
                     <button type="button" id="add-item-btn" class="btn success">Agregar item</button>
                 </div>
             </div>
 
-            <table class="table" id="items-table" style="display: none;">
+            <table class="table table-hidden" id="items-table">
                 <thead>
                 <tr>
                     <th>Item</th>
@@ -123,7 +127,7 @@
 
         tipoDocumento.addEventListener('change', () => {
             cedulaInput.value = '';
-            if (tipoDocumento.value === 'cedula') {
+            if (tipoDocumento.value === 'CED') {
                 cedulaInput.maxLength = 10;
             } else {
                 cedulaInput.maxLength = 30;
@@ -171,7 +175,7 @@
                         items.splice(itemIndex, 1);
                     }
                     this.closest('tr').remove();
-                    
+
                     if (items.length === 0) {
                         table.style.display = 'none';
                     }

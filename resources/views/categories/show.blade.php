@@ -1,24 +1,28 @@
 @extends('layouts.app')
 
+@push('styles')
+    @vite(['resources/css/admin/categories.css'])
+@endpush
+
 @section('content')
 <div class="header">
     <h1 class="title">🏷️ Detalle de Categoría: {{ $category->name }}</h1>
     <div class="header-actions">
-        <a class="btn btn-secondary" href="{{ route('admin.categorias.edit', $category) }}" style="gap: 6px;">✏️ Editar</a>
-        <a class="btn btn-secondary" href="{{ route('admin.categorias.index') }}" style="gap: 6px;">← Volver</a>
+        <a class="btn btn-secondary category-btn-gap-sm" href="{{ route('admin.categorias.edit', $category) }}">✏️ Editar</a>
+        <a class="btn btn-secondary category-btn-gap-sm" href="{{ route('admin.categorias.index') }}">← Volver</a>
     </div>
 </div>
 
 <!-- Category Details Card -->
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 24px; color: white; margin-bottom: 30px;">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+<div class="category-show-header">
+    <div class="category-show-header-grid">
         <div>
-            <h2 style="margin: 0 0 8px 0; font-size: 24px;">{{ $category->name }}</h2>
-            <p style="margin: 0; opacity: 0.9;">{{ $category->description ?: 'Sin descripción' }}</p>
+            <h2 class="category-show-title">{{ $category->name }}</h2>
+            <p class="category-show-description">{{ $category->description ?: 'Sin descripción' }}</p>
         </div>
-        <div style="text-align: right;">
-            <div style="font-size: 16px; opacity: 0.9;">📍 Zona Asociada</div>
-            <div style="font-size: 24px; font-weight: 700; margin-top: 8px;">
+        <div class="category-show-zone-section">
+            <div class="category-show-zone-label">📍 Zona Asociada</div>
+            <div class="category-show-zone-name">
                 {{ $category->zone->name ?? 'Sin zona' }}
             </div>
         </div>
@@ -26,35 +30,35 @@
 </div>
 
 <!-- Information Grid -->
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+<div class="category-info-grid">
     <!-- Basic Info -->
-    <div style="background: #f9fafb; border-radius: 10px; padding: 16px; border-left: 4px solid #667eea;">
-        <h3 style="margin: 0 0 12px 0; color: #1f2937; font-weight: 600;">ℹ️ Información</h3>
-        <div style="margin-bottom: 12px;">
+    <div class="category-info-card">
+        <h3 class="category-info-card-title">ℹ️ Información</h3>
+        <div class="category-info-card-section">
             <span class="muted">ID:</span>
-            <div style="font-weight: 600; color: #1f2937; margin-top: 4px;">#{{ $category->id }}</div>
+            <div class="category-info-card-value">#{{ $category->id }}</div>
         </div>
         @if($category->code)
             <div>
                 <span class="muted">Código:</span>
-                <div style="font-weight: 600; color: #1f2937; margin-top: 4px;">{{ $category->code }}</div>
+                <div class="category-info-card-value">{{ $category->code }}</div>
             </div>
         @endif
     </div>
 
     <!-- Zone Info -->
-    <div style="background: #f9fafb; border-radius: 10px; padding: 16px; border-left: 4px solid #667eea;">
-        <h3 style="margin: 0 0 12px 0; color: #1f2937; font-weight: 600;">📍 Zona</h3>
-        <div style="font-size: 18px; font-weight: 700; color: #1f2937; margin-bottom: 8px;">
+    <div class="category-info-card">
+        <h3 class="category-info-card-title">📍 Zona</h3>
+        <div class="category-info-card-value category-info-card-value--large">
             {{ $category->zone->name ?? 'Sin asignar' }}
         </div>
         <div class="muted">{{ $category->zone->description ?? 'Sin descripción' }}</div>
     </div>
 
     <!-- Statistics -->
-    <div style="background: #f9fafb; border-radius: 10px; padding: 16px; border-left: 4px solid #10b981;">
-        <h3 style="margin: 0 0 12px 0; color: #1f2937; font-weight: 600;">📦 Estadísticas</h3>
-        <div style="font-size: 28px; font-weight: 700; color: #10b981;">
+    <div class="category-info-card category-info-card--green">
+        <h3 class="category-info-card-title">📦 Estadísticas</h3>
+        <div class="category-stats-value">
             {{ $category->products->count() }}
         </div>
         <div class="muted">Productos en esta categoría</div>
@@ -62,11 +66,11 @@
 </div>
 
 <!-- Products List -->
-<div style="margin-bottom: 30px;">
-    <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #1f2937;">📦 Productos en esta Categoría</h2>
+<div class="category-products-section">
+    <h2 class="category-products-title">📦 Productos en esta Categoría</h2>
     
     @if($category->products->count() > 0)
-        <div style="overflow-x: auto;">
+        <div class="category-products-table-container">
             <table class="table table-striped table-hover align-middle">
                 <thead>
                     <tr>
@@ -102,7 +106,7 @@
             </table>
         </div>
     @else
-        <div class="empty-state" style="padding: 40px 20px;">
+        <div class="empty-state category-empty-state">
             <div class="empty-state-icon">📦</div>
             <div class="empty-state-text">No hay productos en esta categoría</div>
             <a href="{{ route('admin.productos.create') }}" class="btn btn-primary">Crear primer producto</a>
@@ -111,13 +115,13 @@
 </div>
 
 <!-- Action Buttons -->
-<div style="display: flex; gap: 12px; margin-bottom: 30px; flex-wrap: wrap;">
-    <a class="btn btn-primary" href="{{ route('admin.categorias.edit', $category) }}" style="gap: 6px;">✏️ Editar Categoría</a>
-    <a class="btn btn-secondary" href="{{ route('admin.categorias.index') }}" style="gap: 6px;">← Volver a Lista</a>
-    <form action="{{ route('admin.categorias.destroy', $category) }}" method="POST" style="display: inline;">
+<div class="category-actions-container">
+    <a class="btn btn-primary category-btn-gap-sm" href="{{ route('admin.categorias.edit', $category) }}">✏️ Editar Categoría</a>
+    <a class="btn btn-secondary category-btn-gap-sm" href="{{ route('admin.categorias.index') }}">← Volver a Lista</a>
+    <form action="{{ route('admin.categorias.destroy', $category) }}" method="POST" class="category-delete-form">
         @csrf
         @method('DELETE')
-        <button class="btn btn-danger" type="submit" onclick="return confirm('¿Eliminar esta categoría? También se eliminarán sus productos.')" style="gap: 6px;">🗑️ Eliminar</button>
+        <button class="btn btn-danger category-btn-gap-sm" type="submit" onclick="return confirm('¿Eliminar esta categoría? También se eliminarán sus productos.')">🗑️ Eliminar</button>
     </form>
 </div>
 

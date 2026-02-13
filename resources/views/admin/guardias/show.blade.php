@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('styles')
+    @vite(['resources/css/admin/guardias.css'])
+@endpush
+
 @section('content')
     <div class="header">
         <h2 class="title">Detalle de Guardia</h2>
@@ -28,8 +32,8 @@
         </div>
     </div>
 
-    <div class="header" style="margin-top: 20px;">
-        <h3 class="title" style="font-size: 18px;">Equipamiento asignado</h3>
+    <div class="header section-header">
+        <h3 class="title section-title">Equipamiento asignado</h3>
     </div>
 
     @if ($guardia->items->isEmpty())
@@ -64,8 +68,8 @@
         </table>
     @endif
 
-    <div class="header" style="margin-top: 20px;">
-        <h3 class="title" style="font-size: 18px;">Agregar item</h3>
+    <div class="header section-header">
+        <h3 class="title section-title">Agregar item</h3>
     </div>
 
     <form action="{{ route('admin.guardias.addItem', $guardia) }}" method="POST" class="form-row">
@@ -78,7 +82,7 @@
                 @endforeach
             </select>
         </div>
-        <div class="form-group" style="display: flex; align-items: flex-end;">
+        <div class="form-group form-group--align-end">
             <button type="submit" class="btn success">Agregar</button>
         </div>
     </form>

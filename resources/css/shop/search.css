@@ -1,0 +1,36 @@
+@import './components.css';
+
+.search-header {
+    margin-bottom: 30px;
+}
+
+.search-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.search-subtitle {
+    color: #6b7280;
+}
+
+.search-empty-body {
+    padding: 60px;
+}
+
+.search-empty-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.search-empty-text {
+    color: #6b7280;
+    margin-bottom: 20px;
+}
+
+.search-empty-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}

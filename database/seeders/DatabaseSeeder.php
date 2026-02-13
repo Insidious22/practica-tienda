@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
     {
         // Seeders base del sistema
         $this->call([
+            DiccionarioSeeder::class,
             RolesSeeder::class,
             PermissionsSeeder::class,
             RolePermissionSeeder::class,
