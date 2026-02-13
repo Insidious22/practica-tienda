@@ -1,252 +1,128 @@
-# Sistema de Gestión de Tienda (Laravel)
+# Sistema de Gestion de Tienda (Laravel)
 
-Documentación única y unificada del proyecto.
+Aplicacion web con dos caras:
+- Tienda online para clientes.
+- Panel de administracion para operacion interna.
 
-## 1. Resumen
-Aplicación web con dos caras:
-1. Tienda online (clientes): catálogo, carrito, checkout, cuenta y pedidos.
-2. Administración (backoffice): productos, categorías, zonas, proveedores, usuarios y guardias.
-
-El objetivo es publicar productos, gestionar stock y procesar pedidos con un flujo de compra completo.
-Además, el proyecto ya incluye modelos y migraciones para inventario, compras y trazabilidad.
-
-## 2. Stack tecnológico
-- Backend: Laravel 12 (PHP 8.2+)
-- Frontend: Blade
-- Estilos y assets: Vite + Tailwind CSS v4
+## 1. Stack tecnologico
+- Backend: Laravel 12
+- PHP: 8.2+
+- Frontend: Blade + Vite + Tailwind CSS
 - Base de datos: MySQL
-- Assets: Vite / npm
 
-## 3. Instalación y arranque (local)
-1. Instalar dependencias:
+## 2. Requisitos
+- PHP 8.2 o superior
+- Composer
+- Node.js + npm
+- MySQL
+
+## 3. Instalacion local
 ```bash
 composer install
 npm install
-```
-
-2. Configurar entorno:
-```bash
 cp .env.example .env
 php artisan key:generate
-```
-
-3. Migraciones y datos:
-```bash
-php artisan migrate
-php artisan db:seed
-```
-
-4. Assets:
-```bash
+php artisan migrate --seed
 npm run dev
-# o
-npm run build
-```
-
-5. Levantar servidor:
-```bash
 php artisan serve
 ```
 
-Acceso local: `http://localhost:8000`
+URL local: `http://127.0.0.1:8000`
 
-## 4. Docker (local)
-Si usas docker-compose, el panel corre en:
-- `http://localhost:8080`
-
-Comandos típicos:
-```bash
-docker compose up -d --build
-docker compose exec app php artisan migrate --seed
-```
+## 4. Scripts utiles
+Desde `composer.json`:
+- `composer run setup`: instala, configura, migra con seed y compila assets.
+- `composer run dev`: entorno de desarrollo en Windows (server, queue, vite).
+- `composer run test`: ejecuta pruebas.
+- `composer run reset`: reinicia base de datos con seed.
+- `composer run doctor`: limpieza y estado de migraciones.
 
 ## 5. Credenciales admin (seed)
-Se crean con `php artisan migrate --seed` o `php artisan db:seed`.
+- Super Admin: `superadmin@tienda.local` / `password`
+- Admin: `admin@tienda.local` / `password`
 
-Super Admin:
-- Email: `superadmin@tienda.local`
-- Contraseña: `password`
-
-Admin:
-- Email: `admin@tienda.local`
-- Contraseña: `password`
-
-
-Atajos útiles:
-```bash
-composer run setup
-composer run dev
-composer run test
-```
-`composer run dev` levanta servidor, cola, logs y Vite en paralelo.
-URL de login admin:
-- `http://localhost:8080/admin/login` (Docker)
-- `http://localhost:8000/admin/login` (local)
-
-## 6. Módulos principales
-### Administración
-- Dashboard: estadísticas de productos, categorías y zonas
-- Productos: CRUD completo, stock y estados
-- Categorías: CRUD y relación con zonas
-- Guardias: alta, baja lógica, reactivación y asignación de items
-
-### Inventario y compras (base de datos y modelos)
-- Órdenes de compra, recepciones y detalle de items
-- Movimientos de inventario y tipos de movimiento
-- Transferencias entre zonas y sus items
-- Ajustes de stock con aprobación
-- Relación proveedores-productos
-- Zonas: CRUD y relación con categorías
-- Proveedores: CRUD completo
-- Usuarios: solo Super Admin
-
+## 6. Modulos implementados
 ### Tienda
-- Home con productos destacados
-- Catálogo con filtros y búsqueda
-- Detalle de producto con relacionados
-- Carrito (actualización de cantidades)
-- Checkout con validación de stock
-- Cuenta del cliente (perfil y pedidos)
+- Home de tienda.
+- Catalogo con filtros, categoria, detalle y busqueda.
+- Carrito (agregar, actualizar, eliminar, limpiar).
+- Checkout en pasos (envio, pago, confirmacion).
+- Validacion de stock antes de procesar pedido.
+- Area de cliente (`/tienda/mi-cuenta`) con perfil y pedidos.
 
-## 7. Roles y seguridad
-Roles principales:
-- `super_admin`: acceso total, puede gestionar usuarios
-El admin se protege con middleware y validación de rol en login.
-Permisos y roles se gestionan con pivots `role_permission` y `user_role`.
-- `customer`: tienda y cuenta
+### Administracion
+- Login y dashboard admin.
+- CRUD de productos, zonas, categorias y proveedores.
+- CRUD de diccionario catalogo (`/admin/diccionario`).
+- Modulo de guardias con:
+- Alta y edicion.
+- Baja logica y reactivacion.
+- Asignacion y devolucion de items.
+- Validaciones por tipo de documento y cedula/documento.
+- Gestion de usuarios admin (restringido por rol).
 
-El admin se protege con middleware y validación de rol en login.
+### Inventario y compras (modelo de datos)
+- Ordenes de compra y sus items.
+- Recepciones de compra y detalle.
+- Movimientos de inventario y tipos de movimiento.
+- Transferencias de inventario entre zonas.
+- Ajustes de stock y sus items.
+- Relacion proveedores-productos.
 
-## 8. Flujo de compra (resumen)
-1. Cliente agrega productos al carrito
-2. Checkout valida stock
-SalesOrder 1..N SalesOrderPayment
-PaymentMethod 1..N SalesOrderPayment
-3. Captura dirección de envío
-Role N..N Permission
-Supplier N..N Product (via supplier_products)
-PurchaseOrder 1..N PurchaseOrderItem
-PurchaseOrder 1..N PurchaseReceipt
-PurchaseReceipt 1..N PurchaseReceiptItem
-InventoryMovementType 1..N InventoryMovement
-InventoryTransfer 1..N InventoryTransferItem
-StockAdjustment 1..N StockAdjustmentItem
-Guardia 1..N Item
-InventarioItem 1..N Item
-4. Pago simulado (PaymentService)
-5. Se crea pedido y se descuenta stock
-## 10. Diagrama de base de datos (Mermaid)
-```mermaid
-erDiagram
-	ZONES ||--o{ CATEGORIES : has
-	CATEGORIES ||--o{ PRODUCTS : has
+## 7. Avances recientes (lo ya hecho)
+- Integracion completa del modulo de guardias en rutas, controladores y vistas.
+- Integracion de campo `cedula`/documento con validaciones en guardias.
+- Normalizacion de codigos de catalogo en migraciones (`normalize_catalog_codes`).
+- Incorporacion de modulo `diccionario` para catalogos reutilizables.
+- Flujo de checkout conectado con servicios (`CheckoutService`, `PaymentService`).
+- Ajustes de vistas y CSS recientes en frontend.
 
-	USERS ||--o{ CARTS : owns
-	CARTS ||--o{ CART_ITEMS : contains
-	PRODUCTS ||--o{ CART_ITEMS : in
-
-	CUSTOMERS ||--o{ SALES_ORDERS : places
-	SALES_ORDERS ||--o{ SALES_ORDER_ITEMS : contains
-	PRODUCTS ||--o{ SALES_ORDER_ITEMS : in
-	SALES_ORDERS ||--o{ SALES_ORDER_PAYMENTS : paid_by
-	PAYMENT_METHODS ||--o{ SALES_ORDER_PAYMENTS : uses
-
-	SUPPLIERS ||--o{ PURCHASE_ORDERS : issues
-	PURCHASE_ORDERS ||--o{ PURCHASE_ORDER_ITEMS : contains
-	PRODUCTS ||--o{ PURCHASE_ORDER_ITEMS : in
-	PURCHASE_ORDERS ||--o{ PURCHASE_RECEIPTS : receives
-	PURCHASE_RECEIPTS ||--o{ PURCHASE_RECEIPT_ITEMS : contains
-	PURCHASE_ORDER_ITEMS ||--o{ PURCHASE_RECEIPT_ITEMS : matches
-	PRODUCTS ||--o{ PURCHASE_RECEIPT_ITEMS : in
-
-	INVENTORY_MOVEMENT_TYPES ||--o{ INVENTORY_MOVEMENTS : type
-	PRODUCTS ||--o{ INVENTORY_MOVEMENTS : moves
-	ZONES ||--o{ INVENTORY_MOVEMENTS : from_to
-
-	INVENTORY_TRANSFERS ||--o{ INVENTORY_TRANSFER_ITEMS : contains
-	PRODUCTS ||--o{ INVENTORY_TRANSFER_ITEMS : in
-	ZONES ||--o{ INVENTORY_TRANSFERS : source_target
-
-	STOCK_ADJUSTMENTS ||--o{ STOCK_ADJUSTMENT_ITEMS : contains
-	PRODUCTS ||--o{ STOCK_ADJUSTMENT_ITEMS : in
-
-	ROLES ||--o{ USER_ROLE : joins
-	USERS ||--o{ USER_ROLE : joins
-	ROLES ||--o{ ROLE_PERMISSION : grants
-	PERMISSIONS ||--o{ ROLE_PERMISSION : grants
-
-	GUARDIAS ||--o{ ITEMS : has
-	INVENTARIO_ITEMS ||--o{ ITEMS : assigned
-
-	USERS ||--o{ AUDIT_LOGS : writes
-```
-6. Confirmación y pedidos en “Mi cuenta”
-## 11. Endpoints principales
-Nota: IVA configurado al 15% (Ecuador).
-
-## 9. Estructura de datos (relaciones clave)
-```
-Zone 1..N Category
+## 8. Rutas principales
+### Tienda
+- `GET /tienda`
+- `GET /tienda/catalogo`
+- `GET /tienda/producto/{product}`
+- `GET /tienda/carrito`
 - `GET /tienda/api/carrito`
-Category 1..N Product
-Cart 1..N CartItem
-SalesOrder 1..N SalesOrderItem
-User N..N Role
-Supplier 1..N PurchaseOrder
-```
+- `GET /tienda/checkout`
+- `GET /tienda/mi-cuenta`
 
-## 10. Endpoints principales
+### Admin
+- `GET /admin/login`
+- `GET /admin/dashboard`
+- `GET /admin/productos`
+- `GET /admin/categorias`
+- `GET /admin/zonas`
+- `GET /admin/proveedores`
+- `GET /admin/diccionario`
 - `GET /admin/guardias`
 - `POST /admin/guardias/{guardia}/items`
 - `PATCH /admin/guardias/{id}/reactivar`
 - `DELETE /admin/guardia-items/{id}`
-Tienda:
-## 12. Documentación adicional
-- Ver [GUIA_INTEGRACION_GUARDIAS.md](GUIA_INTEGRACION_GUARDIAS.md) para el módulo de guardias. //ya está integrado, ya se eliminó el .md
 
-## 13. Troubleshooting
-- `GET /tienda/catalogo`
-- `GET /tienda/producto/{product}`
-- `GET /tienda/carrito`
-
-Admin:
-- `GET /admin/dashboard`
-- `GET /admin/productos`
-- `GET /admin/categorias`
-## 14. Demo rápida
-- `GET /admin/proveedores`
-- `GET /admin/usuarios` (solo Super Admin)
-
-## 11. Troubleshooting
-Página en blanco / errores raros:
-## 15. Roadmap sugerido
+## 9. Troubleshooting
+Limpiar caches:
+```bash
 php artisan optimize:clear
 php artisan cache:clear
 php artisan config:clear
 php artisan view:clear
 ```
 
-Assets sin estilos:
+Si faltan estilos:
 ```bash
 npm run build
 ```
 
-Reset contraseña (admin):
+Reset de password admin (ejemplo):
 ```bash
 php artisan tinker
 $user = \App\Models\User::where('email', 'superadmin@tienda.local')->first();
 $user->update(['password' => \Illuminate\Support\Facades\Hash::make('newpassword')]);
 ```
 
-## 12. Demo rápida
-1. Entra al admin y crea zona → categoría → producto
-2. Abre la tienda y agrega al carrito
-3. Completa checkout
-4. Revisa pedido en “Mi cuenta”
-
-## 13. Roadmap sugerido
-- Pasarela de pagos real (Stripe/PayPal)
-- Reportes de ventas e inventario
-- Auditoría y logs por acción
-- Exportación a Excel/PDF
-
+## 10. Proximos pasos sugeridos
+- Pasarela de pagos real (Stripe/PayPal).
+- Reportes de ventas e inventario.
+- Exportacion a Excel/PDF.
+- Mayor cobertura de pruebas automatizadas.
