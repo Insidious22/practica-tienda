@@ -7,6 +7,22 @@
     margin-top: 40px;
 }
 
+.dashboard-export-section {
+    margin-top: 20px;
+}
+
+.dashboard-export-form {
+    display: grid;
+    grid-template-columns: 1.2fr .8fr 1fr 1fr auto;
+    gap: 12px;
+    align-items: end;
+}
+
+.dashboard-export-button-wrap {
+    display: flex;
+    justify-content: flex-end;
+}
+
 .dashboard-section-title {
     font-size: 18px;
     font-weight: 600;
@@ -74,6 +90,18 @@
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
+    .dashboard-export-form {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-export-button-wrap {
+        justify-content: stretch;
+    }
+
+    .dashboard-export-button-wrap .btn {
+        width: 100%;
+    }
+
     .dashboard-categories-grid {
         grid-template-columns: 1fr;
     }

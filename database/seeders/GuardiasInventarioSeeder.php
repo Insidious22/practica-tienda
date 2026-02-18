@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\InventarioItem;
+use App\Models\InventoryItem;
 use Illuminate\Database\Seeder;
 
 class GuardiasInventarioSeeder extends Seeder
@@ -19,7 +19,7 @@ class GuardiasInventarioSeeder extends Seeder
         ];
 
         foreach ($items as $item) {
-            InventarioItem::updateOrCreate(
+            InventoryItem::updateOrCreate(
                 ['codigo_serie' => $item['codigo_serie']],
                 ['nombre' => $item['nombre'], 'cantidad' => $item['cantidad']]
             );

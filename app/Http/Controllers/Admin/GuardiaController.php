@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Diccionario;
 use App\Models\Guardia;
-use App\Models\InventarioItem;
+use App\Models\InventoryItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -21,7 +21,7 @@ class GuardiaController extends Controller
 
     public function create()
     {
-        $inventarioItems = InventarioItem::where('cantidad', '>', 0)->orderBy('nombre')->get();
+        $inventarioItems = InventoryItem::where('cantidad', '>', 0)->orderBy('nombre')->get();
         $tiposDocumento = $this->obtenerCatalogo('guardia_tipo_documento', [
             ['numero' => 1, 'descripcion' => 'Cedula', 'siglas' => 'CED'],
             ['numero' => 2, 'descripcion' => 'RUC', 'siglas' => 'RUC'],
@@ -86,16 +86,16 @@ class GuardiaController extends Controller
                 'activo' => true,
             ]);
 
-            foreach ($request->items as $inventarioItemId) {
-                if (!empty($inventarioItemId)) {
-                    $inventarioItem = InventarioItem::find($inventarioItemId);
-                    if ($inventarioItem && $inventarioItem->cantidad > 0) {
+            foreach ($request->items as $inventoryItemId) {
+                if (!empty($inventoryItemId)) {
+                    $inventoryItem = InventoryItem::find($inventoryItemId);
+                    if ($inventoryItem && $inventoryItem->cantidad > 0) {
                         $guardia->items()->create([
-                            'inventario_item_id' => $inventarioItemId,
-                            'nombre_item' => $inventarioItem->nombre,
-                            'codigo_serie' => $inventarioItem->codigo_serie,
+                            'inventory_item_id' => $inventoryItemId,
+                            'nombre_item' => $inventoryItem->nombre,
+                            'codigo_serie' => $inventoryItem->codigo_serie,
                         ]);
-                        $inventarioItem->decrement('cantidad');
+                        $inventoryItem->decrement('cantidad');
                     }
                 }
             }
@@ -106,8 +106,8 @@ class GuardiaController extends Controller
 
     public function show(string $id)
     {
-        $guardia = Guardia::with('items.inventarioItem')->findOrFail($id);
-        $inventarioItems = InventarioItem::where('cantidad', '>', 0)->orderBy('nombre')->get();
+        $guardia = Guardia::with('items.inventoryItem')->findOrFail($id);
+        $inventarioItems = InventoryItem::where('cantidad', '>', 0)->orderBy('nombre')->get();
         return view('admin.guardias.show', compact('guardia', 'inventarioItems'));
     }
 
@@ -150,15 +150,15 @@ class GuardiaController extends Controller
 
     public function destroy(string $id)
     {
-        $guardia = Guardia::with('items.inventarioItem')->findOrFail($id);
+        $guardia = Guardia::with('items.inventoryItem')->findOrFail($id);
 
         DB::transaction(function () use ($guardia) {
             $guardia->activo = false;
             $guardia->save();
 
             foreach ($guardia->items as $item) {
-                if ($item->inventarioItem) {
-                    $item->inventarioItem->increment('cantidad');
+                if ($item->inventoryItem) {
+                    $item->inventoryItem->increment('cantidad');
                 }
                 $item->delete();
             }
@@ -171,13 +171,13 @@ class GuardiaController extends Controller
     {
         $guardia = Guardia::findOrFail($id);
         $request->validate([
-            'inventario_item_id' => 'required|integer|exists:inventario_items,id',
+            'inventory_item_id' => 'required|integer|exists:inventory_items,id',
         ]);
 
-        $inventarioItemId = $request->input('inventario_item_id');
-        $inventarioItem = InventarioItem::findOrFail($inventarioItemId);
+        $inventoryItemId = $request->input('inventory_item_id');
+        $inventoryItem = InventoryItem::findOrFail($inventoryItemId);
 
-        if ($inventarioItem->cantidad <= 0) {
+        if ($inventoryItem->cantidad <= 0) {
             if ($request->wantsJson()) {
                 return response()->json(['error' => 'Item no disponible'], 400);
             }
@@ -185,7 +185,7 @@ class GuardiaController extends Controller
         }
 
         $existingItem = $guardia->items()
-            ->where('inventario_item_id', $inventarioItemId)
+            ->where('inventory_item_id', $inventoryItemId)
             ->exists();
 
         if ($existingItem) {
@@ -195,13 +195,13 @@ class GuardiaController extends Controller
             return redirect()->route('admin.guardias.show', $guardia->id)->with('error', 'Este item ya esta asignado al guardia');
         }
 
-        DB::transaction(function () use ($guardia, $inventarioItem) {
+        DB::transaction(function () use ($guardia, $inventoryItem) {
             $guardia->items()->create([
-                'inventario_item_id' => $inventarioItem->id,
-                'nombre_item' => $inventarioItem->nombre,
-                'codigo_serie' => $inventarioItem->codigo_serie,
+                'inventory_item_id' => $inventoryItem->id,
+                'nombre_item' => $inventoryItem->nombre,
+                'codigo_serie' => $inventoryItem->codigo_serie,
             ]);
-            $inventarioItem->decrement('cantidad');
+            $inventoryItem->decrement('cantidad');
         });
 
         if ($request->wantsJson()) {
@@ -230,7 +230,7 @@ class GuardiaController extends Controller
 
     private function obtenerSiglasCatalogo(string $tipo, array $fallback): array
     {
-        $siglas = Diccionario::porTipo($tipo)->orderBy('numero')->pluck('siglas')->all();
+        $siglas = Diccionario::siglas($tipo);
 
         return !empty($siglas) ? $siglas : $fallback;
     }

@@ -11,7 +11,7 @@ class ShopController extends Controller
 {
     public function home()
     {
-        $featuredProducts = Product::where('status', 'ACT')
+        $featuredProducts = Product::onlyActive()
             ->whereNotNull('price')
             ->where('price', '>', 0)
             ->with('category')
@@ -20,7 +20,7 @@ class ShopController extends Controller
             ->get();
 
         $categories = Category::withCount(['products' => function ($query) {
-            $query->where('status', 'ACT');
+            $query->onlyActive();
         }])->get();
 
         return view('shop.home', compact('featuredProducts', 'categories'));
@@ -28,7 +28,7 @@ class ShopController extends Controller
 
     public function catalog(Request $request)
     {
-        $query = Product::where('status', 'ACT')
+        $query = Product::onlyActive()
             ->whereNotNull('price')
             ->where('price', '>', 0)
             ->with('category');
@@ -70,7 +70,7 @@ class ShopController extends Controller
     public function category(Category $category)
     {
         $products = Product::where('category_id', $category->id)
-            ->where('status', 'ACT')
+            ->onlyActive()
             ->whereNotNull('price')
             ->where('price', '>', 0)
             ->with('category')
@@ -87,7 +87,7 @@ class ShopController extends Controller
 
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
-            ->where('status', 'ACT')
+            ->onlyActive()
             ->limit(4)
             ->get();
 
@@ -98,7 +98,7 @@ class ShopController extends Controller
     {
         $query = $request->get('q', '');
 
-        $products = Product::where('status', 'ACT')
+        $products = Product::onlyActive()
             ->whereNotNull('price')
             ->where('price', '>', 0)
             ->where(function ($q) use ($query) {

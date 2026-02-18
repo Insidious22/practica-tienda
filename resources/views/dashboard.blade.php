@@ -9,6 +9,59 @@
     <h1 class="title">📊 Dashboard</h1>
 </div>
 
+<div class="dashboard-section dashboard-export-section">
+    <h2 class="dashboard-section-title">⬇️ Exportar Datos</h2>
+    <form action="{{ route('admin.export.data') }}" method="GET" class="dashboard-export-form">
+        <div>
+            <label for="dataset" class="form-label">Módulo</label>
+            <select name="dataset" id="dataset" class="form-select" required>
+                <option value="categorias" {{ request('dataset', 'categorias') === 'categorias' ? 'selected' : '' }}>Categorías</option>
+                <option value="productos" {{ request('dataset') === 'productos' ? 'selected' : '' }}>Productos</option>
+                <option value="zonas" {{ request('dataset') === 'zonas' ? 'selected' : '' }}>Zonas</option>
+                <option value="proveedores" {{ request('dataset') === 'proveedores' ? 'selected' : '' }}>Proveedores</option>
+                <option value="usuarios" {{ request('dataset') === 'usuarios' ? 'selected' : '' }}>Usuarios</option>
+                <option value="clientes" {{ request('dataset') === 'clientes' ? 'selected' : '' }}>Clientes</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="format" class="form-label">Formato</label>
+            <select name="format" id="format" class="form-select" required>
+                <option value="csv" {{ request('format', 'csv') === 'csv' ? 'selected' : '' }}>CSV</option>
+                <option value="xlsx" {{ request('format') === 'xlsx' ? 'selected' : '' }}>XLSX</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="start_date" class="form-label">Desde</label>
+            <input
+                type="date"
+                id="start_date"
+                name="start_date"
+                class="form-control"
+                value="{{ request('start_date', now()->subDays(30)->toDateString()) }}"
+                required
+            >
+        </div>
+
+        <div>
+            <label for="end_date" class="form-label">Hasta</label>
+            <input
+                type="date"
+                id="end_date"
+                name="end_date"
+                class="form-control"
+                value="{{ request('end_date', now()->toDateString()) }}"
+                required
+            >
+        </div>
+
+        <div class="dashboard-export-button-wrap">
+            <button type="submit" class="btn btn-primary">Exportar</button>
+        </div>
+    </form>
+</div>
+
 <!-- Stats Grid -->
 <div class="stats-grid">
     <div class="stat-card primary">

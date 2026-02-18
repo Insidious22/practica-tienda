@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -86,5 +87,23 @@ class User extends Authenticatable
     public function isSuperAdmin(): bool
     {
         return $this->hasRole('super_admin');
+    }
+
+    protected function documentType(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => Diccionario::siglaDeNumero('cliente_tipo_documento', $value),
+            set: function ($value) {
+                if ($value === null || $value === '') {
+                    return null;
+                }
+
+                if (is_numeric($value)) {
+                    return (int) $value;
+                }
+
+                return Diccionario::numeroDeSigla('cliente_tipo_documento', (string) $value);
+            }
+        );
     }
 }

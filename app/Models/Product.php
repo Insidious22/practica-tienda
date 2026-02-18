@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -43,7 +45,6 @@ class Product extends Model
         'description',
         'image',
         'price',
-        'stock',
         'stock_quantity',
         'unit',
         'status',
@@ -52,6 +53,8 @@ class Product extends Model
     protected $casts = [
         'price' => 'decimal:2',
         'stock_quantity' => 'decimal:3',
+        'unit' => 'integer',
+        'status' => 'integer',
     ];
 
     public function category(): BelongsTo
@@ -84,5 +87,46 @@ class Product extends Model
     public function inventoryMovements(): HasMany
     {
         return $this->hasMany(InventoryMovement::class);
+    }
+
+    public function scopeOnlyActive(Builder $query): Builder
+    {
+        return $query->where('status', Diccionario::numeroDeSigla('producto_estado', 'ACT') ?? 1);
+    }
+
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => Diccionario::siglaDeNumero('producto_estado', $value) ?? 'ACT',
+            set: function ($value) {
+                if ($value === null || $value === '') {
+                    return 1;
+                }
+
+                if (is_numeric($value)) {
+                    return (int) $value;
+                }
+
+                return Diccionario::numeroDeSigla('producto_estado', (string) $value) ?? 1;
+            }
+        );
+    }
+
+    protected function unit(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => Diccionario::siglaDeNumero('producto_unidad', $value) ?? 'UNI',
+            set: function ($value) {
+                if ($value === null || $value === '') {
+                    return 1;
+                }
+
+                if (is_numeric($value)) {
+                    return (int) $value;
+                }
+
+                return Diccionario::numeroDeSigla('producto_unidad', (string) $value) ?? 1;
+            }
+        );
     }
 }

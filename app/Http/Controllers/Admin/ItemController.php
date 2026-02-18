@@ -10,12 +10,12 @@ class ItemController extends Controller
 {
     public function destroy(string $id)
     {
-        $item = Item::with('inventarioItem')->findOrFail($id);
+        $item = Item::with('inventoryItem')->findOrFail($id);
         $guardiaId = $item->guardia_id;
 
         DB::transaction(function () use ($item) {
-            if ($item->inventarioItem) {
-                $item->inventarioItem->increment('cantidad');
+            if ($item->inventoryItem) {
+                $item->inventoryItem->increment('cantidad');
             }
             $item->delete();
         });

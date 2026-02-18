@@ -13,7 +13,6 @@ class SalesOrder extends Model
 
     protected $fillable = [
         'order_number',
-        'customer_id',
         'user_id',
         'status',
         'channel',
@@ -90,11 +89,6 @@ class SalesOrder extends Model
         $date = now()->format('Ymd');
         $random = strtoupper(substr(uniqid(), -4));
         return "{$prefix}-{$date}-{$random}";
-    }
-
-    public function customer(): BelongsTo
-    {
-        return $this->belongsTo(Customer::class);
     }
 
     public function user(): BelongsTo

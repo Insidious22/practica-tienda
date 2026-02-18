@@ -13,6 +13,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\GuardiaController as AdminGuardiaController;
 use App\Http\Controllers\Admin\ItemController as AdminItemController;
 use App\Http\Controllers\Admin\DiccionarioController as AdminDiccionarioController;
+use App\Http\Controllers\Admin\DataExportController;
 
 // Shop Controllers
 use App\Http\Controllers\Shop\ShopController;
@@ -98,6 +99,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin.or.superadmin
     });
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/exportar', [DataExportController::class, 'export'])->name('export.data');
     Route::resource('productos', ProductController::class);
     Route::resource('zonas', ZoneController::class);
     Route::resource('categorias', CategoryController::class);

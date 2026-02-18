@@ -53,8 +53,8 @@
             <tbody>
             @foreach ($guardia->items as $item)
                 <tr>
-                    <td>{{ $item->nombre_item ?? ($item->inventarioItem->nombre ?? '-') }}</td>
-                    <td>{{ $item->codigo_serie ?? ($item->inventarioItem->codigo_serie ?? '-') }}</td>
+                    <td>{{ $item->nombre_item ?? ($item->inventoryItem->nombre ?? '-') }}</td>
+                    <td>{{ $item->codigo_serie ?? ($item->inventoryItem->codigo_serie ?? '-') }}</td>
                     <td>
                         <form action="{{ route('admin.guardias.items.destroy', $item) }}" method="POST" onsubmit="return confirm('Quitar este item?');">
                             @csrf
@@ -75,8 +75,8 @@
     <form action="{{ route('admin.guardias.addItem', $guardia) }}" method="POST" class="form-row">
         @csrf
         <div class="form-group">
-            <label for="inventario_item_id">Inventario</label>
-            <select id="inventario_item_id" name="inventario_item_id" required>
+            <label for="inventory_item_id">Inventario</label>
+            <select id="inventory_item_id" name="inventory_item_id" required>
                 @foreach ($inventarioItems as $inv)
                     <option value="{{ $inv->id }}">{{ $inv->nombre }} ({{ $inv->cantidad }})</option>
                 @endforeach

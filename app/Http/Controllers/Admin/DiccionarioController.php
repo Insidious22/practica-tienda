@@ -16,7 +16,7 @@ class DiccionarioController extends Controller
         $query = Diccionario::query()->orderBy('tipo')->orderBy('numero');
 
         if (!empty($tipoFiltro)) {
-            $query->where('tipo', $tipoFiltro);
+            $query->where('tipo', Diccionario::tipoKey($tipoFiltro));
         }
 
         $registros = $query->paginate(20)->withQueryString();
@@ -69,7 +69,7 @@ class DiccionarioController extends Controller
                 'integer',
                 'min:1',
                 Rule::unique('diccionario', 'numero')
-                    ->where(fn ($query) => $query->where('tipo', $request->input('tipo')))
+                    ->where(fn ($query) => $query->where('tipo', Diccionario::tipoKey((string) $request->input('tipo'))))
                     ->ignore($id),
             ],
             'tipo' => ['required', 'string', 'max:100'],
@@ -78,7 +78,7 @@ class DiccionarioController extends Controller
                 'string',
                 'max:150',
                 Rule::unique('diccionario', 'descripcion')
-                    ->where(fn ($query) => $query->where('tipo', $request->input('tipo')))
+                    ->where(fn ($query) => $query->where('tipo', Diccionario::tipoKey((string) $request->input('tipo'))))
                     ->ignore($id),
             ],
             'siglas' => [
@@ -88,7 +88,7 @@ class DiccionarioController extends Controller
                 'max:3',
                 'regex:/^[A-Z0-9]{2,3}$/',
                 Rule::unique('diccionario', 'siglas')
-                    ->where(fn ($query) => $query->where('tipo', $request->input('tipo')))
+                    ->where(fn ($query) => $query->where('tipo', Diccionario::tipoKey((string) $request->input('tipo'))))
                     ->ignore($id),
             ],
         ]);

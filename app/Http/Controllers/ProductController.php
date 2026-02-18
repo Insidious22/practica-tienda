@@ -135,7 +135,7 @@ class ProductController extends Controller
 
     private function obtenerSiglasCatalogo(string $tipo, array $fallback): array
     {
-        $siglas = Diccionario::porTipo($tipo)->orderBy('numero')->pluck('siglas')->all();
+        $siglas = Diccionario::siglas($tipo);
 
         return !empty($siglas) ? $siglas : $fallback;
     }

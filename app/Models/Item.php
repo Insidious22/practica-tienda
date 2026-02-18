@@ -8,7 +8,7 @@ class Item extends Model
 {
     protected $fillable = [
         'guardia_id',
-        'inventario_item_id',
+        'inventory_item_id',
         'nombre_item',
         'codigo_serie',
     ];
@@ -18,8 +18,14 @@ class Item extends Model
         return $this->belongsTo(Guardia::class);
     }
 
+    public function inventoryItem()
+    {
+        return $this->belongsTo(InventoryItem::class, 'inventory_item_id');
+    }
+
+    // Backward-compatible alias while old views/controllers are aligned.
     public function inventarioItem()
     {
-        return $this->belongsTo(InventarioItem::class);
+        return $this->inventoryItem();
     }
 }
