@@ -106,14 +106,14 @@ class SupplierController extends Controller
 
     private function obtenerCatalogo(string $tipo, array $fallback)
     {
-        $catalogo = Diccionario::porTipo($tipo)->orderBy('numero')->get();
+        $catalogo = Diccionario::porTipo($tipo)->orderBy('orden')->get();
 
         return $catalogo->isNotEmpty() ? $catalogo : collect($fallback);
     }
 
     private function obtenerSiglasCatalogo(string $tipo, array $fallback): array
     {
-        $siglas = Diccionario::porTipo($tipo)->orderBy('numero')->pluck('siglas')->all();
+        $siglas = Diccionario::porTipo($tipo)->orderBy('orden')->pluck('valor')->all();
 
         return !empty($siglas) ? $siglas : $fallback;
     }

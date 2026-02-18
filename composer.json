@@ -59,12 +59,12 @@
             "npm run build"
         ],
         "dev": [
-            "@composer run dev:win"
+            "@dev:win"
         ],
         "start:safe": [
             "@php artisan optimize:clear",
             "@php artisan migrate --force",
-            "@composer run dev:win"
+            "@dev:win"
         ],
         "dev:win": [
             "Composer\\Config::disableProcessTimeout",

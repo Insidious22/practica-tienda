@@ -18,7 +18,7 @@
             <select id="tipo" name="tipo">
                 <option value="">Todos</option>
                 @foreach ($tipos as $tipo)
-                    <option value="{{ $tipo }}" @selected($tipoFiltro === $tipo)>{{ $tipo }}</option>
+                    <option value="{{ $tipo }}" @selected($tipoFiltro === $tipo)>{{ \App\Models\Diccionario::tipoLabel($tipo) }} ({{ $tipo }})</option>
                 @endforeach
             </select>
         </div>
@@ -39,10 +39,12 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Numero</th>
+                <th>Orden</th>
                 <th>Tipo</th>
+                <th>Valor</th>
                 <th>Descripcion</th>
-                <th>Siglas</th>
+                <th>Estado</th>
+                <th>ID Cliente</th>
                 <th>Acciones</th>
             </tr>
             </thead>
@@ -50,10 +52,12 @@
             @foreach ($registros as $registro)
                 <tr>
                     <td>{{ $registro->id }}</td>
-                    <td>{{ $registro->numero }}</td>
-                    <td><span class="badge primary">{{ $registro->tipo }}</span></td>
+                    <td>{{ $registro->orden }}</td>
+                    <td><span class="badge primary">{{ \App\Models\Diccionario::tipoLabel($registro->tabla) }} ({{ $registro->tabla }})</span></td>
+                    <td>{{ $registro->valor }}</td>
                     <td>{{ $registro->descripcion }}</td>
-                    <td>{{ $registro->siglas }}</td>
+                    <td>{{ $registro->estado }}</td>
+                    <td>{{ $registro->id_cliente ?? '-' }}</td>
                     <td>
                         <div class="actions">
                             <a href="{{ route('admin.diccionario.edit', $registro) }}" class="btn secondary">Editar</a>

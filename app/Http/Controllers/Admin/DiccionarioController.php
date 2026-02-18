@@ -11,16 +11,16 @@ class DiccionarioController extends Controller
 {
     public function index(Request $request)
     {
-        $tipoFiltro = $request->query('tipo');
+        $tipoFiltro = Diccionario::tipoKey((string) $request->query('tipo', ''));
 
-        $query = Diccionario::query()->orderBy('tipo')->orderBy('numero');
+        $query = Diccionario::query()->orderBy('tabla')->orderBy('orden');
 
         if (!empty($tipoFiltro)) {
-            $query->where('tipo', Diccionario::tipoKey($tipoFiltro));
+            $query->where('tabla', $tipoFiltro);
         }
 
         $registros = $query->paginate(20)->withQueryString();
-        $tipos = Diccionario::query()->select('tipo')->distinct()->orderBy('tipo')->pluck('tipo');
+        $tipos = Diccionario::query()->select('tabla')->distinct()->orderBy('tabla')->pluck('tabla');
 
         return view('admin.diccionario.index', compact('registros', 'tipos', 'tipoFiltro'));
     }
@@ -63,34 +63,43 @@ class DiccionarioController extends Controller
 
     private function validar(Request $request, ?int $id = null): array
     {
+        $tabla = Diccionario::tipoKey((string) $request->input('tabla', $request->input('tipo', '')));
+        $valor = Diccionario::resolverValor(
+            $request->input('valor', $request->input('siglas')),
+            (string) $request->input('descripcion', '')
+        );
+
+        $request->merge([
+            'tabla' => $tabla,
+            'valor' => $valor,
+            'estado' => strtoupper((string) $request->input('estado', 'A')),
+        ]);
+
         return $request->validate([
-            'numero' => [
+            'orden' => [
                 'required',
                 'integer',
                 'min:1',
-                Rule::unique('diccionario', 'numero')
-                    ->where(fn ($query) => $query->where('tipo', Diccionario::tipoKey((string) $request->input('tipo'))))
+                Rule::unique('diccionario', 'orden')
+                    ->where(fn ($query) => $query->where('tabla', $tabla))
                     ->ignore($id),
             ],
-            'tipo' => ['required', 'string', 'max:100'],
+            'id_cliente' => ['nullable', 'integer', 'min:1'],
+            'tabla' => ['required', 'string', 'max:255'],
+            'valor' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('diccionario', 'valor')
+                    ->where(fn ($query) => $query->where('tabla', $tabla))
+                    ->ignore($id),
+            ],
             'descripcion' => [
                 'required',
                 'string',
-                'max:150',
-                Rule::unique('diccionario', 'descripcion')
-                    ->where(fn ($query) => $query->where('tipo', Diccionario::tipoKey((string) $request->input('tipo'))))
-                    ->ignore($id),
+                'max:255',
             ],
-            'siglas' => [
-                'required',
-                'string',
-                'min:2',
-                'max:3',
-                'regex:/^[A-Z0-9]{2,3}$/',
-                Rule::unique('diccionario', 'siglas')
-                    ->where(fn ($query) => $query->where('tipo', Diccionario::tipoKey((string) $request->input('tipo'))))
-                    ->ignore($id),
-            ],
+            'estado' => ['required', 'string', 'size:1', Rule::in(['A', 'I'])],
         ]);
     }
 }

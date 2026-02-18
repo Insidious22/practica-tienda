@@ -223,7 +223,7 @@ class GuardiaController extends Controller
 
     private function obtenerCatalogo(string $tipo, array $fallback)
     {
-        $catalogo = Diccionario::porTipo($tipo)->orderBy('numero')->get();
+        $catalogo = Diccionario::porTipo($tipo)->orderBy('orden')->get();
 
         return $catalogo->isNotEmpty() ? $catalogo : collect($fallback);
     }

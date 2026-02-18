@@ -25,24 +25,42 @@ class Diccionario extends Model
         'proveedor_estado' => self::TIPO_PROVEEDOR_ESTADO,
         'cliente_tipo_documento' => self::TIPO_CLIENTE_TIPO_DOCUMENTO,
     ];
+    private const TIPO_LABELS = [
+        self::TIPO_GUARDIA_TIPO_DOCUMENTO => 'Guardia - Tipo de documento',
+        self::TIPO_GUARDIA_TURNO => 'Guardia - Turno',
+        self::TIPO_PRODUCTO_ESTADO => 'Producto - Estado',
+        self::TIPO_PRODUCTO_UNIDAD => 'Producto - Unidad',
+        self::TIPO_PROVEEDOR_ESTADO => 'Proveedor - Estado',
+        self::TIPO_CLIENTE_TIPO_DOCUMENTO => 'Cliente - Tipo de documento',
+    ];
 
     protected $fillable = [
-        'numero',
-        'tipo',
+        'orden',
+        'id_cliente',
+        'tabla',
+        'valor',
         'descripcion',
-        'siglas',
+        'estado',
     ];
 
     private static array $cache = [];
 
-    public function setTipoAttribute(string $value): void
+    protected static function booted(): void
     {
-        $this->attributes['tipo'] = self::tipoKey($value);
+        static::saving(function (self $model): void {
+            $model->tabla = self::tipoKey((string) $model->tabla);
+            $model->descripcion = trim((string) $model->descripcion);
+            $model->valor = self::resolverValor($model->valor, $model->descripcion);
+
+            $estado = strtoupper(trim((string) ($model->estado ?? 'A')));
+            $model->estado = in_array($estado, ['A', 'I'], true) ? $estado : 'A';
+        });
     }
 
     public function scopePorTipo(Builder $query, string $tipo): Builder
     {
-        return $query->where('tipo', self::tipoKey($tipo));
+        return $query->where('tabla', self::tipoKey($tipo))
+            ->where('estado', 'A');
     }
 
     public static function opciones(string $tipo): Collection
@@ -51,9 +69,10 @@ class Diccionario extends Model
 
         if (!isset(self::$cache[$tipoKey])) {
             self::$cache[$tipoKey] = self::query()
-                ->where('tipo', $tipoKey)
-                ->orderBy('numero')
-                ->get(['numero', 'siglas', 'descripcion']);
+                ->where('tabla', $tipoKey)
+                ->where('estado', 'A')
+                ->orderBy('orden')
+                ->get(['orden as numero', 'valor as siglas', 'descripcion']);
         }
 
         return self::$cache[$tipoKey];
@@ -84,9 +103,101 @@ class Diccionario extends Model
         return self::opciones($tipo)->pluck('siglas')->all();
     }
 
+    public function getNumeroAttribute(): ?int
+    {
+        return $this->attributes['orden'] ?? null;
+    }
+
+    public function setNumeroAttribute(mixed $value): void
+    {
+        $this->attributes['orden'] = $value;
+    }
+
+    public function getTipoAttribute(): ?string
+    {
+        return $this->attributes['tabla'] ?? null;
+    }
+
+    public function setTipoAttribute(mixed $value): void
+    {
+        $this->attributes['tabla'] = self::tipoKey((string) $value);
+    }
+
+    public function getSiglasAttribute(): ?string
+    {
+        return $this->attributes['valor'] ?? null;
+    }
+
+    public function setSiglasAttribute(mixed $value): void
+    {
+        $this->attributes['valor'] = self::normalizarValor((string) $value);
+    }
+
     public static function tipoKey(string $tipo): string
     {
         $normalized = strtolower(trim($tipo));
         return self::TIPO_ALIAS[$normalized] ?? strtoupper(trim($tipo));
+    }
+
+    public static function tipoLabel(string $tipo): string
+    {
+        $tipoKey = self::tipoKey($tipo);
+        return self::TIPO_LABELS[$tipoKey] ?? $tipoKey;
+    }
+
+    public static function tiposConocidos(): array
+    {
+        return self::TIPO_LABELS;
+    }
+
+    public static function resolverValor(mixed $valor, mixed $descripcion): string
+    {
+        $valorNormalizado = self::normalizarValor((string) ($valor ?? ''));
+        if ($valorNormalizado !== '') {
+            return $valorNormalizado;
+        }
+
+        return self::generarValorDesdeDescripcion((string) ($descripcion ?? ''));
+    }
+
+    public static function generarValorDesdeDescripcion(string $descripcion): string
+    {
+        $limpio = self::normalizarTexto($descripcion);
+        if ($limpio === '') {
+            return '';
+        }
+
+        $palabras = preg_split('/\s+/', $limpio, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        if (count($palabras) <= 1) {
+            return substr($palabras[0] ?? '', 0, 3);
+        }
+
+        $iniciales = '';
+        foreach ($palabras as $palabra) {
+            if ($palabra === '') {
+                continue;
+            }
+            $iniciales .= substr($palabra, 0, 1);
+            if (strlen($iniciales) === 4) {
+                break;
+            }
+        }
+
+        return $iniciales;
+    }
+
+    public static function normalizarValor(string $valor): string
+    {
+        $texto = self::normalizarTexto($valor);
+        return preg_replace('/[^A-Z0-9]/', '', $texto) ?? '';
+    }
+
+    private static function normalizarTexto(string $texto): string
+    {
+        $sinTildes = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', trim($texto));
+        $sinTildes = $sinTildes === false ? trim($texto) : $sinTildes;
+        $sinTildes = strtoupper($sinTildes);
+        $sinTildes = preg_replace('/[^A-Z0-9 ]/', ' ', $sinTildes) ?? '';
+        return trim(preg_replace('/\s+/', ' ', $sinTildes) ?? '');
     }
 }
