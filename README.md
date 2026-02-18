@@ -9,12 +9,14 @@ Aplicacion web con dos caras:
 - PHP: 8.2+
 - Frontend: Blade + Vite + Tailwind CSS
 - Base de datos: MySQL
+- Exportacion: Laravel Excel (Maatwebsite) para CSV/XLSX
 
 ## 2. Requisitos
 - PHP 8.2 o superior
 - Composer
 - Node.js + npm
 - MySQL
+- Extensiones PHP: `zip`, `xml`, `mbstring` (para Laravel Excel)
 
 ## 3. Instalacion local
 ```bash
@@ -28,6 +30,11 @@ php artisan serve
 ```
 
 URL local: `http://127.0.0.1:8000`
+
+### Configuracion de Laravel Excel (opcional si no está inicializado)
+```bash
+php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider" --tag=config
+```
 
 ## 4. Scripts utiles
 Desde `composer.json`:
@@ -54,11 +61,15 @@ Desde `composer.json`:
 - Login y dashboard admin.
 - CRUD de productos, zonas, categorias y proveedores.
 - CRUD de diccionario catalogo (`/admin/diccionario`).
+- **Exportacion de datos** en CSV/XLSX con filtro por fechas:
+  - Categorías, productos, zonas, proveedores.
+  - Usuarios y clientes.
+  - Disponible en dashboard con selector de módulo y rango de fechas.
 - Modulo de guardias con:
-- Alta y edicion.
-- Baja logica y reactivacion.
-- Asignacion y devolucion de items.
-- Validaciones por tipo de documento y cedula/documento.
+  - Alta y edicion.
+  - Baja logica y reactivacion.
+  - Asignacion y devolucion de items.
+  - Validaciones por tipo de documento y cedula/documento.
 - Gestion de usuarios admin (restringido por rol).
 
 ### Inventario y compras (modelo de datos)
@@ -76,6 +87,12 @@ Desde `composer.json`:
 - Incorporacion de modulo `diccionario` para catalogos reutilizables.
 - Flujo de checkout conectado con servicios (`CheckoutService`, `PaymentService`).
 - Ajustes de vistas y CSS recientes en frontend.
+- **Implementación de exportación de datos en CSV/XLSX:**
+  - Nuevo controlador: `DataExportController` en `app/Http/Controllers/Admin/`.
+  - Nueva clase export: `GenericArrayExport` en `app/Exports/` (reutilizable).
+  - Integracion con Laravel Excel para manejo de formatos.
+  - Botón/formulario en dashboard con selector de módulo, formato y rango de fechas.
+  - Soporte para 6 módulos exportables con filtrado por `created_at`.
 
 ## 8. Rutas principales
 ### Tienda
@@ -90,6 +107,7 @@ Desde `composer.json`:
 ### Admin
 - `GET /admin/login`
 - `GET /admin/dashboard`
+- `GET /admin/exportar` — Descarga CSV/XLSX con filtros de fecha (requiere autenticación admin)
 - `GET /admin/productos`
 - `GET /admin/categorias`
 - `GET /admin/zonas`
@@ -121,8 +139,27 @@ $user = \App\Models\User::where('email', 'superadmin@tienda.local')->first();
 $user->update(['password' => \Illuminate\Support\Facades\Hash::make('newpassword')]);
 ```
 
-## 10. Proximos pasos sugeridos
+## 10. Caracteristicas de Exportacion
+### Uso del botón de exportación en dashboard
+1. Ir a `/admin/dashboard`.
+2. En la sección "⬇️ Exportar Datos":
+   - Seleccionar **Módulo**: categorías, productos, zonas, proveedores, usuarios o clientes.
+   - Seleccionar **Formato**: CSV o XLSX.
+   - Ingresar **rango de fechas** (Desde/Hasta).
+   - Hacer clic en **Exportar**.
+3. El archivo se descargará automáticamente con nombre: `{modulo}_{fechaInicio}_a_{fechaFin}.{formato}`.
+
+### Módulos exportables
+- **Categorías**: id, zona, nombre, código, descripción, fecha_creación.
+- **Productos**: id, categoría, nombre, código_barras, precio, stock, unidad, estado, fecha_creación.
+- **Zonas**: id, código, nombre, descripción, fecha_creación.
+- **Proveedores**: id, código, razón_social, nombre_comercial, contacto, teléfono, email, ciudad, estado, fecha_creación.
+- **Usuarios**: id, nombre, email, teléfono, ciudad, documento, fecha_creación.
+- **Clientes**: id, código, nombre, email, teléfono, ciudad, estado, fecha_creación.
+
+## 11. Proximos pasos sugeridos
+- Exportacion de pedidos (ventas/compras) con filtros avanzados.
 - Pasarela de pagos real (Stripe/PayPal).
-- Reportes de ventas e inventario.
-- Exportacion a Excel/PDF.
+- Reportes de ventas e inventario en tiempo real.
+- Mejora de queries con paginación para grandes volúmenes de datos.
 - Mayor cobertura de pruebas automatizadas.
