@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/css/layouts/admin.css', 'resources/js/app.js'])
+        @safeVite(['resources/css/app.css', 'resources/css/layouts/admin.css', 'resources/js/app.js'])
     @endif
 
     @stack('styles')
@@ -40,7 +40,7 @@
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="icon-18">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
                 </svg>
-                Categorías
+                Categor�as
             </a>
             <a href="{{ route('admin.zonas.index') }}" class="@if(str_starts_with(Route::currentRouteName(), 'admin.zonas')) active @endif">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="icon-18">
@@ -87,7 +87,7 @@
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="icon-18">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                     </svg>
-                    Cerrar Sesión
+                    Cerrar Sesi�n
                 </button>
             </form>
         </nav>
@@ -108,9 +108,9 @@
         <div class="container">
             @if (session('success'))
                 <div class="alert alert-success">
-                    <span>✓</span>
+                    <span>?</span>
                     <span>{{ session('success') }}</span>
-                    <span class="alert-close" onclick="this.parentElement.style.display='none'">✕</span>
+                    <span class="alert-close" onclick="this.parentElement.style.display='none'">?</span>
                 </div>
             @endif
 
@@ -118,7 +118,7 @@
                 <div class="alert alert-danger">
                     <span>!</span>
                     <div>
-                        <strong>¡Error!</strong>
+                        <strong>�Error!</strong>
                         <ul class="alert-list">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>

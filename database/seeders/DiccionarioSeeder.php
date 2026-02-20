@@ -10,40 +10,48 @@ class DiccionarioSeeder extends Seeder
     public function run(): void
     {
         $registros = [
-            ['numero' => 1, 'tipo' => Diccionario::TIPO_GUARDIA_TIPO_DOCUMENTO, 'descripcion' => 'Cedula', 'siglas' => 'CED'],
-            ['numero' => 2, 'tipo' => Diccionario::TIPO_GUARDIA_TIPO_DOCUMENTO, 'descripcion' => 'RUC', 'siglas' => 'RUC'],
-            ['numero' => 3, 'tipo' => Diccionario::TIPO_GUARDIA_TIPO_DOCUMENTO, 'descripcion' => 'Pasaporte', 'siglas' => 'PAS'],
-            ['numero' => 4, 'tipo' => Diccionario::TIPO_GUARDIA_TIPO_DOCUMENTO, 'descripcion' => 'Otro', 'siglas' => 'OTR'],
+            ['orden' => 1, 'tabla' => Diccionario::TIPO_GUARDIA_TIPO_DOCUMENTO, 'descripcion' => 'Cedula', 'valor' => 'CED'],
+            ['orden' => 2, 'tabla' => Diccionario::TIPO_GUARDIA_TIPO_DOCUMENTO, 'descripcion' => 'RUC', 'valor' => 'RUC'],
+            ['orden' => 3, 'tabla' => Diccionario::TIPO_GUARDIA_TIPO_DOCUMENTO, 'descripcion' => 'Pasaporte', 'valor' => 'PAS'],
+            ['orden' => 4, 'tabla' => Diccionario::TIPO_GUARDIA_TIPO_DOCUMENTO, 'descripcion' => 'Otro', 'valor' => 'OTR'],
 
-            ['numero' => 1, 'tipo' => Diccionario::TIPO_GUARDIA_TURNO, 'descripcion' => 'Manana', 'siglas' => 'MAN'],
-            ['numero' => 2, 'tipo' => Diccionario::TIPO_GUARDIA_TURNO, 'descripcion' => 'Tarde', 'siglas' => 'TAR'],
-            ['numero' => 3, 'tipo' => Diccionario::TIPO_GUARDIA_TURNO, 'descripcion' => 'Noche', 'siglas' => 'NOC'],
+            ['orden' => 1, 'tabla' => Diccionario::TIPO_GUARDIA_TURNO, 'descripcion' => 'Manana', 'valor' => 'MAN'],
+            ['orden' => 2, 'tabla' => Diccionario::TIPO_GUARDIA_TURNO, 'descripcion' => 'Tarde', 'valor' => 'TAR'],
+            ['orden' => 3, 'tabla' => Diccionario::TIPO_GUARDIA_TURNO, 'descripcion' => 'Noche', 'valor' => 'NOC'],
 
-            ['numero' => 1, 'tipo' => Diccionario::TIPO_PRODUCTO_ESTADO, 'descripcion' => 'Activo', 'siglas' => 'ACT'],
-            ['numero' => 2, 'tipo' => Diccionario::TIPO_PRODUCTO_ESTADO, 'descripcion' => 'Inactivo', 'siglas' => 'INA'],
-            ['numero' => 3, 'tipo' => Diccionario::TIPO_PRODUCTO_ESTADO, 'descripcion' => 'Descontinuado', 'siglas' => 'DSC'],
+            ['orden' => 1, 'tabla' => Diccionario::TIPO_PRODUCTO_ESTADO, 'descripcion' => 'Activo', 'valor' => 'ACT'],
+            ['orden' => 2, 'tabla' => Diccionario::TIPO_PRODUCTO_ESTADO, 'descripcion' => 'Inactivo', 'valor' => 'INA'],
+            ['orden' => 3, 'tabla' => Diccionario::TIPO_PRODUCTO_ESTADO, 'descripcion' => 'Descontinuado', 'valor' => 'DSC'],
 
-            ['numero' => 1, 'tipo' => Diccionario::TIPO_PRODUCTO_UNIDAD, 'descripcion' => 'Unidad', 'siglas' => 'UNI'],
-            ['numero' => 2, 'tipo' => Diccionario::TIPO_PRODUCTO_UNIDAD, 'descripcion' => 'Litro', 'siglas' => 'LTR'],
-            ['numero' => 3, 'tipo' => Diccionario::TIPO_PRODUCTO_UNIDAD, 'descripcion' => 'Kilogramo', 'siglas' => 'KGM'],
-            ['numero' => 4, 'tipo' => Diccionario::TIPO_PRODUCTO_UNIDAD, 'descripcion' => 'Caja', 'siglas' => 'CAJ'],
-            ['numero' => 5, 'tipo' => Diccionario::TIPO_PRODUCTO_UNIDAD, 'descripcion' => 'Set', 'siglas' => 'SET'],
-            ['numero' => 6, 'tipo' => Diccionario::TIPO_PRODUCTO_UNIDAD, 'descripcion' => 'Paquete', 'siglas' => 'PAQ'],
+            ['orden' => 1, 'tabla' => Diccionario::TIPO_PRODUCTO_UNIDAD, 'descripcion' => 'Unidad', 'valor' => 'UNI'],
+            ['orden' => 2, 'tabla' => Diccionario::TIPO_PRODUCTO_UNIDAD, 'descripcion' => 'Litro', 'valor' => 'LTR'],
+            ['orden' => 3, 'tabla' => Diccionario::TIPO_PRODUCTO_UNIDAD, 'descripcion' => 'Kilogramo', 'valor' => 'KGM'],
+            ['orden' => 4, 'tabla' => Diccionario::TIPO_PRODUCTO_UNIDAD, 'descripcion' => 'Caja', 'valor' => 'CAJ'],
+            ['orden' => 5, 'tabla' => Diccionario::TIPO_PRODUCTO_UNIDAD, 'descripcion' => 'Set', 'valor' => 'SET'],
+            ['orden' => 6, 'tabla' => Diccionario::TIPO_PRODUCTO_UNIDAD, 'descripcion' => 'Paquete', 'valor' => 'PAQ'],
 
-            ['numero' => 1, 'tipo' => Diccionario::TIPO_PROVEEDOR_ESTADO, 'descripcion' => 'Activo', 'siglas' => 'ACT'],
-            ['numero' => 2, 'tipo' => Diccionario::TIPO_PROVEEDOR_ESTADO, 'descripcion' => 'Inactivo', 'siglas' => 'INA'],
+            ['orden' => 1, 'tabla' => Diccionario::TIPO_PROVEEDOR_ESTADO, 'descripcion' => 'Activo', 'valor' => 'ACT'],
+            ['orden' => 2, 'tabla' => Diccionario::TIPO_PROVEEDOR_ESTADO, 'descripcion' => 'Inactivo', 'valor' => 'INA'],
 
-            ['numero' => 1, 'tipo' => Diccionario::TIPO_CLIENTE_TIPO_DOCUMENTO, 'descripcion' => 'Cedula', 'siglas' => 'CED'],
-            ['numero' => 2, 'tipo' => Diccionario::TIPO_CLIENTE_TIPO_DOCUMENTO, 'descripcion' => 'RUC', 'siglas' => 'RUC'],
-            ['numero' => 3, 'tipo' => Diccionario::TIPO_CLIENTE_TIPO_DOCUMENTO, 'descripcion' => 'Pasaporte', 'siglas' => 'PAS'],
-            ['numero' => 4, 'tipo' => Diccionario::TIPO_CLIENTE_TIPO_DOCUMENTO, 'descripcion' => 'Otro', 'siglas' => 'OTR'],
+            ['orden' => 1, 'tabla' => Diccionario::TIPO_CLIENTE_TIPO_DOCUMENTO, 'descripcion' => 'Cedula', 'valor' => 'CED'],
+            ['orden' => 2, 'tabla' => Diccionario::TIPO_CLIENTE_TIPO_DOCUMENTO, 'descripcion' => 'RUC', 'valor' => 'RUC'],
+            ['orden' => 3, 'tabla' => Diccionario::TIPO_CLIENTE_TIPO_DOCUMENTO, 'descripcion' => 'Pasaporte', 'valor' => 'PAS'],
+            ['orden' => 4, 'tabla' => Diccionario::TIPO_CLIENTE_TIPO_DOCUMENTO, 'descripcion' => 'Otro', 'valor' => 'OTR'],
         ];
 
-        $tiposBase = collect($registros)->pluck('tipo')->unique()->all();
-        Diccionario::whereIn('tipo', $tiposBase)->delete();
-
         foreach ($registros as $registro) {
-            Diccionario::create($registro);
+            Diccionario::updateOrCreate(
+                [
+                    'tabla' => $registro['tabla'],
+                    'orden' => $registro['orden'],
+                ],
+                [
+                    'id_cliente' => null,
+                    'valor' => $registro['valor'],
+                    'descripcion' => $registro['descripcion'],
+                    'estado' => 'A',
+                ]
+            );
         }
     }
 }

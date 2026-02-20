@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @push('styles')
-    @vite(['resources/css/admin/diccionario.css'])
+    @safeVite(['resources/css/admin/diccionario.css'])
 @endpush
 
 @section('content')

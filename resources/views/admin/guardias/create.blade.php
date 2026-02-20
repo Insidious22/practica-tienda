@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @push('styles')
-    @vite(['resources/css/admin/guardias.css'])
+    @safeVite(['resources/css/admin/guardias.css'])
 @endpush
 
 @section('content')
@@ -158,7 +158,6 @@
                     <td>${nombre}</td>
                     <td>Del inventario</td>
                     <td>
-                        <button type="button" class="btn danger btn-delete" data-index="${rowIndex}">Eliminar</button>
                         <button type="button" class="btn danger btn-delete" data-id="${itemId}">Eliminar</button>
                     </td>
                 `;
@@ -166,9 +165,6 @@
                 table.style.display = 'table';
 
                 row.querySelector('.btn-delete').addEventListener('click', function () {
-                    const index = parseInt(this.getAttribute('data-index'));
-                    items.splice(index, 1);
-                    tbody.deleteRow(index);
                     const idToRemove = this.getAttribute('data-id');
                     const itemIndex = items.findIndex(i => i.id === idToRemove);
                     if (itemIndex > -1) {

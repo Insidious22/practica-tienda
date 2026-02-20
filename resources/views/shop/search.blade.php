@@ -1,7 +1,7 @@
 @extends('layouts.shop')
 
 @push('styles')
-    @vite(['resources/css/shop/search.css'])
+    @safeVite(['resources/css/shop/search.css'])
 @endpush
 
 @section('content')
