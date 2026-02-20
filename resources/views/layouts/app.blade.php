@@ -40,7 +40,7 @@
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="icon-18">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
                 </svg>
-                Categorías
+                Categorias
             </a>
             <a href="{{ route('admin.zonas.index') }}" class="@if(str_starts_with(Route::currentRouteName(), 'admin.zonas')) active @endif">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="icon-18">
@@ -87,7 +87,7 @@
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="icon-18">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                     </svg>
-                    Cerrar Sesión
+                    Cerrar Sesion
                 </button>
             </form>
         </nav>
@@ -118,7 +118,7 @@
                 <div class="alert alert-danger">
                     <span>!</span>
                     <div>
-                        <strong>¡Error!</strong>
+                        <strong>Ã¯Â¿Â½Error!</strong>
                         <ul class="alert-list">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>

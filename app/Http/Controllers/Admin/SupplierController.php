@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Diccionario;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 class SupplierController extends Controller
@@ -104,17 +105,47 @@ class SupplierController extends Controller
             ->with('success', 'Proveedor eliminado correctamente.');
     }
 
-    private function obtenerCatalogo(string $tipo, array $fallback)
+    private function obtenerCatalogo(string $tipo, array $fallback): Collection
     {
         $catalogo = Diccionario::porTipo($tipo)->orderBy('orden')->get();
 
-        return $catalogo->isNotEmpty() ? $catalogo : collect($fallback);
+        if ($catalogo->isNotEmpty()) {
+            return $catalogo->map(function ($item) {
+                return (object) [
+                    'numero' => (int) ($item->numero ?? $item->orden ?? 0),
+                    'descripcion' => trim((string) ($item->descripcion ?? '')),
+                    'siglas' => strtoupper(trim((string) ($item->siglas ?? $item->valor ?? ''))),
+                ];
+            })->filter(fn ($item) => $item->siglas !== '' && $item->descripcion !== '')->values();
+        }
+
+        return collect($fallback)->map(function ($item) {
+            return (object) [
+                'numero' => (int) ($item['numero'] ?? 0),
+                'descripcion' => trim((string) ($item['descripcion'] ?? '')),
+                'siglas' => strtoupper(trim((string) ($item['siglas'] ?? ''))),
+            ];
+        })->values();
     }
 
     private function obtenerSiglasCatalogo(string $tipo, array $fallback): array
     {
-        $siglas = Diccionario::porTipo($tipo)->orderBy('orden')->pluck('valor')->all();
+        $siglas = collect(Diccionario::siglas($tipo))
+            ->map(fn ($sigla) => strtoupper(trim((string) $sigla)))
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
 
-        return !empty($siglas) ? $siglas : $fallback;
+        if (!empty($siglas)) {
+            return $siglas;
+        }
+
+        return collect($fallback)
+            ->map(fn ($sigla) => strtoupper(trim((string) $sigla)))
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
     }
 }
