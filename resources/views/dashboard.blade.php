@@ -169,26 +169,6 @@
     @endif
 </div>
 
-<!-- Quick Actions -->
-<div class="dashboard-actions-section">
-    <h2 class="dashboard-section-title">⚡ Acciones Rápidas</h2>
-    
-    <div class="dashboard-actions-grid">
-        <a href="{{ route('admin.productos.create') }}" class="btn btn-primary dashboard-action-btn">
-            <span>➕ Nuevo Producto</span>
-        </a>
-        <a href="{{ route('admin.categorias.create') }}" class="btn btn-primary dashboard-action-btn">
-            <span>➕ Nueva Categoría</span>
-        </a>
-        <a href="{{ route('admin.zonas.create') }}" class="btn btn-primary dashboard-action-btn">
-            <span>➕ Nueva Zona</span>
-        </a>
-        <a href="{{ route('admin.productos.index') }}" class="btn btn-secondary dashboard-action-btn">
-            <span>📋 Ver Todos los Productos</span>
-        </a>
-    </div>
-</div>
-
 @endsection
 
 
