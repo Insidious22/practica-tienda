@@ -9,7 +9,7 @@
             <option value="">-- Seleccionar una categoria --</option>
             @foreach($categories as $cat)
                 <option value="{{ $cat->id }}" {{ old('category_id', $product->category_id ?? '') == $cat->id ? 'selected' : '' }}>
-                    {{ $cat->name }} ({{ $cat->zone->name ?? 'Sin zona' }})
+                    {{ $cat->name }} ({{ $cat->zone?->name ?? 'Sin zona' }})
                 </option>
             @endforeach
         </select>
