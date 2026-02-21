@@ -1,9 +1,5 @@
 @extends('layouts.shop')
 
-@push('styles')
-    @safeVite(['resources/css/shop/cart.css'])
-@endpush
-
 @section('content')
     <div class="breadcrumb">
         <a href="{{ route('shop.home') }}">Inicio</a>

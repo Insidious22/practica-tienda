@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@push('styles')
-    @safeVite(['resources/css/admin/guardias.css'])
-@endpush
-
 @section('content')
     <div class="header">
         <h2 class="title">Registrar Guardia</h2>

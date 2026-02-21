@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@push('styles')
-    @safeVite(['resources/css/admin/categories.css'])
-@endpush
-
 @section('content')
 <div class="header">
     <h1 class="title">🏷️ Detalle de Categoría: {{ $category->name }}</h1>

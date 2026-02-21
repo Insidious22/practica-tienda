@@ -1,9 +1,5 @@
 @extends('layouts.shop')
 
-@push('styles')
-    @safeVite(['resources/css/shop/checkout.css'])
-@endpush
-
 @section('content')
     <div class="confirmation-wrap">
         <!-- Success Header -->

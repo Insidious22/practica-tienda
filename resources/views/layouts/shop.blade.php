@@ -9,13 +9,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-            @safeVite(['resources/css/app.css', 'resources/css/layouts/shop.css', 'resources/js/app.js'])
+            @safeVite(['resources/css/app.css', 'resources/css/bundles/shop.css', 'resources/js/app.js'])
         @endif
 
         @stack('styles')
 
 </head>
 <body>
+    <x-turbo-loader />
+
     <!-- Header -->
     <header class="shop-header">
         <div class="header-top">
@@ -26,7 +28,7 @@
         </div>
 
         <div class="header-main container">
-            <a href="{{ route('shop.home') }}" class="shop-logo">
+            <a href="{{ route('shop.home') }}" class="shop-logo" data-turbo-prefetch>
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="shop-logo-icon">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                 </svg>
@@ -46,7 +48,7 @@
 
             <div class="header-actions">
                 @auth
-                    <a href="{{ route('shop.account.index') }}" class="header-link">
+                    <a href="{{ route('shop.account.index') }}" class="header-link" data-turbo-prefetch>
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="icon-20">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
@@ -62,7 +64,7 @@
                         </button>
                     </form>
                 @else
-                    <a href="{{ route('shop.login') }}" class="header-link">
+                    <a href="{{ route('shop.login') }}" class="header-link" data-turbo-prefetch>
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="icon-20">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
@@ -70,7 +72,7 @@
                     </a>
                 @endauth
 
-                <a href="{{ route('shop.cart') }}" class="header-link cart-icon">
+                <a href="{{ route('shop.cart') }}" class="header-link cart-icon" data-turbo-prefetch>
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="icon-24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                     </svg>
@@ -89,13 +91,17 @@
 
         <nav class="shop-nav">
             <div class="nav-content container">
-                <a href="{{ route('shop.home') }}" class="nav-link @if(Route::currentRouteName() === 'shop.home') active @endif">Inicio</a>
-                <a href="{{ route('shop.catalog') }}" class="nav-link @if(Route::currentRouteName() === 'shop.catalog') active @endif">Catalogo</a>
+                <a href="{{ route('shop.home') }}" class="nav-link @if(Route::currentRouteName() === 'shop.home') active @endif" data-turbo-prefetch>Inicio</a>
+                <a href="{{ route('shop.catalog') }}" class="nav-link @if(Route::currentRouteName() === 'shop.catalog') active @endif" data-turbo-prefetch>Catalogo</a>
                 @php
-                    $navCategories = \App\Models\Category::take(5)->get();
+                    $navCategories = \Illuminate\Support\Facades\Cache::remember(
+                        'shop.nav.categories',
+                        now()->addMinutes(10),
+                        fn () => \App\Models\Category::query()->select(['id', 'name'])->orderBy('name')->take(5)->get()
+                    );
                 @endphp
                 @foreach($navCategories as $navCategory)
-                    <a href="{{ route('shop.category', $navCategory) }}" class="nav-link">{{ $navCategory->name }}</a>
+                    <a href="{{ route('shop.category', $navCategory) }}" class="nav-link" data-turbo-prefetch>{{ $navCategory->name }}</a>
                 @endforeach
             </div>
         </nav>
@@ -147,20 +153,20 @@
             <div class="footer-section">
                 <h4>Enlaces</h4>
                 <ul>
-                    <li><a href="{{ route('shop.home') }}">Inicio</a></li>
-                    <li><a href="{{ route('shop.catalog') }}">Catalogo</a></li>
-                    <li><a href="{{ route('shop.cart') }}">Carrito</a></li>
+                    <li><a href="{{ route('shop.home') }}" data-turbo-prefetch>Inicio</a></li>
+                    <li><a href="{{ route('shop.catalog') }}" data-turbo-prefetch>Catalogo</a></li>
+                    <li><a href="{{ route('shop.cart') }}" data-turbo-prefetch>Carrito</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>Mi Cuenta</h4>
                 <ul>
                     @auth
-                        <li><a href="{{ route('shop.account.index') }}">Mi Cuenta</a></li>
-                        <li><a href="{{ route('shop.account.orders') }}">Mis Pedidos</a></li>
+                        <li><a href="{{ route('shop.account.index') }}" data-turbo-prefetch>Mi Cuenta</a></li>
+                        <li><a href="{{ route('shop.account.orders') }}" data-turbo-prefetch>Mis Pedidos</a></li>
                     @else
-                        <li><a href="{{ route('shop.login') }}">Iniciar Sesion</a></li>
-                        <li><a href="{{ route('shop.register') }}">Registrarse</a></li>
+                        <li><a href="{{ route('shop.login') }}" data-turbo-prefetch>Iniciar Sesion</a></li>
+                        <li><a href="{{ route('shop.register') }}" data-turbo-prefetch>Registrarse</a></li>
                     @endauth
                 </ul>
             </div>

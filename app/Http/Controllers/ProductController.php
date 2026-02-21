@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\Diccionario;
+use App\Services\CatalogOptionService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
+    public function __construct(private readonly CatalogOptionService $catalogOptionService)
+    {
+    }
+
     public function index()
     {
         $products = Product::with('category.zone')->orderByDesc('id')->paginate(10);
@@ -21,12 +24,12 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::with('zone')->orderBy('name')->get();
-        $statusOptions = $this->obtenerCatalogo('producto_estado', [
+        $statusOptions = $this->catalogOptionService->options('producto_estado', [
             ['numero' => 1, 'descripcion' => 'Activo', 'siglas' => 'ACT'],
             ['numero' => 2, 'descripcion' => 'Inactivo', 'siglas' => 'INA'],
             ['numero' => 3, 'descripcion' => 'Descontinuado', 'siglas' => 'DSC'],
         ]);
-        $unitOptions = $this->obtenerCatalogo('producto_unidad', [
+        $unitOptions = $this->catalogOptionService->options('producto_unidad', [
             ['numero' => 1, 'descripcion' => 'Unidad', 'siglas' => 'UNI'],
             ['numero' => 2, 'descripcion' => 'Litro', 'siglas' => 'LTR'],
             ['numero' => 3, 'descripcion' => 'Kilogramo', 'siglas' => 'KGM'],
@@ -40,8 +43,8 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $statusSiglas = $this->obtenerSiglasCatalogo('producto_estado', ['ACT', 'INA', 'DSC']);
-        $unitSiglas = $this->obtenerSiglasCatalogo('producto_unidad', ['UNI', 'LTR', 'KGM', 'CAJ', 'SET', 'PAQ']);
+        $statusSiglas = $this->catalogOptionService->keys('producto_estado', ['ACT', 'INA', 'DSC']);
+        $unitSiglas = $this->catalogOptionService->keys('producto_unidad', ['UNI', 'LTR', 'KGM', 'CAJ', 'SET', 'PAQ']);
 
         $data = $request->validate([
             'category_id' => 'required|exists:categories,id',
@@ -72,12 +75,12 @@ class ProductController extends Controller
     public function edit(Product $producto)
     {
         $categories = Category::with('zone')->orderBy('name')->get();
-        $statusOptions = $this->obtenerCatalogo('producto_estado', [
+        $statusOptions = $this->catalogOptionService->options('producto_estado', [
             ['numero' => 1, 'descripcion' => 'Activo', 'siglas' => 'ACT'],
             ['numero' => 2, 'descripcion' => 'Inactivo', 'siglas' => 'INA'],
             ['numero' => 3, 'descripcion' => 'Descontinuado', 'siglas' => 'DSC'],
         ]);
-        $unitOptions = $this->obtenerCatalogo('producto_unidad', [
+        $unitOptions = $this->catalogOptionService->options('producto_unidad', [
             ['numero' => 1, 'descripcion' => 'Unidad', 'siglas' => 'UNI'],
             ['numero' => 2, 'descripcion' => 'Litro', 'siglas' => 'LTR'],
             ['numero' => 3, 'descripcion' => 'Kilogramo', 'siglas' => 'KGM'],
@@ -96,8 +99,8 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $producto)
     {
-        $statusSiglas = $this->obtenerSiglasCatalogo('producto_estado', ['ACT', 'INA', 'DSC']);
-        $unitSiglas = $this->obtenerSiglasCatalogo('producto_unidad', ['UNI', 'LTR', 'KGM', 'CAJ', 'SET', 'PAQ']);
+        $statusSiglas = $this->catalogOptionService->keys('producto_estado', ['ACT', 'INA', 'DSC']);
+        $unitSiglas = $this->catalogOptionService->keys('producto_unidad', ['UNI', 'LTR', 'KGM', 'CAJ', 'SET', 'PAQ']);
 
         $data = $request->validate([
             'category_id' => 'required|exists:categories,id',
@@ -125,49 +128,5 @@ class ProductController extends Controller
         return redirect()
             ->route('admin.productos.index')
             ->with('success', 'Producto eliminado correctamente.');
-    }
-
-    private function obtenerCatalogo(string $tipo, array $fallback): Collection
-    {
-        $catalogo = Diccionario::porTipo($tipo)->orderBy('orden')->get();
-
-        if ($catalogo->isNotEmpty()) {
-            return $catalogo->map(function ($item) {
-                return (object) [
-                    'numero' => (int) ($item->numero ?? $item->orden ?? 0),
-                    'descripcion' => trim((string) ($item->descripcion ?? '')),
-                    'siglas' => strtoupper(trim((string) ($item->siglas ?? $item->valor ?? ''))),
-                ];
-            })->filter(fn ($item) => $item->siglas !== '' && $item->descripcion !== '')->values();
-        }
-
-        return collect($fallback)->map(function ($item) {
-            return (object) [
-                'numero' => (int) ($item['numero'] ?? 0),
-                'descripcion' => trim((string) ($item['descripcion'] ?? '')),
-                'siglas' => strtoupper(trim((string) ($item['siglas'] ?? ''))),
-            ];
-        })->values();
-    }
-
-    private function obtenerSiglasCatalogo(string $tipo, array $fallback): array
-    {
-        $siglas = collect(Diccionario::siglas($tipo))
-            ->map(fn ($sigla) => strtoupper(trim((string) $sigla)))
-            ->filter()
-            ->unique()
-            ->values()
-            ->all();
-
-        if (!empty($siglas)) {
-            return $siglas;
-        }
-
-        return collect($fallback)
-            ->map(fn ($sigla) => strtoupper(trim((string) $sigla)))
-            ->filter()
-            ->unique()
-            ->values()
-            ->all();
     }
 }

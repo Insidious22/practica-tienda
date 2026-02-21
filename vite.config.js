@@ -11,15 +11,24 @@ export default defineConfig({
         tailwindcss(),
     ],
     server: {
-        host: '127.0.0.1',
-        port: 5174,
-        strictPort: true,
+        host: '0.0.0.0',
+        port: 5173,
         hmr: {
-            host: '127.0.0.1',
-            port: 5174,
+            host: 'localhost',
+            port: 5173,
         },
         watch: {
             ignored: ['**/storage/framework/views/**'],
+        },
+    },
+    build: {
+        chunkSizeWarningLimit: 1000,
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    turbo: ['@hotwired/turbo'],
+                },
+            },
         },
     },
 });

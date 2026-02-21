@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Shop;
 
+use App\Actions\Shop\BuildCatalogQueryAction;
+use App\Actions\Shop\BuildRelatedProductsQueryAction;
+use App\Actions\Shop\BuildSearchProductsQueryAction;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
@@ -9,60 +12,45 @@ use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
+    public function __construct(
+        private readonly BuildCatalogQueryAction $buildCatalogQueryAction,
+        private readonly BuildSearchProductsQueryAction $buildSearchProductsQueryAction,
+        private readonly BuildRelatedProductsQueryAction $buildRelatedProductsQueryAction,
+    ) {
+    }
+
     public function home()
     {
         $featuredProducts = Product::onlyActive()
+            ->select(['id', 'name', 'price', 'image', 'category_id'])
             ->whereNotNull('price')
             ->where('price', '>', 0)
-            ->with('category')
+            ->with('category:id,name')
             ->inRandomOrder()
             ->limit(8)
             ->get();
 
-        $categories = Category::withCount(['products' => function ($query) {
-            $query->onlyActive();
-        }])->get();
+        $categories = Category::query()
+            ->select(['id', 'name'])
+            ->withCount(['products' => function ($query) {
+                $query->onlyActive();
+            }])
+            ->get();
 
         return view('shop.home', compact('featuredProducts', 'categories'));
     }
 
     public function catalog(Request $request)
     {
-        $query = Product::onlyActive()
-            ->whereNotNull('price')
-            ->where('price', '>', 0)
-            ->with('category');
+        $products = $this->buildCatalogQueryAction
+            ->execute($request)
+            ->paginate(12)
+            ->withQueryString();
 
-        // Filter by category
-        if ($request->filled('category')) {
-            $query->where('category_id', $request->category);
-        }
-
-        if ($request->filled('min_price')) {
-            $query->where('price', '>=', $request->min_price);
-        }
-
-        if ($request->filled('max_price')) {
-            $query->where('price', '<=', $request->max_price);
-        }
-
-        $sort = $request->get('sort', 'newest');
-        switch ($sort) {
-            case 'price_asc':
-                $query->orderBy('price', 'asc');
-                break;
-            case 'price_desc':
-                $query->orderBy('price', 'desc');
-                break;
-            case 'name':
-                $query->orderBy('name', 'asc');
-                break;
-            default:
-                $query->orderByDesc('created_at');
-        }
-
-        $products = $query->paginate(12)->withQueryString();
-        $categories = Category::all();
+        $categories = Category::query()
+            ->select(['id', 'name'])
+            ->orderBy('name')
+            ->get();
 
         return view('shop.catalog', compact('products', 'categories'));
     }
@@ -71,9 +59,10 @@ class ShopController extends Controller
     {
         $products = Product::where('category_id', $category->id)
             ->onlyActive()
+            ->select(['id', 'name', 'price', 'image', 'category_id', 'created_at'])
             ->whereNotNull('price')
             ->where('price', '>', 0)
-            ->with('category')
+            ->with('category:id,name')
             ->paginate(12);
 
         return view('shop.category', compact('category', 'products'));
@@ -85,9 +74,8 @@ class ShopController extends Controller
             abort(404);
         }
 
-        $relatedProducts = Product::where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id)
-            ->onlyActive()
+        $relatedProducts = $this->buildRelatedProductsQueryAction
+            ->execute($product)
             ->limit(4)
             ->get();
 
@@ -98,20 +86,11 @@ class ShopController extends Controller
     {
         $query = $request->get('q', '');
 
-        $products = Product::onlyActive()
-            ->whereNotNull('price')
-            ->where('price', '>', 0)
-            ->where(function ($q) use ($query) {
-                $q->where('name', 'like', "%{$query}%")
-                    ->orWhere('description', 'like', "%{$query}%")
-                    ->orWhere('barcode', 'like', "%{$query}%")
-                    ->orWhere('sku', 'like', "%{$query}%");
-            })
-            ->with('category')
+        $products = $this->buildSearchProductsQueryAction
+            ->execute((string) $query)
             ->paginate(12)
             ->withQueryString();
 
         return view('shop.search', compact('products', 'query'));
     }
 }
-

@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@push('styles')
-    @safeVite(['resources/css/admin/suppliers.css'])
-@endpush
-
 @section('content')
 <div class="header">
     <h1 class="title">{{ $supplier->business_name }}</h1>

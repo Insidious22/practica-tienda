@@ -1,0 +1,11 @@
+@import '../layouts/shop.css';
+@import '../shop/components.css';
+@import '../shop/home.css';
+@import '../shop/catalog.css';
+@import '../shop/category.css';
+@import '../shop/product.css';
+@import '../shop/cart.css';
+@import '../shop/search.css';
+@import '../shop/account.css';
+@import '../shop/auth.css';
+@import '../shop/checkout.css';

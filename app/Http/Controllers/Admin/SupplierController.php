@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Diccionario;
 use App\Models\Supplier;
+use App\Services\CatalogOptionService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 class SupplierController extends Controller
 {
+    public function __construct(private readonly CatalogOptionService $catalogOptionService)
+    {
+    }
+
     public function index()
     {
         $suppliers = Supplier::orderByDesc('id')->paginate(15);
@@ -19,7 +22,7 @@ class SupplierController extends Controller
 
     public function create()
     {
-        $statusOptions = $this->obtenerCatalogo('proveedor_estado', [
+        $statusOptions = $this->catalogOptionService->options('proveedor_estado', [
             ['numero' => 1, 'descripcion' => 'Activo', 'siglas' => 'ACT'],
             ['numero' => 2, 'descripcion' => 'Inactivo', 'siglas' => 'INA'],
         ]);
@@ -29,7 +32,7 @@ class SupplierController extends Controller
 
     public function store(Request $request)
     {
-        $statusSiglas = $this->obtenerSiglasCatalogo('proveedor_estado', ['ACT', 'INA']);
+        $statusSiglas = $this->catalogOptionService->keys('proveedor_estado', ['ACT', 'INA']);
 
         $data = $request->validate([
             'code' => 'required|string|max:32|unique:suppliers,code',
@@ -60,7 +63,7 @@ class SupplierController extends Controller
 
     public function edit(Supplier $supplier)
     {
-        $statusOptions = $this->obtenerCatalogo('proveedor_estado', [
+        $statusOptions = $this->catalogOptionService->options('proveedor_estado', [
             ['numero' => 1, 'descripcion' => 'Activo', 'siglas' => 'ACT'],
             ['numero' => 2, 'descripcion' => 'Inactivo', 'siglas' => 'INA'],
         ]);
@@ -70,7 +73,7 @@ class SupplierController extends Controller
 
     public function update(Request $request, Supplier $supplier)
     {
-        $statusSiglas = $this->obtenerSiglasCatalogo('proveedor_estado', ['ACT', 'INA']);
+        $statusSiglas = $this->catalogOptionService->keys('proveedor_estado', ['ACT', 'INA']);
 
         $data = $request->validate([
             'code' => 'required|string|max:32|unique:suppliers,code,' . $supplier->id,
@@ -103,49 +106,5 @@ class SupplierController extends Controller
 
         return redirect()->route('admin.proveedores.index')
             ->with('success', 'Proveedor eliminado correctamente.');
-    }
-
-    private function obtenerCatalogo(string $tipo, array $fallback): Collection
-    {
-        $catalogo = Diccionario::porTipo($tipo)->orderBy('orden')->get();
-
-        if ($catalogo->isNotEmpty()) {
-            return $catalogo->map(function ($item) {
-                return (object) [
-                    'numero' => (int) ($item->numero ?? $item->orden ?? 0),
-                    'descripcion' => trim((string) ($item->descripcion ?? '')),
-                    'siglas' => strtoupper(trim((string) ($item->siglas ?? $item->valor ?? ''))),
-                ];
-            })->filter(fn ($item) => $item->siglas !== '' && $item->descripcion !== '')->values();
-        }
-
-        return collect($fallback)->map(function ($item) {
-            return (object) [
-                'numero' => (int) ($item['numero'] ?? 0),
-                'descripcion' => trim((string) ($item['descripcion'] ?? '')),
-                'siglas' => strtoupper(trim((string) ($item['siglas'] ?? ''))),
-            ];
-        })->values();
-    }
-
-    private function obtenerSiglasCatalogo(string $tipo, array $fallback): array
-    {
-        $siglas = collect(Diccionario::siglas($tipo))
-            ->map(fn ($sigla) => strtoupper(trim((string) $sigla)))
-            ->filter()
-            ->unique()
-            ->values()
-            ->all();
-
-        if (!empty($siglas)) {
-            return $siglas;
-        }
-
-        return collect($fallback)
-            ->map(fn ($sigla) => strtoupper(trim((string) $sigla)))
-            ->filter()
-            ->unique()
-            ->values()
-            ->all();
     }
 }

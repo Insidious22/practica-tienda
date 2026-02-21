@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@push('styles')
-    @safeVite(['resources/css/admin/users.css'])
-@endpush
-
 @section('content')
 <div class="header">
     <h1 class="title">Crear Nuevo Usuario</h1>

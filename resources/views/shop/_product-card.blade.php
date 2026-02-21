@@ -15,14 +15,14 @@
             <div class="product-category">{{ $product->category->name }}</div>
         @endif
         <h3 class="product-name">
-            <a href="{{ route('shop.product', $product->id) }}">{{ $product->name }}</a>
+            <a href="{{ route('shop.product', $product->id) }}" data-turbo-prefetch data-turbo-frame="_top">{{ $product->name }}</a>
         </h3>
         <div class="product-price">
             ${{ number_format($product->price, 2, ',', '.') }}
         </div>
     </div>
     <div class="product-actions">
-        <form action="{{ route('shop.cart.add') }}" method="POST">
+        <form action="{{ route('shop.cart.add') }}" method="POST" data-turbo-frame="_top">
             @csrf
             <input type="hidden" name="product_id" value="{{ $product->id }}">
             <input type="hidden" name="quantity" value="1">

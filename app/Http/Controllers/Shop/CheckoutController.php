@@ -2,38 +2,40 @@
 
 namespace App\Http\Controllers\Shop;
 
+use App\Actions\Shop\FormatStockErrorsAction;
+use App\Actions\Shop\ProcessCheckoutAction;
 use App\Http\Controllers\Controller;
 use App\Models\SalesOrder;
+use App\Models\User;
 use App\Services\CartService;
 use App\Services\CheckoutService;
-use App\Services\PaymentService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class CheckoutController extends Controller
 {
     public function __construct(
         protected CartService $cartService,
         protected CheckoutService $checkoutService,
-        protected PaymentService $paymentService
+        protected FormatStockErrorsAction $formatStockErrorsAction,
+        protected ProcessCheckoutAction $processCheckoutAction
     ) {
     }
 
-    public function index()
+    public function index(): View|RedirectResponse
     {
         $cart = $this->cartService->getCart()->load('items.product');
 
         if ($cart->items->isEmpty()) {
             return redirect()->route('shop.cart')
-                ->with('error', 'Tu carrito está vacío');
+                ->with('error', 'Tu carrito esta vacio');
         }
 
-        // Validate stock
         $stockErrors = $this->checkoutService->validateStock($cart);
         if (!empty($stockErrors)) {
-            $errorMessages = collect($stockErrors)->map(function ($error) {
-                return "{$error['product']}: solo hay {$error['available']} disponibles";
-            })->join(', ');
+            $errorMessages = $this->formatStockErrorsAction->execute($stockErrors);
 
             return redirect()->route('shop.cart')
                 ->with('error', "Algunos productos no tienen stock suficiente: {$errorMessages}");
@@ -45,7 +47,7 @@ class CheckoutController extends Controller
         return view('shop.checkout.index', compact('cart', 'totals', 'user'));
     }
 
-    public function saveShipping(Request $request)
+    public function saveShipping(Request $request): RedirectResponse
     {
         $data = $request->validate([
             'shipping_address' => 'required|string|max:255',
@@ -59,14 +61,13 @@ class CheckoutController extends Controller
         return redirect()->route('shop.checkout.payment');
     }
 
-    public function payment()
+    public function payment(): View|RedirectResponse
     {
         if (!session('checkout_shipping')) {
             return redirect()->route('shop.checkout.index');
         }
 
         $cart = $this->cartService->getCart()->load('items.product');
-
         if ($cart->items->isEmpty()) {
             return redirect()->route('shop.cart');
         }
@@ -77,60 +78,43 @@ class CheckoutController extends Controller
         return view('shop.checkout.payment', compact('cart', 'totals', 'shippingData'));
     }
 
-    public function process(Request $request)
+    public function process(Request $request): RedirectResponse
     {
         $cart = $this->cartService->getCart()->load('items.product');
         $shippingData = session('checkout_shipping');
+        $user = Auth::user();
 
-        if (!$shippingData || $cart->items->isEmpty()) {
+        if (!$shippingData || $cart->items->isEmpty() || !$user instanceof User) {
             return redirect()->route('shop.checkout.index');
         }
 
-        // Validate stock one more time
         $stockErrors = $this->checkoutService->validateStock($cart);
         if (!empty($stockErrors)) {
             return redirect()->route('shop.cart')
                 ->with('error', 'Algunos productos ya no tienen stock suficiente');
         }
 
-        try {
-            // Create order
-            $order = $this->checkoutService->createOrder(
-                $cart,
-                $shippingData,
-                Auth::user()
-            );
+        $result = $this->processCheckoutAction->execute($cart, $shippingData, $user);
 
-            // Process payment (simplified version)
-            $paymentResult = $this->paymentService->processPayment($order);
+        if ($result->ok && $result->order) {
+            $this->cartService->clear();
+            session()->forget('checkout_shipping');
 
-            if ($paymentResult['success']) {
-                // Mark as paid
-                $this->checkoutService->markAsPaid($order);
-
-                // Clear cart and session
-                $this->cartService->clear();
-                session()->forget('checkout_shipping');
-
-                return redirect()->route('shop.checkout.confirmation', $order)
-                    ->with('success', '¡Pedido realizado con éxito!');
-            }
-
-            // Payment failed - delete order
-            $order->delete();
-
-            return redirect()->route('shop.checkout.payment')
-                ->with('error', 'Error al procesar el pago: ' . ($paymentResult['error'] ?? 'Error desconocido'));
-
-        } catch (\Exception $e) {
-            return redirect()->route('shop.checkout.payment')
-                ->with('error', 'Error al procesar tu pedido. Por favor intenta nuevamente.');
+            return redirect()->route('shop.checkout.confirmation', $result->order)
+                ->with('success', 'Pedido realizado con exito');
         }
+
+        if ($result->error) {
+            return redirect()->route('shop.checkout.payment')
+                ->with('error', 'Error al procesar el pago: ' . $result->error);
+        }
+
+        return redirect()->route('shop.checkout.payment')
+            ->with('error', 'Error al procesar tu pedido. Por favor intenta nuevamente.');
     }
 
-    public function confirmation(SalesOrder $order)
+    public function confirmation(SalesOrder $order): View
     {
-        // Verify order belongs to current user
         if ($order->user_id !== Auth::id()) {
             abort(403);
         }

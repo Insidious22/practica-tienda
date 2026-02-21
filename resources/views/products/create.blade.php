@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@push('styles')
-    @safeVite(['resources/css/admin/products.css'])
-@endpush
-
 @section('content')
 <div class="header">
     <h1 class="title">➕ Crear Nuevo Producto</h1>

@@ -7,18 +7,36 @@ Aplicacion web con dos caras:
 ## 1. Stack tecnologico
 - Backend: Laravel 12
 - PHP: 8.2+
-- Frontend: Blade + Vite + Tailwind CSS
+- Frontend: Blade + Vite + Turbo (Hotwire)
 - Base de datos: MySQL
 - Exportacion: Laravel Excel (Maatwebsite) para CSV/XLSX
+- Contenedores: Docker (app, web, db, node)
 
 ## 2. Requisitos
-- PHP 8.2 o superior
-- Composer
-- Node.js + npm
-- MySQL
-- Extensiones PHP: `zip`, `xml`, `mbstring` (para Laravel Excel)
+- Docker y Docker Compose (recomendado)
+- Opcion local sin Docker:
+  - PHP 8.2 o superior
+  - Composer
+  - Node.js + npm
+  - MySQL
+  - Extensiones PHP: `zip`, `xml`, `mbstring`
 
-## 3. Instalacion local
+## 3. Instalacion y ejecucion
+
+### Opcion A: Docker (recomendada)
+```bash
+docker compose up -d --build
+docker compose exec app composer install
+docker compose exec app cp .env.example .env
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate --seed
+docker compose exec node npm install
+docker compose exec node npm run dev
+```
+
+URL web: `http://localhost:8080`
+
+### Opcion B: Local (sin Docker)
 ```bash
 composer install
 npm install
@@ -31,15 +49,10 @@ php artisan serve
 
 URL local: `http://127.0.0.1:8000`
 
-### Configuracion de Laravel Excel (opcional si no está inicializado)
-```bash
-php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider" --tag=config
-```
-
 ## 4. Scripts utiles
 Desde `composer.json`:
 - `composer run setup`: instala, configura, migra con seed y compila assets.
-- `composer run dev`: entorno de desarrollo en Windows (server, queue, vite).
+- `composer run dev`: entorno de desarrollo.
 - `composer run test`: ejecuta pruebas.
 - `composer run reset`: reinicia base de datos con seed.
 - `composer run doctor`: limpieza y estado de migraciones.
@@ -49,6 +62,7 @@ Desde `composer.json`:
 - Admin: `admin@tienda.local` / `password`
 
 ## 6. Modulos implementados
+
 ### Tienda
 - Home de tienda.
 - Catalogo con filtros, categoria, detalle y busqueda.
@@ -61,44 +75,38 @@ Desde `composer.json`:
 - Login y dashboard admin.
 - CRUD de productos, zonas, categorias y proveedores.
 - CRUD de diccionario catalogo (`/admin/diccionario`).
-- **Exportacion de datos** en CSV/XLSX con filtro por fechas:
-  - Categorías, productos, zonas, proveedores.
-  - Usuarios y clientes.
-  - Disponible en dashboard con selector de módulo y rango de fechas.
-- Modulo de guardias con:
-  - Alta y edicion.
-  - Baja logica y reactivacion.
-  - Asignacion y devolucion de items.
-  - Validaciones por tipo de documento y cedula/documento.
-- Gestion de usuarios admin (restringido por rol).
+- Modulo de guardias con alta, edicion, baja logica, reactivacion y asignacion/devolucion de items.
+- Gestion de usuarios admin por rol.
+- Exportacion de datos CSV/XLSX con filtro por fechas.
 
-### Inventario y compras (modelo de datos)
-- Ordenes de compra y sus items.
-- Recepciones de compra y detalle.
-- Movimientos de inventario y tipos de movimiento.
-- Transferencias de inventario entre zonas.
-- Ajustes de stock y sus items.
-- Relacion proveedores-productos.
+## 7. Cambios recientes (Turbo SPA y UX)
 
-## 7. Avances recientes (lo ya hecho)
-- Integracion completa del modulo de guardias en rutas, controladores y vistas.
-- Integracion de campo `cedula`/documento con validaciones en guardias.
-- Normalizacion de codigos de catalogo en migraciones (`normalize_catalog_codes`).
-- Incorporacion de modulo `diccionario` para catalogos reutilizables.
-- Flujo de checkout conectado con servicios (`CheckoutService`, `PaymentService`).
-- Ajustes de vistas y CSS recientes en frontend.
-- **Implementación de exportación de datos en CSV/XLSX:**
-  - Nuevo controlador: `DataExportController` en `app/Http/Controllers/Admin/`.
-  - Nueva clase export: `GenericArrayExport` en `app/Exports/` (reutilizable).
-  - Integracion con Laravel Excel para manejo de formatos.
-  - Botón/formulario en dashboard con selector de módulo, formato y rango de fechas.
-  - Soporte para 6 módulos exportables con filtrado por `created_at`.
+### Navegacion sin recarga completa
+- Se integro Turbo para navegacion parcial en tienda y admin.
+- Listados de catalogo, categoria y busqueda actualizan contenido con `turbo-frame` en lugar de recargar pagina completa.
+- Se agrego paginacion manual por frame con `data-turbo-frame` y `data-turbo-action="advance"`.
+
+### Estados de carga visual
+- Skeleton loaders en:
+  - Catalogo tienda
+  - Categoria tienda
+  - Busqueda tienda
+  - Listados admin (usuarios, proveedores, diccionario, guardias)
+- Se uso estado `frame[busy]` para mostrar carga de forma no intrusiva.
+
+### Mejoras de estabilidad
+- Guard contra listeners duplicados en auto-submit de filtros.
+- Ajustes de target (`_top`) en enlaces/formularios que salen de frames.
+- Paginacion en `GuardiaController@index` para evitar listas completas.
 
 ## 8. Rutas principales
+
 ### Tienda
 - `GET /tienda`
 - `GET /tienda/catalogo`
+- `GET /tienda/categoria/{category}`
 - `GET /tienda/producto/{product}`
+- `GET /tienda/buscar`
 - `GET /tienda/carrito`
 - `GET /tienda/api/carrito`
 - `GET /tienda/checkout`
@@ -107,18 +115,20 @@ Desde `composer.json`:
 ### Admin
 - `GET /admin/login`
 - `GET /admin/dashboard`
-- `GET /admin/exportar` — Descarga CSV/XLSX con filtros de fecha (requiere autenticación admin)
+- `GET /admin/exportar`
 - `GET /admin/productos`
 - `GET /admin/categorias`
 - `GET /admin/zonas`
 - `GET /admin/proveedores`
 - `GET /admin/diccionario`
 - `GET /admin/guardias`
-- `POST /admin/guardias/{guardia}/items`
-- `PATCH /admin/guardias/{id}/reactivar`
-- `DELETE /admin/guardia-items/{id}`
+- `GET /admin/usuarios`
+
+### Rutas Turbo
+- `routes/turbo.php` contiene endpoints de contenido parcial para flujos Turbo.
 
 ## 9. Troubleshooting
+
 Limpiar caches:
 ```bash
 php artisan optimize:clear
@@ -132,34 +142,19 @@ Si faltan estilos:
 npm run build
 ```
 
-Reset de password admin (ejemplo):
+En Docker:
 ```bash
-php artisan tinker
-$user = \App\Models\User::where('email', 'superadmin@tienda.local')->first();
-$user->update(['password' => \Illuminate\Support\Facades\Hash::make('newpassword')]);
+docker compose exec node npm run build
+docker compose restart web app
 ```
 
-## 10. Caracteristicas de Exportacion
-### Uso del botón de exportación en dashboard
-1. Ir a `/admin/dashboard`.
-2. En la sección "⬇️ Exportar Datos":
-   - Seleccionar **Módulo**: categorías, productos, zonas, proveedores, usuarios o clientes.
-   - Seleccionar **Formato**: CSV o XLSX.
-   - Ingresar **rango de fechas** (Desde/Hasta).
-   - Hacer clic en **Exportar**.
-3. El archivo se descargará automáticamente con nombre: `{modulo}_{fechaInicio}_a_{fechaFin}.{formato}`.
-
-### Módulos exportables
-- **Categorías**: id, zona, nombre, código, descripción, fecha_creación.
-- **Productos**: id, categoría, nombre, código_barras, precio, stock, unidad, estado, fecha_creación.
-- **Zonas**: id, código, nombre, descripción, fecha_creación.
-- **Proveedores**: id, código, razón_social, nombre_comercial, contacto, teléfono, email, ciudad, estado, fecha_creación.
-- **Usuarios**: id, nombre, email, teléfono, ciudad, documento, fecha_creación.
-- **Clientes**: id, código, nombre, email, teléfono, ciudad, estado, fecha_creación.
+## 10. Notas de produccion
+- No subir artefactos temporales en `storage/` (dumps `.html/.css/.js/.tmp`).
+- Se agrego `.dockerignore` para evitar incluir archivos temporales, logs, cache y docs en la imagen.
+- Se reforzo `.gitignore` para ignorar temporales de `storage`.
 
 ## 11. Proximos pasos sugeridos
-- Exportacion de pedidos (ventas/compras) con filtros avanzados.
-- Pasarela de pagos real (Stripe/PayPal).
-- Reportes de ventas e inventario en tiempo real.
-- Mejora de queries con paginación para grandes volúmenes de datos.
-- Mayor cobertura de pruebas automatizadas.
+- Completar el patron Turbo en todos los listados admin restantes.
+- Incrementar pruebas automatizadas de navegacion Turbo y regresion visual.
+- Agregar monitoreo de rendimiento (TTFB, navegacion parcial, errores JS).
+- Evaluar cache por fragmentos para vistas de alto trafico.

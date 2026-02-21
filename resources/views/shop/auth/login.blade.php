@@ -1,9 +1,5 @@
 @extends('layouts.shop')
 
-@push('styles')
-    @safeVite(['resources/css/shop/auth.css'])
-@endpush
-
 @section('content')
     <div class="auth-wrap auth-wrap--sm">
         <div class="card">

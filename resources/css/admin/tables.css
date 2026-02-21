@@ -145,3 +145,68 @@
 .role-pill-empty {
     color: #9ca3af;
 }
+
+.admin-results-frame {
+    display: block;
+    position: relative;
+    min-height: 320px;
+}
+
+.admin-results-content {
+    transition: opacity 0.2s ease;
+}
+
+.admin-results-skeleton {
+    display: none;
+    position: absolute;
+    inset: 8px 0 0 0;
+    z-index: 2;
+    pointer-events: none;
+    padding: 0 4px;
+}
+
+.admin-results-skeleton-row {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 12px;
+    background: #ffffff;
+    border: 1px solid #eef2f7;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+}
+
+.admin-results-skeleton-line {
+    display: block;
+    height: 12px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+    background-size: 200% 100%;
+    animation: admin-skeleton-shimmer 1.1s linear infinite;
+}
+
+.admin-results-skeleton-line--sm {
+    width: 55%;
+}
+
+.admin-results-skeleton-line--md {
+    width: 75%;
+}
+
+.admin-results-skeleton-line--lg {
+    width: 95%;
+}
+
+.admin-results-frame[busy] .admin-results-content {
+    opacity: 0.35;
+}
+
+.admin-results-frame[busy] .admin-results-skeleton {
+    display: block;
+}
+
+@keyframes admin-skeleton-shimmer {
+    to {
+        background-position: -200% 0;
+    }
+}

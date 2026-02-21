@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@push('styles')
-    @safeVite(['resources/css/admin/products.css'])
-@endpush
-
 @section('content')
 @php
     $stockLevel = $product->stock_quantity < 5 ? 'critical' : ($product->stock_quantity < 20 ? 'low' : 'ok');

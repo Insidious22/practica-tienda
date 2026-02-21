@@ -1,0 +1,12 @@
+@import '../layouts/admin.css';
+@import '../admin/auth.css';
+@import '../admin/dashboard.css';
+@import '../admin/tables.css';
+@import '../admin/forms.css';
+@import '../admin/products.css';
+@import '../admin/categories.css';
+@import '../admin/zones.css';
+@import '../admin/suppliers.css';
+@import '../admin/guardias.css';
+@import '../admin/diccionario.css';
+@import '../admin/users.css';

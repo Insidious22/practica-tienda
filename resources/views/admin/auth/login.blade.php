@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@push('styles')
-    @safeVite(['resources/css/admin/auth.css'])
-@endpush
-
 @section('content')
 <div class="auth-wrapper">
     <div class="container">

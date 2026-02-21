@@ -2,74 +2,86 @@
 
 namespace App\Http\Controllers\Shop;
 
+use App\Actions\Shop\BuildCustomerDashboardAction;
+use App\Actions\Shop\GetCustomerOrderDetailAction;
+use App\Actions\Shop\GetCustomerOrdersAction;
+use App\Actions\Shop\UpdateCustomerProfileAction;
 use App\Http\Controllers\Controller;
-use App\Models\Diccionario;
 use App\Models\SalesOrder;
 use App\Models\User;
+use App\Services\CatalogOptionService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 
 class CustomerAccountController extends Controller
 {
-    public function index()
-    {
-        $user = Auth::user();
-
-        $recentOrders = SalesOrder::where('user_id', $user->id)
-            ->where('channel', 'online')
-            ->latest()
-            ->limit(5)
-            ->get();
-
-        $totalOrders = SalesOrder::where('user_id', $user->id)
-            ->where('channel', 'online')
-            ->count();
-
-        $totalSpent = SalesOrder::where('user_id', $user->id)
-            ->where('channel', 'online')
-            ->where('status', 'completed')
-            ->sum('total');
-
-        return view('shop.account.index', compact('user', 'recentOrders', 'totalOrders', 'totalSpent'));
+    public function __construct(
+        private readonly CatalogOptionService $catalogOptionService,
+        private readonly BuildCustomerDashboardAction $buildCustomerDashboardAction,
+        private readonly GetCustomerOrdersAction $getCustomerOrdersAction,
+        private readonly GetCustomerOrderDetailAction $getCustomerOrderDetailAction,
+        private readonly UpdateCustomerProfileAction $updateCustomerProfileAction
+    ) {
     }
 
-    public function orders()
+    public function index(): View
     {
-        $orders = SalesOrder::where('user_id', Auth::id())
-            ->where('channel', 'online')
-            ->with('items')
-            ->latest()
-            ->paginate(10);
+        $user = Auth::user();
+        if (!$user instanceof User) {
+            abort(401);
+        }
+
+        $dashboard = $this->buildCustomerDashboardAction->execute($user);
+
+        return view('shop.account.index', [
+            'user' => $user,
+            'recentOrders' => $dashboard['recentOrders'],
+            'totalOrders' => $dashboard['totalOrders'],
+            'totalSpent' => $dashboard['totalSpent'],
+        ]);
+    }
+
+    public function orders(): View
+    {
+        $orders = $this->getCustomerOrdersAction->execute((int) Auth::id(), 10);
 
         return view('shop.account.orders', compact('orders'));
     }
 
-    public function orderDetail(SalesOrder $order)
+    public function orderDetail(SalesOrder $order): View
     {
-        if ($order->user_id !== Auth::id()) {
+        $resolvedOrder = $this->getCustomerOrderDetailAction->execute($order, (int) Auth::id());
+        if (!$resolvedOrder) {
             abort(403);
         }
 
-        $order->load(['items.product', 'payments']);
-
-        return view('shop.account.order-detail', compact('order'));
+        return view('shop.account.order-detail', ['order' => $resolvedOrder]);
     }
 
-    public function profile()
+    public function profile(): View
     {
-        $documentTypes = $this->obtenerCatalogo('cliente_tipo_documento', [
+        $user = Auth::user();
+        if (!$user instanceof User) {
+            abort(401);
+        }
+
+        $documentTypes = $this->catalogOptionService->options('cliente_tipo_documento', [
             ['numero' => 1, 'descripcion' => 'Cedula', 'siglas' => 'CED'],
             ['numero' => 2, 'descripcion' => 'RUC', 'siglas' => 'RUC'],
             ['numero' => 3, 'descripcion' => 'Pasaporte', 'siglas' => 'PAS'],
             ['numero' => 4, 'descripcion' => 'Otro', 'siglas' => 'OTR'],
         ]);
 
-        return view('shop.account.profile', ['user' => Auth::user(), 'documentTypes' => $documentTypes]);
+        return view('shop.account.profile', [
+            'user' => $user,
+            'documentTypes' => $documentTypes,
+        ]);
     }
 
-    public function updateProfile(Request $request)
+    public function updateProfile(Request $request): RedirectResponse
     {
         $user = Auth::user();
         if (!$user) {
@@ -77,7 +89,7 @@ class CustomerAccountController extends Controller
         }
         /** @var User $user */
 
-        $documentTypeSiglas = $this->obtenerSiglasCatalogo('cliente_tipo_documento', ['CED', 'RUC', 'PAS', 'OTR']);
+        $documentTypeSiglas = $this->catalogOptionService->keys('cliente_tipo_documento', ['CED', 'RUC', 'PAS', 'OTR']);
 
         $data = $request->validate([
             'name' => 'required|string|max:255',
@@ -89,53 +101,8 @@ class CustomerAccountController extends Controller
             'document_number' => 'nullable|string|max:20',
         ]);
 
-        $user->update($data);
+        $this->updateCustomerProfileAction->execute($user, $data);
 
         return back()->with('success', 'Perfil actualizado correctamente');
     }
-
-    private function obtenerCatalogo(string $tipo, array $fallback): Collection
-    {
-        $catalogo = Diccionario::porTipo($tipo)->orderBy('orden')->get();
-
-        if ($catalogo->isNotEmpty()) {
-            return $catalogo->map(function ($item) {
-                return (object) [
-                    'numero' => (int) ($item->numero ?? $item->orden ?? 0),
-                    'descripcion' => trim((string) ($item->descripcion ?? '')),
-                    'siglas' => strtoupper(trim((string) ($item->siglas ?? $item->valor ?? ''))),
-                ];
-            })->filter(fn ($item) => $item->siglas !== '' && $item->descripcion !== '')->values();
-        }
-
-        return collect($fallback)->map(function ($item) {
-            return (object) [
-                'numero' => (int) ($item['numero'] ?? 0),
-                'descripcion' => trim((string) ($item['descripcion'] ?? '')),
-                'siglas' => strtoupper(trim((string) ($item['siglas'] ?? ''))),
-            ];
-        })->values();
-    }
-
-    private function obtenerSiglasCatalogo(string $tipo, array $fallback): array
-    {
-        $siglas = collect(Diccionario::siglas($tipo))
-            ->map(fn ($sigla) => strtoupper(trim((string) $sigla)))
-            ->filter()
-            ->unique()
-            ->values()
-            ->all();
-
-        if (!empty($siglas)) {
-            return $siglas;
-        }
-
-        return collect($fallback)
-            ->map(fn ($sigla) => strtoupper(trim((string) $sigla)))
-            ->filter()
-            ->unique()
-            ->values()
-            ->all();
-    }
 }
-

@@ -2,21 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Admin\CreateUserAction;
+use App\Actions\Admin\DeleteUserAction;
+use App\Actions\Admin\UpdateUserAction;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Models\Role;
+use App\Models\User;
+use DomainException;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    // Solo Super Admin puede ver y gestionar usuarios
-    public function __construct()
-    {
+    public function __construct(
+        private readonly CreateUserAction $createUserAction,
+        private readonly UpdateUserAction $updateUserAction,
+        private readonly DeleteUserAction $deleteUserAction
+    ) {
         $this->middleware(function ($request, $next) {
-            if (!$request->user() || !$request->user()->isSuperAdmin()) {
+            if (! $request->user() || ! $request->user()->isSuperAdmin()) {
                 return redirect()->route('admin.dashboard')
-                    ->with('error', 'No tienes permiso para acceder a esta sección.');
+                    ->with('error', 'No tienes permiso para acceder a esta seccion.');
             }
+
             return $next($request);
         });
     }
@@ -47,18 +54,7 @@ class UserController extends Controller
             'roles.*' => 'exists:roles,id',
         ]);
 
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => $data['password'],
-            'phone' => $data['phone'] ?? null,
-        ]);
-
-        // Asignar roles
-        $user->roles()->attach($data['roles'], [
-            'assigned_by' => $request->user()->id,
-            'assigned_at' => now(),
-        ]);
+        $this->createUserAction->execute($data, (int) $request->user()->id);
 
         return redirect()->route('admin.users.index')
             ->with('success', 'Usuario creado correctamente.');
@@ -89,17 +85,7 @@ class UserController extends Controller
             'roles.*' => 'exists:roles,id',
         ]);
 
-        $user->update([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'phone' => $data['phone'] ?? null,
-        ]);
-
-        // Actualizar roles
-        $syncData = collect($data['roles'])->mapWithKeys(fn($roleId) => [
-            $roleId => ['assigned_by' => $request->user()->id, 'assigned_at' => now()],
-        ])->toArray();
-        $user->roles()->sync($syncData);
+        $this->updateUserAction->execute($user, $data, (int) $request->user()->id);
 
         return redirect()->route('admin.users.index')
             ->with('success', 'Usuario actualizado correctamente.');
@@ -107,17 +93,11 @@ class UserController extends Controller
 
     public function destroy(Request $request, User $user)
     {
-        // No permitir eliminar al mismo usuario
-        if ($user->id === $request->user()->id) {
-            return back()->with('error', 'No puedes eliminar tu propia cuenta.');
+        try {
+            $this->deleteUserAction->execute($user, $request->user());
+        } catch (DomainException $exception) {
+            return back()->with('error', $exception->getMessage());
         }
-
-        // No permitir eliminar si tiene órdenes de venta o compra
-        if ($user->salesOrders()->exists() || $user->purchaseOrders()->exists()) {
-            return back()->with('error', 'No puedes eliminar este usuario porque tiene órdenes asociadas.');
-        }
-
-        $user->delete();
 
         return redirect()->route('admin.users.index')
             ->with('success', 'Usuario eliminado correctamente.');

@@ -1,9 +1,5 @@
 @extends('layouts.shop')
 
-@push('styles')
-    @safeVite(['resources/css/shop/home.css'])
-@endpush
-
 @section('content')
     <!-- Hero Section -->
     <div class="home-hero">

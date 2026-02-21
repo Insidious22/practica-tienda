@@ -3,33 +3,40 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Diccionario;
 use App\Models\Guardia;
 use App\Models\InventoryItem;
+use App\Services\CatalogOptionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class GuardiaController extends Controller
 {
+    public function __construct(private readonly CatalogOptionService $catalogOptionService)
+    {
+    }
+
     public function index()
     {
-        $guardias = Guardia::where('activo', true)->orderBy('id', 'desc')->get();
+        $guardias = Guardia::where('activo', true)
+            ->orderByDesc('id')
+            ->paginate(20)
+            ->withQueryString();
+
         return view('admin.guardias.index', compact('guardias'));
     }
 
     public function create()
     {
         $inventarioItems = InventoryItem::where('cantidad', '>', 0)->orderBy('nombre')->get();
-        $tiposDocumento = $this->obtenerCatalogo('guardia_tipo_documento', [
+        $tiposDocumento = $this->catalogOptionService->options('guardia_tipo_documento', [
             ['numero' => 1, 'descripcion' => 'Cedula', 'siglas' => 'CED'],
             ['numero' => 2, 'descripcion' => 'RUC', 'siglas' => 'RUC'],
             ['numero' => 3, 'descripcion' => 'Pasaporte', 'siglas' => 'PAS'],
             ['numero' => 4, 'descripcion' => 'Otro', 'siglas' => 'OTR'],
         ]);
-        $turnos = $this->obtenerCatalogo('guardia_turno', [
+        $turnos = $this->catalogOptionService->options('guardia_turno', [
             ['numero' => 1, 'descripcion' => 'Manana', 'siglas' => 'MAN'],
             ['numero' => 2, 'descripcion' => 'Tarde', 'siglas' => 'TAR'],
             ['numero' => 3, 'descripcion' => 'Noche', 'siglas' => 'NOC'],
@@ -40,19 +47,19 @@ class GuardiaController extends Controller
 
     public function store(Request $request)
     {
-        $tiposDocumento = $this->obtenerCatalogo('guardia_tipo_documento', [
+        $tiposDocumento = $this->catalogOptionService->options('guardia_tipo_documento', [
             ['numero' => 1, 'descripcion' => 'Cedula', 'siglas' => 'CED'],
             ['numero' => 2, 'descripcion' => 'RUC', 'siglas' => 'RUC'],
             ['numero' => 3, 'descripcion' => 'Pasaporte', 'siglas' => 'PAS'],
             ['numero' => 4, 'descripcion' => 'Otro', 'siglas' => 'OTR'],
         ]);
-        $turnos = $this->obtenerCatalogo('guardia_turno', [
+        $turnos = $this->catalogOptionService->options('guardia_turno', [
             ['numero' => 1, 'descripcion' => 'Manana', 'siglas' => 'MAN'],
             ['numero' => 2, 'descripcion' => 'Tarde', 'siglas' => 'TAR'],
             ['numero' => 3, 'descripcion' => 'Noche', 'siglas' => 'NOC'],
         ]);
-        $tipoDocumentoSiglas = $this->extraerSiglas($tiposDocumento, ['CED', 'RUC', 'PAS', 'OTR']);
-        $turnoSiglas = $this->extraerSiglas($turnos, ['MAN', 'TAR', 'NOC']);
+        $tipoDocumentoSiglas = $this->catalogOptionService->keys('guardia_tipo_documento', ['CED', 'RUC', 'PAS', 'OTR']);
+        $turnoSiglas = $this->catalogOptionService->keys('guardia_turno', ['MAN', 'TAR', 'NOC']);
 
         $rules = [
             'nombre' => 'required|string|max:100',
@@ -126,13 +133,13 @@ class GuardiaController extends Controller
     public function edit(string $id)
     {
         $guardia = Guardia::findOrFail($id);
-        $tiposDocumento = $this->obtenerCatalogo('guardia_tipo_documento', [
+        $tiposDocumento = $this->catalogOptionService->options('guardia_tipo_documento', [
             ['numero' => 1, 'descripcion' => 'Cedula', 'siglas' => 'CED'],
             ['numero' => 2, 'descripcion' => 'RUC', 'siglas' => 'RUC'],
             ['numero' => 3, 'descripcion' => 'Pasaporte', 'siglas' => 'PAS'],
             ['numero' => 4, 'descripcion' => 'Otro', 'siglas' => 'OTR'],
         ]);
-        $turnos = $this->obtenerCatalogo('guardia_turno', [
+        $turnos = $this->catalogOptionService->options('guardia_turno', [
             ['numero' => 1, 'descripcion' => 'Manana', 'siglas' => 'MAN'],
             ['numero' => 2, 'descripcion' => 'Tarde', 'siglas' => 'TAR'],
             ['numero' => 3, 'descripcion' => 'Noche', 'siglas' => 'NOC'],
@@ -143,19 +150,8 @@ class GuardiaController extends Controller
 
     public function update(Request $request, string $id)
     {
-        $tiposDocumento = $this->obtenerCatalogo('guardia_tipo_documento', [
-            ['numero' => 1, 'descripcion' => 'Cedula', 'siglas' => 'CED'],
-            ['numero' => 2, 'descripcion' => 'RUC', 'siglas' => 'RUC'],
-            ['numero' => 3, 'descripcion' => 'Pasaporte', 'siglas' => 'PAS'],
-            ['numero' => 4, 'descripcion' => 'Otro', 'siglas' => 'OTR'],
-        ]);
-        $turnos = $this->obtenerCatalogo('guardia_turno', [
-            ['numero' => 1, 'descripcion' => 'Manana', 'siglas' => 'MAN'],
-            ['numero' => 2, 'descripcion' => 'Tarde', 'siglas' => 'TAR'],
-            ['numero' => 3, 'descripcion' => 'Noche', 'siglas' => 'NOC'],
-        ]);
-        $tipoDocumentoSiglas = $this->extraerSiglas($tiposDocumento, ['CED', 'RUC', 'PAS', 'OTR']);
-        $turnoSiglas = $this->extraerSiglas($turnos, ['MAN', 'TAR', 'NOC']);
+        $tipoDocumentoSiglas = $this->catalogOptionService->keys('guardia_tipo_documento', ['CED', 'RUC', 'PAS', 'OTR']);
+        $turnoSiglas = $this->catalogOptionService->keys('guardia_turno', ['MAN', 'TAR', 'NOC']);
 
         $request->validate([
             'nombre' => 'required|string|max:100',
@@ -242,58 +238,5 @@ class GuardiaController extends Controller
 
         return redirect()->route('admin.guardias.create')
             ->with('success', 'El guardia ' . $guardia->nombre . ' ' . $guardia->apellido . ' ha sido reactivado exitosamente.');
-    }
-
-    private function obtenerCatalogo(string $tipo, array $fallback): Collection
-    {
-        $catalogo = Diccionario::porTipo($tipo)->orderBy('orden')->get();
-        $normalizado = $catalogo
-            ->map(function ($item) {
-                $siglas = strtoupper(trim((string) ($item->siglas ?? $item->valor ?? '')));
-                $descripcion = trim((string) ($item->descripcion ?? ''));
-                $numero = (int) ($item->numero ?? $item->orden ?? 0);
-
-                return (object) [
-                    'numero' => $numero,
-                    'descripcion' => $descripcion,
-                    'siglas' => $siglas,
-                ];
-            })
-            ->filter(fn ($item) => $item->siglas !== '' && $item->descripcion !== '')
-            ->values();
-
-        if ($normalizado->isNotEmpty()) {
-            return $normalizado;
-        }
-
-        return collect($fallback)->map(function ($item) {
-            return (object) [
-                'numero' => (int) ($item['numero'] ?? 0),
-                'descripcion' => (string) ($item['descripcion'] ?? ''),
-                'siglas' => strtoupper(trim((string) ($item['siglas'] ?? ''))),
-            ];
-        })->values();
-    }
-
-    private function extraerSiglas(Collection $catalogo, array $fallback): array
-    {
-        $siglas = $catalogo
-            ->pluck('siglas')
-            ->map(fn ($sigla) => strtoupper(trim((string) $sigla)))
-            ->filter()
-            ->unique()
-            ->values()
-            ->all();
-
-        if (!empty($siglas)) {
-            return $siglas;
-        }
-
-        return collect($fallback)
-            ->map(fn ($sigla) => strtoupper(trim((string) $sigla)))
-            ->filter()
-            ->unique()
-            ->values()
-            ->all();
     }
 }
