@@ -18,7 +18,7 @@
     <x-turbo-loader />
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" id="admin-sidebar">
         <div class="sidebar-logo">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
@@ -83,7 +83,7 @@
                 </svg>
                 Ver Tienda
             </a>
-            <form action="{{ route('admin.logout') }}" method="POST" class="sidebar-logout-form">
+            <form action="{{ route('admin.logout') }}" method="POST" class="sidebar-logout-form" data-turbo="false">
                 @csrf
                 <button type="submit" class="sidebar-logout-button">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="icon-18">
@@ -95,11 +95,20 @@
         </nav>
     </div>
 
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
     <!-- Main Content -->
     <div class="main-content">
         <!-- Topbar -->
         <div class="topbar">
-            <h1 class="topbar-title">{{ $title ?? config('app.name', 'Tienda') }}</h1>
+            <div class="topbar-left">
+                <button type="button" class="mobile-nav-toggle" id="mobile-nav-toggle" aria-controls="admin-sidebar" aria-expanded="false" aria-label="Abrir menu">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="icon-20">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                <h1 class="topbar-title">{{ $title ?? config('app.name', 'Tienda') }}</h1>
+            </div>
             <div class="topbar-user">
                 <span class="topbar-user-label">Usuario</span>
                 <div class="user-avatar">U</div>
@@ -135,24 +144,67 @@
     </div>
 
     <script>
-        // Highlight active nav link
-        document.querySelectorAll('.sidebar-nav a').forEach(link => {
-            if (link.href === window.location.href) {
-                link.classList.add('active');
-            }
-        });
-        
-        // Auto-close alerts after 5 seconds
-        setTimeout(() => {
-            document.querySelectorAll('.alert').forEach(alert => {
-                if (alert.classList.contains('success')) {
-                    alert.style.opacity = '0';
-                    alert.style.transition = 'opacity 0.3s ease';
-                    setTimeout(() => alert.remove(), 300);
+        const initializeAdminLayout = () => {
+            document.querySelectorAll('.sidebar-nav a').forEach(link => {
+                if (link.href === window.location.href) {
+                    link.classList.add('active');
                 }
             });
-        }, 5000);
+
+            const body = document.body;
+            const sidebar = document.getElementById('admin-sidebar');
+            const toggle = document.getElementById('mobile-nav-toggle');
+            const backdrop = document.getElementById('sidebar-backdrop');
+
+            const closeSidebar = () => {
+                body.classList.remove('admin-sidebar-open');
+                if (toggle) toggle.setAttribute('aria-expanded', 'false');
+            };
+
+            if (toggle && !toggle.dataset.bound) {
+                toggle.dataset.bound = 'true';
+                toggle.addEventListener('click', () => {
+                    const isOpen = body.classList.toggle('admin-sidebar-open');
+                    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                });
+            }
+
+            if (backdrop && !backdrop.dataset.bound) {
+                backdrop.dataset.bound = 'true';
+                backdrop.addEventListener('click', closeSidebar);
+            }
+
+            if (sidebar && !sidebar.dataset.bound) {
+                sidebar.dataset.bound = 'true';
+                sidebar.addEventListener('click', (event) => {
+                    if (window.innerWidth > 768) return;
+                    if (event.target.closest('a, button')) closeSidebar();
+                });
+            }
+
+            if (!window.__adminSidebarResizeBound) {
+                window.__adminSidebarResizeBound = true;
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768) closeSidebar();
+                });
+            }
+
+            setTimeout(() => {
+                document.querySelectorAll('.alert').forEach(alert => {
+                    if (alert.classList.contains('success')) {
+                        alert.style.opacity = '0';
+                        alert.style.transition = 'opacity 0.3s ease';
+                        setTimeout(() => alert.remove(), 300);
+                    }
+                });
+            }, 5000);
+        };
+
+        document.addEventListener('turbo:load', initializeAdminLayout);
+        document.addEventListener('DOMContentLoaded', initializeAdminLayout);
     </script>
     @stack('scripts')
 </body>
 </html>
+
+

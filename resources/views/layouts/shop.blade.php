@@ -53,7 +53,7 @@
                         </svg>
                         {{ Auth::user()->name }}
                     </a>
-                    <form action="{{ route('shop.logout') }}" method="POST" class="header-actions-form">
+                    <form action="{{ route('shop.logout') }}" method="POST" class="header-actions-form" data-turbo="false">
                         @csrf
                         <button type="submit" class="header-link header-link-button">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="icon-20">
@@ -197,3 +197,4 @@
     @stack('scripts')
 </body>
 </html>
+

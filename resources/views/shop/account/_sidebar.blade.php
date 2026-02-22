@@ -22,7 +22,7 @@
                 </svg>
                 Mi Perfil
             </a>
-            <form action="{{ route('shop.logout') }}" method="POST" class="account-nav-form">
+            <form action="{{ route('shop.logout') }}" method="POST" class="account-nav-form" data-turbo="false">
                 @csrf
                 <button type="submit" class="account-nav-button">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="account-nav-icon">
@@ -34,3 +34,4 @@
         </nav>
     </div>
 </div>
+

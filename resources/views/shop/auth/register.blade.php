@@ -7,7 +7,7 @@
                 Crear Cuenta
             </div>
             <div class="card-body">
-                <form action="{{ route('shop.register') }}" method="POST">
+                <form action="{{ route('shop.register') }}" method="POST" data-turbo="false">
                     @csrf
 
                     <div class="form-group mb-3">
@@ -63,3 +63,4 @@
         </div>
     </div>
 @endsection
+
