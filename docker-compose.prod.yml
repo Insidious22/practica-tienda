@@ -10,6 +10,13 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - public_build:/shared-public-build
+    command: >
+      sh -lc "rm -rf /shared-public-build/* &&
+              mkdir -p /shared-public-build &&
+              cp -a /var/www/public/build/. /shared-public-build/ &&
+              exec php-fpm"
     networks:
       - tienda
 
@@ -22,6 +29,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./public:/var/www/public:ro
+      - public_build:/var/www/public/build:ro
     depends_on:
       - app
     networks:
@@ -52,3 +60,4 @@ networks:
 
 volumes:
   db_data:
+  public_build:

@@ -8,24 +8,19 @@ CHECK_URL="${CHECK_URL:-http://127.0.0.1/tienda}"
 
 cd "$PROJECT_DIR"
 
-echo "[1/5] Git sync"
+echo "[1/4] Git sync"
 git pull --ff-only
 
-echo "[2/5] Build app image"
+echo "[2/4] Build app image"
 docker compose -f "$COMPOSE_FILE" build app
 
-echo "[3/5] Restart app container"
-docker compose -f "$COMPOSE_FILE" up -d app
+echo "[3/4] Restart app and web"
+docker compose -f "$COMPOSE_FILE" up -d app web
 
-echo "[4/6] Sync Vite build to host public/ for nginx"
-rm -rf "$PROJECT_DIR/public/build"
-mkdir -p "$PROJECT_DIR/public/build"
-docker cp "$APP_CONTAINER:/var/www/public/build/." "$PROJECT_DIR/public/build/"
-
-echo "[5/6] Clear Laravel caches"
+echo "[4/4] Clear Laravel caches"
 docker exec "$APP_CONTAINER" php artisan optimize:clear --no-ansi
 
-echo "[6/6] Verify storefront assets"
+echo "[verify] Storefront assets"
 html="$(curl -fsSL "$CHECK_URL")"
 
 if grep -q 'cdn.jsdelivr.net/npm/bootstrap' <<<"$html"; then
