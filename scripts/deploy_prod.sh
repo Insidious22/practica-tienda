@@ -17,10 +17,15 @@ docker compose -f "$COMPOSE_FILE" build app
 echo "[3/5] Restart app container"
 docker compose -f "$COMPOSE_FILE" up -d app
 
-echo "[4/5] Clear Laravel caches"
+echo "[4/6] Sync Vite build to host public/ for nginx"
+rm -rf "$PROJECT_DIR/public/build"
+mkdir -p "$PROJECT_DIR/public/build"
+docker cp "$APP_CONTAINER:/var/www/public/build/." "$PROJECT_DIR/public/build/"
+
+echo "[5/6] Clear Laravel caches"
 docker exec "$APP_CONTAINER" php artisan optimize:clear --no-ansi
 
-echo "[5/5] Verify storefront assets"
+echo "[6/6] Verify storefront assets"
 html="$(curl -fsSL "$CHECK_URL")"
 
 if grep -q 'cdn.jsdelivr.net/npm/bootstrap' <<<"$html"; then
@@ -32,5 +37,14 @@ if ! grep -q '/build/assets/.*\.css' <<<"$html"; then
   echo "ERROR: storefront is not rendering Vite CSS assets"
   exit 1
 fi
+
+while read -r asset; do
+  [ -n "$asset" ] || continue
+  code="$(curl -fsSL -o /dev/null -w '%{http_code}' "$asset")"
+  if [ "$code" != "200" ]; then
+    echo "ERROR: asset not reachable ($code): $asset"
+    exit 1
+  fi
+done < <(grep -o 'http://[^" ]*/build/assets/[^" ]*\.\(css\|js\)' <<<"$html" | head -n 6)
 
 echo "OK: storefront renders Vite assets and no Bootstrap CDN."
