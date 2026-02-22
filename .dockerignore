@@ -19,3 +19,4 @@ vendor
 /tests
 /*.md
 docker-compose.yml
+/public/storage
