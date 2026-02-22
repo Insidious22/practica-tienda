@@ -10,6 +10,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
     margin-bottom: 20px;
 }
 
@@ -47,6 +49,21 @@
 @media (max-width: 768px) {
     .catalog-layout {
         grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .catalog-title {
+        font-size: 20px;
+    }
+
+    .catalog-empty-body {
+        padding: 20px;
+    }
+
+    .catalog-frame-skeleton {
+        inset: 72px 0 0 0;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
     }
 }
 
@@ -116,5 +133,12 @@
 @keyframes catalog-skeleton-shimmer {
     to {
         background-position: -200% 0;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .catalog-frame-skeleton {
+        grid-template-columns: 1fr;
     }
 }

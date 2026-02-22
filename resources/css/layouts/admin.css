@@ -5,7 +5,14 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: #1f2937;
     min-height: 100vh;
+    overflow-x: hidden;
     padding-bottom: 40px;
+}
+
+img,
+svg {
+    max-width: 100%;
+    height: auto;
 }
 
 /* Sidebar & Navigation */
@@ -637,8 +644,19 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .container {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: clip;
+    }
+
+    .btn {
+        max-width: 100%;
+        white-space: normal;
+    }
+
     .sidebar {
-        width: 280px;
+        width: min(280px, calc(100vw - 40px));
         transform: translateX(-100%);
         transition: transform 0.25s ease;
         overflow-y: auto;
@@ -674,7 +692,8 @@ body {
     }
 
     .topbar {
-        align-items: center;
+        flex-direction: column;
+        align-items: flex-start;
         gap: 12px;
         margin: -15px -15px 15px -15px;
         padding-left: 15px;
@@ -697,6 +716,7 @@ body {
     .topbar-user {
         width: 100%;
         justify-content: space-between;
+        padding-right: 56px;
     }
 
     .container {

@@ -10,7 +10,9 @@ class HandleTurboRequest
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $isTurbo = $request->header('Turbo-Frame')
+        $isFrameRequest = (bool) $request->header('Turbo-Frame');
+
+        $isTurbo = $isFrameRequest
             || $request->header('X-Turbo-Request')
             || str_contains((string) $request->header('Accept', ''), 'turbo-stream');
 
@@ -28,7 +30,7 @@ class HandleTurboRequest
             $response->headers->set('Cache-Control', 'no-cache, private');
         }
 
-        if ($isTurbo && $response->isRedirection()) {
+        if ($isFrameRequest && $response->isRedirection()) {
             return response('', 200)
                 ->header('Turbo-Location', (string) $response->headers->get('Location'));
         }

@@ -6,6 +6,13 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
+}
+
+img,
+svg {
+    max-width: 100%;
+    height: auto;
 }
 
 /* Header */
@@ -63,6 +70,25 @@ body {
     width: 32px;
     height: 32px;
     color: #667eea;
+}
+
+
+.shop-mobile-toggle {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    color: #374151;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.shop-mobile-toggle:hover {
+    color: #667eea;
+    border-color: #cbd5e1;
 }
 
 /* Search */
@@ -624,9 +650,35 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .shop-main,
+    .card,
+    .card-body {
+        max-width: 100%;
+    }
+
+    .table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .btn {
+        max-width: 100%;
+        white-space: normal;
+        text-align: center;
+    }
+
     .header-main {
         flex-wrap: wrap;
-        gap: 15px;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .shop-mobile-toggle {
+        display: inline-flex;
+        margin-left: auto;
     }
 
     .search-form {
@@ -636,11 +688,43 @@ body {
     }
 
     .header-actions {
-        margin-left: auto;
+        width: 100%;
+        order: 4;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .header-link {
+        font-size: 13px;
+    }
+
+    .shop-nav {
+        display: none;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    body.shop-menu-open .shop-nav {
+        display: block;
     }
 
     .nav-content {
-        overflow-x: auto;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    .nav-link {
+        border-bottom: 0;
+        border-radius: 8px;
+        padding: 10px 12px;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        border-bottom-color: transparent;
+        background: #f3f4f6;
     }
 
     .product-grid {

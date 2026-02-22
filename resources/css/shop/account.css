@@ -467,3 +467,45 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+@media (max-width: 600px) {
+    .account-title,
+    .account-order-detail-title {
+        font-size: 22px;
+    }
+
+    .account-order-detail-header,
+    .account-order-head,
+    .account-order-foot,
+    .account-summary-row,
+    .account-summary-total {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .account-card-body--flush {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .account-table {
+        min-width: 560px;
+    }
+
+    .account-order-item-row {
+        flex-direction: column;
+    }
+
+    .account-order-item-thumb {
+        width: 56px;
+        height: 56px;
+    }
+
+    .account-order-button,
+    .account-back-button,
+    .account-profile-submit {
+        width: 100%;
+    }
+}

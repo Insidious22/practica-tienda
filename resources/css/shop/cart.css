@@ -235,6 +235,22 @@
 }
 
 @media (max-width: 600px) {
+    .cart-title {
+        font-size: 22px;
+    }
+
+    .cart-product {
+        align-items: flex-start;
+    }
+
+    .cart-product-link {
+        word-break: break-word;
+    }
+
+    .cart-summary-card {
+        position: static;
+    }
+
     .cart-table {
         display: block;
     }

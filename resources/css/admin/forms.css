@@ -96,3 +96,34 @@
 .role-empty {
     color: #9ca3af;
 }
+
+
+@media (max-width: 768px) {
+    .admin-form-container {
+        max-width: 100%;
+    }
+
+    .admin-form-card {
+        padding: 16px;
+        border-radius: 10px;
+    }
+
+    .admin-form-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .admin-form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-form-button {
+        width: 100%;
+    }
+
+    .form-group--align-end {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

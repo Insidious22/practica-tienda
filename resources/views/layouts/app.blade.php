@@ -158,7 +158,10 @@
 
             const closeSidebar = () => {
                 body.classList.remove('admin-sidebar-open');
-                if (toggle) toggle.setAttribute('aria-expanded', 'false');
+                if (toggle) {
+                    toggle.setAttribute('aria-expanded', 'false');
+                    toggle.setAttribute('aria-label', 'Abrir menu');
+                }
             };
 
             if (toggle && !toggle.dataset.bound) {
@@ -166,6 +169,7 @@
                 toggle.addEventListener('click', () => {
                     const isOpen = body.classList.toggle('admin-sidebar-open');
                     toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                    toggle.setAttribute('aria-label', isOpen ? 'Cerrar menu' : 'Abrir menu');
                 });
             }
 
@@ -187,6 +191,15 @@
                 window.addEventListener('resize', () => {
                     if (window.innerWidth > 768) closeSidebar();
                 });
+                window.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape') closeSidebar();
+                });
+            }
+
+            if (!window.__adminSidebarTurboHooksBound) {
+                window.__adminSidebarTurboHooksBound = true;
+                document.addEventListener('turbo:before-visit', closeSidebar);
+                document.addEventListener('turbo:submit-start', closeSidebar);
             }
 
             setTimeout(() => {

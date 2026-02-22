@@ -34,7 +34,14 @@
                 <span>Mi Tienda</span>
             </a>
 
-            <form action="{{ route('shop.search') }}" method="GET" class="search-form">
+            <button type="button" class="shop-mobile-toggle" id="shop-nav-toggle" aria-controls="shop-nav" aria-expanded="false" aria-label="Abrir menu">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="icon-20">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+                <span>Menu</span>
+            </button>
+
+            <form action="{{ route('shop.search') }}" method="GET" class="search-form" id="shop-search-form">
                 <div class="search-input-wrapper">
                     <input type="text" name="q" class="search-input" placeholder="Buscar productos..." value="{{ request('q') }}">
                     <button type="submit" class="search-btn">
@@ -88,7 +95,7 @@
             </div>
         </div>
 
-        <nav class="shop-nav">
+        <nav class="shop-nav" id="shop-nav">
             <div class="nav-content container">
                 <a href="{{ route('shop.home') }}" class="nav-link @if(Route::currentRouteName() === 'shop.home') active @endif" data-turbo-prefetch>Inicio</a>
                 <a href="{{ route('shop.catalog') }}" class="nav-link @if(Route::currentRouteName() === 'shop.catalog') active @endif" data-turbo-prefetch>Catalogo</a>
@@ -194,6 +201,46 @@
         }, 5000);
     </script>
 
+    <script>
+        const initializeShopLayout = () => {
+            const body = document.body;
+            const toggle = document.getElementById('shop-nav-toggle');
+            const nav = document.getElementById('shop-nav');
+
+            if (!toggle || !nav) return;
+
+            const closeMenu = () => {
+                body.classList.remove('shop-menu-open');
+                toggle.setAttribute('aria-expanded', 'false');
+            };
+
+            if (!toggle.dataset.bound) {
+                toggle.dataset.bound = 'true';
+                toggle.addEventListener('click', () => {
+                    const isOpen = body.classList.toggle('shop-menu-open');
+                    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                });
+            }
+
+            if (!nav.dataset.bound) {
+                nav.dataset.bound = 'true';
+                nav.addEventListener('click', (event) => {
+                    if (window.innerWidth > 768) return;
+                    if (event.target.closest('a')) closeMenu();
+                });
+            }
+
+            if (!window.__shopMenuResizeBound) {
+                window.__shopMenuResizeBound = true;
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768) closeMenu();
+                });
+            }
+        };
+
+        document.addEventListener('turbo:load', initializeShopLayout);
+        document.addEventListener('DOMContentLoaded', initializeShopLayout);
+    </script>
     @stack('scripts')
 </body>
 </html>

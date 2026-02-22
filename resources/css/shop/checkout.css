@@ -464,3 +464,92 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+@media (max-width: 768px) {
+    .checkout-title,
+    .confirmation-title {
+        font-size: 22px;
+        line-height: 1.2;
+    }
+
+    .checkout-steps {
+        gap: 10px;
+        margin-bottom: 20px;
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .checkout-step {
+        flex-shrink: 0;
+    }
+
+    .checkout-step-label {
+        font-size: 13px;
+    }
+
+    .checkout-step-divider {
+        width: 30px;
+    }
+
+    .checkout-card-sticky {
+        position: static;
+    }
+
+    .shipping-grid,
+    .confirmation-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .shipping-summary-body,
+    .confirmation-header-row,
+    .confirmation-actions,
+    .confirmation-total-row,
+    .confirmation-total-final,
+    .summary-row,
+    .summary-total {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .confirmation-date,
+    .confirmation-price {
+        text-align: left;
+    }
+
+    .confirmation-items-body,
+    .confirmation-table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .confirmation-table {
+        min-width: 560px;
+    }
+
+    .checkout-submit,
+    .checkout-submit--lg,
+    .confirmation-actions .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .summary-item,
+    .confirmation-item {
+        align-items: flex-start;
+    }
+
+    .summary-name {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: initial;
+        word-break: break-word;
+    }
+}
