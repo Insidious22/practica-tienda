@@ -1,8 +1,10 @@
 import './bootstrap';
 import * as Turbo from '@hotwired/turbo';
 import './turbo-state';
+import * as bootstrap from 'bootstrap';
 
 window.Turbo = Turbo;
+window.bootstrap = bootstrap;
 if (typeof Turbo.start === 'function') {
     try {
         Turbo.start();
@@ -10,7 +12,7 @@ if (typeof Turbo.start === 'function') {
         // Turbo might already be started by the module side-effects.
     }
 }
-Turbo.setProgressBarDelay(100);
+Turbo.config.drive.progressBarDelay = 100;
 
 const bootstrapAvailable = () => typeof window.bootstrap !== 'undefined';
 
@@ -81,3 +83,4 @@ document.addEventListener('turbo:fetch-request-error', (event) => {
 });
 
 document.addEventListener('DOMContentLoaded', initializeComponents);
+
