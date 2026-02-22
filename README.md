@@ -152,6 +152,46 @@ docker compose restart web app
 - No subir artefactos temporales en `storage/` (dumps `.html/.css/.js/.tmp`).
 - Se agrego `.dockerignore` para evitar incluir archivos temporales, logs, cache y docs en la imagen.
 - Se reforzo `.gitignore` para ignorar temporales de `storage`.
+- Dockerfile de produccion instala `libzip-dev` para compilar correctamente la extension `zip` en PHP.
+
+### Arquitectura prod actual (Docker)
+- `app` (`tienda_app`): Laravel + PHP-FPM, compila/contiene `public/build` (Vite).
+- `web` (`tienda_web`): Nginx expuesto en puerto `80`.
+- `db` (`tienda_db`): MySQL.
+- Volumen compartido `public_build`: sincroniza los assets de Vite entre `app` y `web`.
+
+Importante:
+- `web` monta `./public` en solo lectura y ademas monta `public_build` sobre `./public/build`.
+- `app` copia `public/build` al volumen compartido al iniciar.
+- Esto evita desincronizacion de hashes Vite entre el contenedor `app` y lo que sirve Nginx.
+
+### Deploy y rollback (VPS)
+Comandos disponibles en el servidor:
+- `sudo tienda-deploy`: despliegue completo (pull, build, restart, clear cache, verificacion de assets Vite).
+- `sudo tienda-rollback <commit|tag|branch>`: rollback a una revision especifica + redeploy.
+- `sudo tienda-rollback-last`: rollback rapido al deploy anterior (`HEAD~1`) + redeploy.
+
+Flujo recomendado:
+```bash
+ssh deploy@TU_IP
+sudo tienda-deploy
+```
+
+Rollback rapido si algo falla:
+```bash
+ssh deploy@TU_IP
+sudo tienda-rollback-last
+```
+
+### Scripts versionados (repo)
+- `scripts/deploy_prod.sh`: flujo de despliegue de produccion con verificacion.
+- `scripts/rollback_prod.sh`: rollback de produccion a un commit/tag/rama y redeploy.
+
+### Verificacion de estilos en produccion
+El deploy valida automaticamente que:
+- La tienda NO renderice Bootstrap CDN.
+- La tienda SI renderice assets Vite (`/build/assets/...`).
+- Los assets CSS/JS referenciados respondan `200`.
 
 ## 11. Proximos pasos sugeridos
 - Completar el patron Turbo en todos los listados admin restantes.
