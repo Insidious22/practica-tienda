@@ -21,7 +21,7 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.login') }}" method="POST" class="admin-form-card">
+        <form action="{{ route('admin.login') }}" method="POST" class="admin-form-card" data-turbo="false">
             @csrf
 
             <div class="admin-form-group">

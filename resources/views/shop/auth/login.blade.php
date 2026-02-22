@@ -7,7 +7,7 @@
                 Iniciar Sesion
             </div>
             <div class="card-body">
-                <form action="{{ route('shop.login') }}" method="POST">
+                <form action="{{ route('shop.login') }}" method="POST" data-turbo="false">
                     @csrf
 
                     @if(request('redirect'))
